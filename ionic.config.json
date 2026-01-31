@@ -1,0 +1,7 @@
+{
+  "name": "weather-cast",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
