@@ -48,21 +48,23 @@ export class HomePage implements OnInit {
           // Fallback if user denies: Load default city
           this.loadWeather('Pune');
           return;
+        }else{
+
         }
       }
 
       // 3. Get the actual position
       const obtainedCoordinates = await Geolocation.getCurrentPosition();
 
-      console.log('Obtained co-ordinates value :::', obtainedCoordinates);
+      console.log('Obtained co-ordinates value in getCurrentLocation :::', obtainedCoordinates);
 
       // 4. Call API with coords
       this.loadWeatherByCoords(obtainedCoordinates.coords.latitude,obtainedCoordinates.coords.longitude);
 
     }catch(error){
 
-    console.error('Error getting location', error);
-    // Fallback: If GPS fails (e.g. disabled), load default
+    console.log('In catch block for Error getting location', error);
+    // Fallback: If location access fails (e.g. disabled), load default
     this.loadWeather('Pune');
 
     }
@@ -72,29 +74,41 @@ export class HomePage implements OnInit {
    * Function used to call weather service after getting the co-ordinates
   */
   loadWeatherByCoords(lat: number, lon: number) {
+    console.log('Inside load weather by coords function  lat-long values :::', lat,lon);
     this.isLoading = true;
     this.errorMsg = '';
 
+    //1. Get current weather by co-ordinates
     this.weatherService.getWeatherByCoords(lat, lon).subscribe({
-      next: (data) => {
+      next: (res) => {
 
-        console.log('data obtained in loadWeatherByCoords function :::', data);
+        console.log('res obtained in load Weather By Coords function :::', res);
 
-        this.weatherData = data;
+        this.weatherData = res;
         this.isLoading = false;
 
-        // Check if res and res.list exist to avoid the "undefined" error
-        if (data && data.list) {
-          // Filter the list to get one entry per day (usually at 12:00:00)
-          this.forecastData = data.list.filter((item: any) => item.dt_txt.includes('12:00:00'));
-        }else{
-          console.error('Forecast data list is missing in the response', data);
-          this.forecastData = [];
-        }
+        //After getting current city weather-- call the getforecast API by passing co-ordinates (Chained call)
+
+        this.weatherService.getForecastByCoords(lat, lon).subscribe({
+          next: (data) => {
+            console.log('Data received for obtaining forecast by co-ordinates :::', data);
+            if (data && data.list) {
+              // Filter the list to get one entry per day (usually at 12:00:00)
+              this.forecastData = data.list.filter((item: any) => item.dt_txt.includes('12:00:00'));
+              console.log('Obtained forecastData for next 5 days :::', this.forecastData,this.forecastData.length);
+            }else{
+              console.log('Forecast data list is missing in the response', data);
+              this.forecastData = [];
+            }
+          },
+          error: (err) => {
+
+          }
+        });
 
       },
       error: (err) => {
-        this.errorMsg = 'Error fetching local weather.';
+        this.errorMsg = 'Error fetching your local weather.';
         this.isLoading = false;
         this.forecastData = [];
       }
@@ -109,24 +123,19 @@ export class HomePage implements OnInit {
     this.errorMsg = ''; // Reset errors
     this.weatherData = null; // Clear old data while loading
 
+    //1. Get current weather
     this.weatherService.getWeather(city).subscribe({
       next: (data) => {
         console.log('Obtained weather data in loadWeather function :::', data);
         this.weatherData = data;
         this.isLoading = false;
 
-        // Check if res and res.list exist to avoid the "undefined" error
-        if (data && data.list) {
-          // Filter the list to get one entry per day (usually at 12:00:00)
-          this.forecastData = data.list.filter((item: any) => item.dt_txt.includes('12:00:00'));
-        }else{
-          console.error('Forecast data list is missing in the response', data);
-          this.forecastData = [];
-        }
+        //After getting current city weather-- call the loadForecast API (Chained call)
+        this.loadForecast(city);
 
       },
       error: (err) => {
-        console.error('Error:', err);
+        console.error('Error block condition in loadWeather function:', err);
         this.isLoading = false;
         this.forecastData = [];
         // Handle standard 404 (City not found)
@@ -137,6 +146,36 @@ export class HomePage implements OnInit {
         }
       }
     });
+  }
+
+  loadForecast(city: string) {
+  console.log('City string passed to load the forecast call :::', city);
+    this.weatherService.getForecast(city).subscribe({
+      next: (data) =>{
+        // Check if res and res.list exist to avoid the "undefined" error
+        if (data && data.list) {
+          // Filter the list to get one entry per day (usually at 12:00:00)
+          this.forecastData = data.list.filter((item: any) => item.dt_txt.includes('12:00:00'));
+          console.log('Obtained forecastData for next 5 days in loadForecast function :::', this.forecastData, this.forecastData.length);
+        }else{
+          console.log('Forecast data list is missing in the response', data);
+          this.forecastData = [];
+        }
+      },
+      error: (err) => {
+        console.error('Error block condition in loadForecast function:', err);
+        this.isLoading = false;
+
+        this.forecastData = [];
+        // Handle standard 404 (City not found)
+        if (err.status === 404) {
+          this.errorMsg = 'City not found. Please try again.';
+        } else {
+          this.errorMsg = 'Unable to connect to forecast service.';
+        }
+      }
+    });
+
   }
 
 

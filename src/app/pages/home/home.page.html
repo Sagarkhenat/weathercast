@@ -1,38 +1,86 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      WEATHERCAST
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true" class="ion-padding">
-  <div *ngIf="isLoading" class="ion-text-center">
-    <ion-spinner name="crescent"></ion-spinner>
-    <p>Locating location...</p>
-  </div>
 
-  <div *ngIf="!isLoading && weatherData" id="container">
-    <strong>{{ weatherData.name }}</strong>
-    <p>{{ weatherData.main?.temp }}°C</p>
-  </div>
+  <!-- Angular if condition to handle loading check-->
+  @if (isLoading) {
+  <div class="ion-text-center">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Locating location...</p>
+    </div>
+  }@else{
 
-  <div *ngIf="!isLoading && forecastData.length > 0" class="ion-padding-top">
-  <ion-list-header>
-    <ion-label>5-Day Forecast (Midday)</ion-label>
-  </ion-list-header>
+    <div class="custom-header">
+      <div class="header-content">
+        <div class="app-title">WeatherCast</div>
+        <ion-icon name="settings-outline" style="font-size: 24px;"></ion-icon>
+      </div>
+    </div>
 
-  <ion-list lines="full">
-    <ion-item *ngFor="let day of forecastData">
-      <ion-label>
-        <h3>{{ day.dt_txt | date: 'EEEE, MMM d' }}</h3>
-        <p>{{ day.weather[0].description | titlecase }}</p>
-      </ion-label>
-      <ion-note slot="end" color="primary">
-        {{ day.main.temp | number: '1.0-0' }}°C
-      </ion-note>
-    </ion-item>
-  </ion-list>
-</div>
+    <!-- Show users location data current-->
+    @if(weatherData){
+      <div class="main-card">
+        <div class="city-name">{{ weatherData.name }}</div>
+
+        <div class="temp-container">
+            <div class="main-icon">⛅ {{ weatherData.main?.temp }}°C</div>
+            <div class="current-temp">
+              {{ weatherData.weather[0]?.description | titlecase }}
+            </div>
+        </div>
+
+      </div>
+    }
+
+    <!--show the users location forecast for next 5 days-->
+    @if(weatherData && forecastData.length > 0){
+        <div class="forecast-section ion-padding-top">
+          <ion-list-header class="list-header">
+            <ion-label class="section-title">Weekly Forecast (Midday)</ion-label>
+          </ion-list-header>
+
+          <ion-list lines="none">
+            <ion-item detail-none *ngFor="let day of forecastData" class="custom-list">
+
+              <ion-grid class="ion-no-padding">
+                <ion-row class="ion-align-items-center">
+
+                  <ion-col size="3">
+                    <ion-label>
+                      <h3 style="font-weight: 600; color: #555;">
+                        {{ day.dt_txt | date: 'EEE' | uppercase }}
+                      </h3>
+                    </ion-label>
+                  </ion-col>
+
+                  <ion-col size="5" class="ion-display-flex ion-align-items-center">
+                    <div style="font-size: 24px; margin-right: 15px;">
+                      ⛅
+                    </div>
+
+                    <ion-label>
+                      <div style="font-size: 13px; color: #666; font-weight: 500;">
+                        Max. &nbsp;{{ day.main.temp_max | number: '1.0-0' }}°
+                      </div>
+                      <div style="font-size: 13px; color: #666;">
+                        Min. &nbsp;{{ day.main.temp_min | number: '1.0-0' }}°
+                      </div>
+                    </ion-label>
+                  </ion-col>
+
+                  <ion-col size="4" class="ion-text-end">
+                    <ion-note style="font-size: 14px; color: #888;">
+                      {{ day.weather[0].description | titlecase }}
+                    </ion-note>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+
+            </ion-item>
+          </ion-list>
+        </div>
+      }@else{
+
+      }
+
+  }
 
 </ion-content>

@@ -26,19 +26,29 @@ export class WeatherService {
   }
 
   /**
-   * Fetch 5-day forecast for the selected city name
-   * @param city - City name
-   */
-  getForecast(city: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/forecast?q=${city}&units=metric&appid=${this.apiKey}`);
-  }
-
-  /**
    * Fetch weather by coordinates
   */
   getWeatherByCoords(lat: number, lon: number): Observable<any> {
     return this.http.get(`${this.baseUrl}/weather?lat=${lat}&lon=${lon}&units=metric&appid=${this.apiKey}`);
   }
+
+  /**
+   * Fetch 5-day forecast for the selected city name
+   * @param city - City name
+  */
+  getForecast(city: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/forecast?q=${city}&units=metric&appid=${this.apiKey}`);
+  }
+
+  /**
+   * Fetch 5-day forecast for the shared co-ordinates
+   * @param city - City name
+  */
+  getForecastByCoords(lat: number, lon: number): Observable<any>{
+    return this.http.get(`${this.baseUrl}/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${this.apiKey}`);
+  }
+
+
 
 
 }
