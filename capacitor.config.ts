@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'weather-cast',
+  appId: 'com.weathercast.app',
+  appName: 'WeatherCast',
   webDir: 'www'
 };
 
