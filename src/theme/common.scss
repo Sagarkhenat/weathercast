@@ -1,0 +1,523 @@
+/******************* Common font variables ****************/
+$font10: 1.0rem;
+$font12: 1.2rem;
+$font13: 1.3rem;
+$font14: 1.4rem;
+$font15: 1.5rem;
+$font16: 1.6rem;
+$font17: 1.7rem;
+$font18: 1.8rem;
+$font19: 1.9rem;
+$font20: 2rem;
+$font22: 2.2rem;
+$font24: 2.4rem;
+$font26: 2.6rem;
+$font28: 2.8rem;
+
+/******************* Common font variables ****************/
+$font-weight-normal:300;
+$font-weight-medium:500;
+$font-weight-bold:600;
+
+
+/******************** Color Variables ********************/
+$blackColor: #000;
+$whiteColor: #FFF;
+$backgroundColor: #FFFFFF;
+$primaryColor: #4A90E2; //For Header,buttons
+$secondaryColor: #F5A623;
+$textColor: #333333; // For the text to be easier on the eyes
+$cardBackground: #F0F4F8;
+$borderColor: #DDDDDD;
+$headerBgColor: #DCDCDC;
+$primaryTitleColor: #5c5959;
+
+/************** Common mixin for font *******************/
+@mixin font-face($font-family, $file-path, $font-weight, $font-style) {
+    @font-face {
+        font-family: $font-family;
+        src: url('#{$file-path}.eot');
+        src: url('#{$file-path}.eot?#iefix') format('embedded-opentype'),
+        url('#{$file-path}.otf') format('truetype'),
+        url('#{$file-path}.svg##{$font-family}') format('svg');
+        font-weight: $font-weight;
+        font-style: $font-style;
+    }
+    // Chrome for Windows rEndering font-face
+    @media screen and (-webkit-min-device-pixel-ratio: 0) {
+        @font-face {
+            font-family: $font-family;
+            src: url('#{$file-path}.svg##{$font-family}') format('svg');
+        }
+    }
+}
+
+
+
+/******************Common media queries for all platform*********************************/
+@mixin screen1440 {
+    @media (min-width: 1440px) {
+        @content;
+    }
+}
+
+@mixin screen1024 {
+    @media (min-width: 1024px) {
+        @content;
+    }
+}
+
+@mixin screen900 {
+    @media (min-width: 900px) {
+        @content;
+    }
+}
+
+/************** Screen resolution mixin for 10 inch tab *******************/
+@mixin screen800 {
+    @media (min-width: 800px) {
+        @content;
+    }
+}
+
+@mixin screenmax800 {
+    @media (max-width: 800px) {
+        @content;
+    }
+}
+
+/************** Screen resolution mixin for iPad *******************/
+@mixin screen768 {
+    @media (min-width: 768px) {
+        @content;
+    }
+}
+
+@mixin screenmax768 {
+    @media (max-width: 768px) {
+        @content;
+    }
+}
+
+/************** Screen resolution mixin for tablet *******************/
+@mixin screen600 {
+    @media (min-width: 600px) {
+        @content;
+    }
+}
+
+@mixin screenmax600 {
+    @media (max-width: 600px) {
+        @content;
+    }
+}
+
+@mixin screen411 {
+    @media (min-width: 411px) {
+        @content;
+    }
+}
+
+@mixin screen480 {
+    @media (max-width: 480px) {
+        @content;
+    }
+}
+
+@mixin screen185 {
+    @media (max-width: 185px) {
+        @content;
+    }
+}
+
+/************** Screen resolution mixin for iPhone 6 Plus *******************/
+@mixin screen414 {
+    @media (min-width: 414px) {
+        @content;
+    }
+}
+
+@mixin screenmax414 {
+    @media (max-width: 414px) {
+        @content;
+    }
+}
+
+/************** Screen resolution mixin for iPhone 6S *******************/
+@mixin screen375 {
+    @media (min-width: 375px) {
+        @content;
+    }
+}
+
+@mixin screenmax375 {
+    @media (max-width: 375px) {
+        @content;
+    }
+}
+
+@mixin screen360 {
+    @media (min-width: 360px) {
+        @content;
+    }
+}
+
+@mixin screenmax360 {
+    @media (max-width: 360px) {
+        @content;
+    }
+}
+
+@mixin screen320 {
+    @media (max-width: 320px) {
+        @content;
+    }
+}
+
+@mixin iPhone7Plus {
+    @media screen and (max-width: 1080px), screen and (max-height: 1920px) {
+        @content;
+    }
+}
+
+@mixin iPhone6 {
+    @media screen and (max-width: 750px), screen and (max-height: 1334px) {
+        @content;
+    }
+}
+
+@mixin iPhone6Plus {
+    @media screen and (max-width: 414px), screen and (max-height: 736px) {
+        @content;
+    }
+}
+/************** Screen resolution mixin for iPhoneX*******************/
+@mixin iPhoneX{
+	@media screen and (max-width: 375px), screen and (max-height: 812px) {
+        @content;
+    }
+}
+
+@mixin screen812{
+	@media (min-height: 812px) {
+        @content;
+    }
+}
+
+@mixin screen896{
+	@media (min-height: 896px) {
+        @content;
+    }
+}
+
+@mixin screen768-1024 {
+    @media screen and (min-width: 768px), screen and (min-height: 1024px) {
+        @content;
+    }
+}
+
+@mixin screen800-1280 {
+    @media screen and (min-width: 800px), screen and (min-height: 1280px) {
+        @content;
+    }
+}
+
+
+/***************** Mixin for border radius *******************/
+@mixin borderRadius($radius) {
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    -ms-border-radius: $radius;
+    border-radius: $radius;
+}
+
+/***************** Mixin for box shadow *******************/
+@mixin boxShadow($x, $y, $blur, $spread, $color) {
+    -webkit-box-shadow: $x $y $blur $spread $color;
+    -moz-box-shadow: $x $y $blur $spread $color;
+    -ms-box-shadow: $x $y $blur $spread $color;
+    box-shadow: $x $y $blur $spread $color;
+}
+
+
+/***************** Common classes *******************/
+.display-none {
+    display: none !important;
+}
+
+/*********************Override input default style***************************************/
+
+.item-md.item-input.ng-valid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner,
+.item-md.item-input.ng-valid.input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner {
+    border-bottom-color: transparent !important;
+    -webkit-box-shadow: transparent !important;
+    box-shadow: none !important;
+}
+
+.item-md.item-input.ng-invalid.ng-touched:not(.input-has-focus):not(.item-input-has-focus) .item-inner {
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+}
+
+.item-md.item-input.item-input-has-focus .item-inner,
+.item-md.item-input.input-has-focus .item-inner {
+    border-bottom-color: transparent !important;
+    -webkit-box-shadow: transparent !important;
+    box-shadow: none !important;
+}
+
+.list-md.item-input.item-input-has-focus:last-child,
+.list-md .item-input.input-has-focus:last-child {
+    -webkit-box-shadow:none !important;
+    box-shadow: none !important;
+    border-bottom-color: $borderColor !important;
+}
+
+.list-md .item-input.ng-invalid.ng-touched:not(.input-has-focus):not(.item-input-has-focus):last-child {
+    border-bottom-color: $borderColor !important;
+}
+
+.list-md .item-input.ng-valid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus):last-child,
+.list-md .item-input.ng-valid.input-has-value:not(.input-has-focus):not(.item-input-has-focus):last-child {
+    border-bottom-color: $borderColor !important;
+    box-shadow: none !important;
+}
+
+.list-md .item-input.ng-valid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus):last-child,
+.list-md .item-input.ng-valid.input-has-value:not(.input-has-focus):not(.item-input-has-focus):last-child {
+    border-bottom-color: $borderColor !important;
+    box-shadow: none !important;
+}
+
+.item-md.item-input.ng-invalid.ng-touched:not(.input-has-focus):not(.item-input-has-focus) .item-inner {
+    border-bottom: 1px solid transparent !important;
+}
+
+
+/************** Override Ios(apple) devices styling ***********/
+.platform-ios {
+	body{
+    padding-top: constant(safe-area-inset-top);
+    padding-top: env(safe-area-inset-top);
+  }
+  .toolbar-footer{
+    margin-bottom: constant(safe-area-inset-bottom);
+    margin-bottom: env(safe-area-inset-bottom);
+  }
+  .list-ios>.item-block:first-child {
+      border-top: 0;
+  }
+
+	.common-btn {
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  &:active {
+      box-shadow: 0 3x 3px rgba(0, 0, 0, 0.14), 0 3px 5px rgba(0, 0, 0, 0.21), 0 0 0 0 transparent;
+      background-color: #ef3c43;
+  }
+	}
+  }
+
+.platform-ios .ios ion-nav>.ion-page>ion-header>.toolbar.statusbar-padding:first-child ion-title {
+    min-height: calc(30px + 20px) !important;
+    padding-top: 0px;
+}
+
+.ios ion-nav>.ion-page>ion-header>.toolbar.statusbar-padding:first-child {
+	@media only screen and (min-width : 375px) {
+	}
+
+  @media screen and (max-width: 375px) and (-webkit-device-pixel-ratio : 3) {
+	}
+
+}
+
+
+/************** Header gradient gray color style ***********/
+.header-gradient{
+	background: #dcdcdc;
+	background: -moz-linear-gradient(top, #dcdcdc 0%, #FFFFFF 85%, #FFFFFF 100%);
+	background: -webkit-linear-gradient(top, #dcdcdc 0%, #FFFFFF 85%, #FFFFFF 100%);
+	background: linear-gradient(to bottom, #dcdcdc 0%, #FFFFFF 85%, #FFFFFF 100%);
+}//End of header-gradient
+
+
+/************** Common title style ***********/
+.common-title-style{
+	text-align: center;
+	color: $primaryColor;
+	font-size: $font18;
+	font-weight: 400;
+}//End of common-title-style
+
+/************** Common border bottom class ***********/
+.border-bottom{
+	border-bottom: 1px solid #dedede;
+}
+
+/************** Common Header style ***********/
+
+ion-header.common-header {
+	/************* Override header title ios style ***********/
+  .toolbar-background-ios {
+      border: 0px !important;
+  }
+  .toolbar-background {
+      background-color: $headerBgColor;
+  }
+  .bar-button-default-ios {
+      color: #424242;
+  }
+  .button-md:hover:not(.disable-hover) {
+      background-color: transparent;
+  }
+
+  /************* Button click and hover effect ***********/
+    .button:active {
+      background-color: transparent !important;
+      opacity: 0.5;
+  }
+
+  /************* Override style of ion navbar ***********/
+  ion-navbar {
+      min-height: 46px;
+  }
+
+  /************* Page title ***********/
+  .page-title {
+    position: relative;
+
+    .toolbar-title{
+      @extend .common-title-style;
+        font-size: $font15;
+        color: $primaryTitleColor;
+        text-transform: uppercase;
+        &:first-letter {
+            font-size: 18px;
+        }
+
+        span{
+            font-size: $font15;
+            color: $primaryTitleColor;
+            &:first-letter {
+              font-size: 18px;
+          }
+        }
+    }//End of toolbar-title
+  } //End of page-title
+
+  .header-icons {
+      position: absolute;
+      background: transparent;
+      color: #424242;
+      box-shadow: none;
+      margin: 0;
+      padding: 0px 5px;
+      top: 0;
+      height: 2.3rem;
+      font-size: 1.5rem;
+      ion-icon {
+          font-size: 1.8em;
+          padding-right: 5px;
+      }
+      span {
+          font-size: 1.8rem;
+          color: red;
+          vertical-align: bottom;
+          text-transform: capitalize;
+      }
+  }//End of header-icons
+
+  /************** Override ios styling header buttons ***********/
+  .header-icons.button-ios {
+      top: 13px;
+      height: 2.8rem;
+  }
+
+  /************** Override ios styling of header icons ***********/
+  .header-icons.bar-buttons-ios {
+      top: 12px;
+      height: 3.2rem;
+  }
+
+  /************** Assign value to the position left property ***********/
+  .left {
+      left: 0;
+  }//End of left
+
+  /************** Assign value to the position right property ***********/
+  .right {
+      right: 0;
+  }//End of right
+
+  /************** Sub title style ***********/
+  .sub-title {
+      @extend .header-gradient;
+      padding-bottom: 10px;
+      .toolbar-title {
+        @extend .common-title-style;
+          font-size: $font18;
+      }//End of toolbar-title
+  }//End of sub-title
+
+  /************** Border bottom for header style ***********/
+  .header-border-bottom {
+      @extend .border-bottom;
+  }//End of header-border-bottom
+
+  .no-title-padding {
+    .toolbar-title {
+      padding: 0px;
+    }
+  }
+
+  /************** Override ios style ***********/
+  .toolbar-ios ion-title {
+      padding: 0px !important;
+      min-height: calc(30px + 20px) !important;
+      height: calc(30px + 20px) !important;
+      padding-top: 0px !important;
+  }
+
+  /************** Header search bar style ***********/
+  .header-search-bar{
+    padding: 0px 10px 5px 10px;
+    background: $headerBgColor;
+
+    .search-bar-wrappper{
+      .search-bar{
+        @extEnd .searchBar;
+      }//End of search-bar
+    }//End of search-bar-wrappper
+
+    /************** Filter style ***********/
+    .filter-wrapper{
+      text-align:center;
+      display: flex;
+      align-items: center;
+      justify-content: flex-End;
+
+      .filter-img{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .filter-icon{
+          width:35px;
+          border:1px solid #c8c7cc;
+          border-radius: 5px;
+          height:33px;
+          &:active{
+              opacity: 0.5;
+          }
+        }//End of filter-icon
+      }//End of filter-img
+    }//End of filter-wrapper
+  } //End of header-search-bar
+
+}
+
+
+/************** Override default back button style ***********/
+.back-button.show-back-button{
+	display:none;
+}

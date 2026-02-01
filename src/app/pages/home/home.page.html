@@ -1,0 +1,38 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      WEATHERCAST
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div *ngIf="isLoading" class="ion-text-center">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Locating location...</p>
+  </div>
+
+  <div *ngIf="!isLoading && weatherData" id="container">
+    <strong>{{ weatherData.name }}</strong>
+    <p>{{ weatherData.main?.temp }}°C</p>
+  </div>
+
+  <div *ngIf="!isLoading && forecastData.length > 0" class="ion-padding-top">
+  <ion-list-header>
+    <ion-label>5-Day Forecast (Midday)</ion-label>
+  </ion-list-header>
+
+  <ion-list lines="full">
+    <ion-item *ngFor="let day of forecastData">
+      <ion-label>
+        <h3>{{ day.dt_txt | date: 'EEEE, MMM d' }}</h3>
+        <p>{{ day.weather[0].description | titlecase }}</p>
+      </ion-label>
+      <ion-note slot="end" color="primary">
+        {{ day.main.temp | number: '1.0-0' }}°C
+      </ion-note>
+    </ion-item>
+  </ion-list>
+</div>
+
+</ion-content>

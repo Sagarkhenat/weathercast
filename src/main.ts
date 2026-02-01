@@ -1,6 +1,21 @@
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
-import { AppModule } from './app/app.module';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { RouteReuseStrategy, provideRouter, withPreloading, PreloadAllModules } from '@angular/router';
+import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalone';
+import { provideHttpClient } from '@angular/common/http'
+import { defineCustomElements } from '@ionic/pwa-elements/loader';
 
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.log(err));
+import { MyApp } from './app/app.component';
+import {routes} from './app/app-routing.module';
+
+// Call the loader before bootstrapping
+defineCustomElements(window);
+
+bootstrapApplication(MyApp, {
+  providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    provideIonicAngular(), // This is the modern way
+    provideRouter(routes, withPreloading(PreloadAllModules)),
+    provideHttpClient() // <--- ADD THIS LINE
+  ],
+});
