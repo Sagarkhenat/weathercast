@@ -3,13 +3,14 @@ import { WeatherService } from '../../../providers/weather-service/weather.servi
 import { Geolocation } from '@capacitor/geolocation';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonSpinner } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common'; // Required for *ngIf
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone:true, //indicates a standalone component
-  imports: [CommonModule,IonHeader, IonToolbar, IonTitle, IonContent, IonSpinner],
+  imports: [CommonModule, IonContent, IonSpinner],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class HomePage implements OnInit {
@@ -17,21 +18,33 @@ export class HomePage implements OnInit {
   weatherData: any;
   isLoading = true; // Start true to show spinner immediately
   errorMsg = '';
+  showLoader : HTMLIonLoadingElement | undefined;
 
   forecastData: any[] = []; // Initialize as an empty array to store 5 day data of selected city
 
-  constructor(public weatherService: WeatherService) {
+  constructor(public weatherService: WeatherService, public loadingController: LoadingController) {
     console.log('Home page constructor loaded:::');
   }
 
   async ngOnInit() {
-    await this.getCurrentLocation();
+
+    //await this.getCurrentLocation();
+
+    await this.getCurrentLocationWithLoader();
   }
 
-  /**
-   * Fetch the co-ordinates to show the current weather location
-  */
-  async getCurrentLocation() {
+
+  async getCurrentLocationWithLoader() {
+
+    // Added loading controller to show loader till user's location is obtained
+    const loading = await this.loadingController.create({
+      message: 'Obtaining location...', // Custom message
+      spinner: 'crescent',  // Optional: customize the spinner type
+      cssClass: 'custom-loading-class'
+    });
+
+    await loading.present(); // Show the loading overlay
+
     try {
 
       // 1. Check user has granted location permissions first (Optional but recommended)
@@ -55,20 +68,63 @@ export class HomePage implements OnInit {
 
       // 3. Get the actual position
       const obtainedCoordinates = await Geolocation.getCurrentPosition();
-
-      console.log('Obtained co-ordinates value in getCurrentLocation :::', obtainedCoordinates);
+      console.log('Obtained co-ordinates value in get Current Location function :::', obtainedCoordinates);
+      await loading.dismiss(); //
 
       // 4. Call API with coords
       this.loadWeatherByCoords(obtainedCoordinates.coords.latitude,obtainedCoordinates.coords.longitude);
 
     }catch(error){
+      console.log('In catch block for Error getting location', error);
+      // Fallback: If location access fails (e.g. disabled), load default
+      this.loadWeather('Pune');
 
-    console.log('In catch block for Error getting location', error);
-    // Fallback: If location access fails (e.g. disabled), load default
-    this.loadWeather('Pune');
-
+      await loading.dismiss(); //
     }
   }
+
+  /**
+   * Fetch the co-ordinates to show the current weather location
+  */
+  // async getCurrentLocation() {
+  //   try {
+
+  //     // 1. Check user has granted location permissions first (Optional but recommended)
+  //     const permission = await Geolocation.checkPermissions();
+  //     console.log('permission variable value :::', permission);
+
+  //     // 2. Request permission if not granted
+  //     if (permission.location !== 'granted') {
+  //       const request = await Geolocation.requestPermissions();
+  //       console.log('request variable value :::', request);
+  //       if (request.location !== 'granted') {
+
+  //         console.log('Request location is not granted condition :::');
+  //         // Fallback if user denies: Load default city
+  //         this.loadWeather('Pune');
+  //         return;
+  //       }else{
+
+  //       }
+  //     }
+
+  //     // 3. Get the actual position
+  //     const obtainedCoordinates = await Geolocation.getCurrentPosition();
+
+  //     console.log('Obtained co-ordinates value in get Current Location function :::', obtainedCoordinates);
+
+  //     // 4. Call API with coords
+  //     this.loadWeatherByCoords(obtainedCoordinates.coords.latitude,obtainedCoordinates.coords.longitude);
+
+  //   }catch(error){
+
+  //     console.log('In catch block for Error getting location', error);
+  //     // Fallback: If location access fails (e.g. disabled), load default
+  //     this.loadWeather('Pune');
+
+  //   }
+  // }
+
 
   /**
    * Function used to call weather service after getting the co-ordinates
@@ -116,7 +172,7 @@ export class HomePage implements OnInit {
   }
 
   /**
-   * Fallback case for loading the weather
+   * Function called for loading the weather
   */
     loadWeather(city: string) {
     this.isLoading = true;
