@@ -1,20 +1,21 @@
 <ion-content [fullscreen]="true" class="ion-no-padding">
 
+  <!-- <ion-refresher slot="fixed" (ionRefresh)="doRefreshLocation($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      refreshingSpinner="circles"
+      refreshingText="Updating...">
+    </ion-refresher-content>
+  </ion-refresher> -->
+
   <!-- Angular if condition to handle loading check-->
   @if (isLoading) {
-
-  <!-- Todo: show obtaining location loader at the center of the screen-->
-  <!-- <div class="ion-text-center">
-      <ion-spinner name="crescent"></ion-spinner>
-      <p>Locating location...</p>
-  </div> -->
 
   }@else{
 
     <div class="custom-header">
       <div class="header-content">
         <div class="app-title">WeatherCast</div>
-        <!-- <ion-icon name="settings-outline" style="font-size: 24px;"></ion-icon> -->
       </div>
     </div>
 
@@ -36,57 +37,50 @@
     <!--show the users location forecast for next 5 days-->
     @if(weatherData && forecastData.length > 0){
         <div class="forecast-section ion-padding-top">
-          <ion-list-header class="list-header">
+          <div class="list-header">
             <ion-label class="section-title">Weekly Forecast (Midday)</ion-label>
-          </ion-list-header><br/>
-
-          <div class="forecast-wrapper">
-            <ion-list lines="none" class="forecast-list">
-                  <ion-item *ngFor="let day of forecastData" class="forecast-item">
-                  <ion-grid class="ion-no-padding">
-                    <ion-row class="weather-row ion-align-items-center">
-
-                      <!---Column to show required day-->
-                      <ion-col size="3" class="weather-col ion-no-padding">
-                        <ion-label>
-                          <h3 style="font-weight: 600; color: #555;">
-                            {{ day.dt_txt | date: 'EEE' | uppercase }}
-                          </h3>
-                        </ion-label>
-                      </ion-col>
-
-                      <!---Column to show required weather icon-->
-                      <ion-col size="2" class="weather-col ion-display-flex ion-align-items-center ion-no-padding">
-                        <div style="font-size: 24px; margin-right: 15px;">
-                          ⛅
-                        </div>
-                      </ion-col>
-
-                      <!---Column to show min and max temperature values-->
-                      <ion-col size="3" class="weather-col ion-display-flex ion-align-items-center ion-no-padding">
-                        <ion-label>
-                          <div style="font-size: 13px; color: #666; font-weight: 500;">
-                            Max. &nbsp;{{ day.main.temp_max | number: '1.0-0' }}°
-                          </div>
-                          <div style="font-size: 13px; color: #666;">
-                            Min. &nbsp;{{ day.main.temp_min | number: '1.0-0' }}°
-                          </div>
-                        </ion-label>
-                      </ion-col>
-
-                      <!---Column to give description of the forecast-->
-                      <ion-col size="4" class="weather-col ion-text-end ion-no-padding">
-                        <ion-note style="font-size: 14px; color: #888;">
-                          {{ day.weather[0].description | titlecase }}
-                        </ion-note>
-                      </ion-col>
-                    </ion-row>
-                  </ion-grid>
-                </ion-item>
-            </ion-list>
-
           </div>
 
+          <!-- Forecast wrapper without using ion-list-->
+          <div class="forecast-wrapper">
+            <ion-grid class="common-list">
+              @for (day of forecastData; track $index) {
+                <ion-row class="common-list-item ripple-row">
+
+                  <!---Column to show required day-->
+                  <ion-col col-3 class="forecast-col">
+                      <p class="forecast-day-label">{{ day.dt_txt | date: 'EEE' | uppercase }}</p>
+                  </ion-col>
+
+                  <!---Column to show required weather icon-->
+                  <ion-col col-2 class="forecast-col">
+                    <div style="font-size: 24px; margin-right: 15px;">
+                      ⛅
+                    </div>
+                  </ion-col>
+
+                  <!---Column to show min and max temperature values-->
+                  <ion-col col-2 class="forecast-col">
+                    <div style="font-size: 13px; color: #666; font-weight: 500;">
+                      Max. &nbsp;{{ day.main.temp_max | number: '1.0-0' }}°
+                    </div>
+                    <div style="font-size: 13px; color: #666;">
+                      Min. &nbsp;{{ day.main.temp_min | number: '1.0-0' }}°
+                    </div>
+                  </ion-col>
+
+                  <!---Column to give description of the forecast-->
+                  <ion-col col-5 class="forecast-col">
+                    <ion-note style="font-size: 14px; color: #888;">
+                      {{ day.weather[0].description | titlecase }}
+                    </ion-note>
+                  </ion-col>
+
+                </ion-row>
+              }
+
+            </ion-grid>
+          </div>
 
         </div>
       }@else{

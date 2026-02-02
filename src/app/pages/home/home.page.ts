@@ -1,16 +1,15 @@
 import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { WeatherService } from '../../../providers/weather-service/weather.service';
 import { Geolocation } from '@capacitor/geolocation';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonSpinner } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonTitle, IonContent,RefresherCustomEvent } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common'; // Required for *ngIf
-import { LoadingController } from '@ionic/angular';
 
+import { WeatherService,CommonService } from 'src/providers/providers';
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone:true, //indicates a standalone component
-  imports: [CommonModule, IonContent, IonSpinner],
+  imports: [CommonModule, IonContent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class HomePage implements OnInit {
@@ -22,30 +21,24 @@ export class HomePage implements OnInit {
 
   forecastData: any[] = []; // Initialize as an empty array to store 5 day data of selected city
 
-  constructor(public weatherService: WeatherService, public loadingController: LoadingController) {
-    console.log('Home page constructor loaded:::');
+  constructor(public weatherService: WeatherService, public commonService: CommonService) {
   }
 
   async ngOnInit() {
 
-    //await this.getCurrentLocation();
+    await this.getCurrentLocation();
 
-    await this.getCurrentLocationWithLoader();
   }
 
+  /**
+   * Fetch the co-ordinates to show the current weather location
+  */
+  async getCurrentLocation() {
 
-  async getCurrentLocationWithLoader() {
-
-    // Added loading controller to show loader till user's location is obtained
-    const loading = await this.loadingController.create({
-      message: 'Obtaining location...', // Custom message
-      spinner: 'crescent',  // Optional: customize the spinner type
-      cssClass: 'custom-loading-class'
-    });
-
-    await loading.present(); // Show the loading overlay
+    this.commonService.showLoading();
 
     try {
+
 
       // 1. Check user has granted location permissions first (Optional but recommended)
       const permission = await Geolocation.checkPermissions();
@@ -58,6 +51,7 @@ export class HomePage implements OnInit {
         if (request.location !== 'granted') {
 
           console.log('Request location is not granted condition :::');
+          this.commonService.hideLoading();
           // Fallback if user denies: Load default city
           this.loadWeather('Pune');
           return;
@@ -66,64 +60,24 @@ export class HomePage implements OnInit {
         }
       }
 
-      // 3. Get the actual position
+      // 3. Get the users actual position
       const obtainedCoordinates = await Geolocation.getCurrentPosition();
+
       console.log('Obtained co-ordinates value in get Current Location function :::', obtainedCoordinates);
-      await loading.dismiss(); //
 
       // 4. Call API with coords
       this.loadWeatherByCoords(obtainedCoordinates.coords.latitude,obtainedCoordinates.coords.longitude);
 
+      this.commonService.hideLoading();
+
     }catch(error){
+
       console.log('In catch block for Error getting location', error);
       // Fallback: If location access fails (e.g. disabled), load default
       this.loadWeather('Pune');
-
-      await loading.dismiss(); //
+      this.commonService.hideLoading();
     }
   }
-
-  /**
-   * Fetch the co-ordinates to show the current weather location
-  */
-  // async getCurrentLocation() {
-  //   try {
-
-  //     // 1. Check user has granted location permissions first (Optional but recommended)
-  //     const permission = await Geolocation.checkPermissions();
-  //     console.log('permission variable value :::', permission);
-
-  //     // 2. Request permission if not granted
-  //     if (permission.location !== 'granted') {
-  //       const request = await Geolocation.requestPermissions();
-  //       console.log('request variable value :::', request);
-  //       if (request.location !== 'granted') {
-
-  //         console.log('Request location is not granted condition :::');
-  //         // Fallback if user denies: Load default city
-  //         this.loadWeather('Pune');
-  //         return;
-  //       }else{
-
-  //       }
-  //     }
-
-  //     // 3. Get the actual position
-  //     const obtainedCoordinates = await Geolocation.getCurrentPosition();
-
-  //     console.log('Obtained co-ordinates value in get Current Location function :::', obtainedCoordinates);
-
-  //     // 4. Call API with coords
-  //     this.loadWeatherByCoords(obtainedCoordinates.coords.latitude,obtainedCoordinates.coords.longitude);
-
-  //   }catch(error){
-
-  //     console.log('In catch block for Error getting location', error);
-  //     // Fallback: If location access fails (e.g. disabled), load default
-  //     this.loadWeather('Pune');
-
-  //   }
-  // }
 
 
   /**
@@ -151,7 +105,8 @@ export class HomePage implements OnInit {
             if (data && data.list) {
               // Filter the list to get one entry per day (usually at 12:00:00)
               this.forecastData = data.list.filter((item: any) => item.dt_txt.includes('12:00:00'));
-              console.log('Obtained forecastData for next 5 days :::', this.forecastData,this.forecastData.length);
+              console.log('Obtained forecast Data for next 5 days in load weather by co-ords :::', this.forecastData,this.forecastData.length);
+              this.commonService.hideLoading();
             }else{
               console.log('Forecast data list is missing in the response', data);
               this.forecastData = [];
@@ -204,6 +159,11 @@ export class HomePage implements OnInit {
     });
   }
 
+
+  /**
+   * Function called for loading the forecast for selected city
+  */
+
   loadForecast(city: string) {
   console.log('City string passed to load the forecast call :::', city);
     this.weatherService.getForecast(city).subscribe({
@@ -212,14 +172,14 @@ export class HomePage implements OnInit {
         if (data && data.list) {
           // Filter the list to get one entry per day (usually at 12:00:00)
           this.forecastData = data.list.filter((item: any) => item.dt_txt.includes('12:00:00'));
-          console.log('Obtained forecastData for next 5 days in loadForecast function :::', this.forecastData, this.forecastData.length);
+          console.log('Obtained forecastData for next 5 days in load Forecast function :::', this.forecastData, this.forecastData.length);
         }else{
           console.log('Forecast data list is missing in the response', data);
           this.forecastData = [];
         }
       },
       error: (err) => {
-        console.error('Error block condition in loadForecast function:', err);
+        console.error('Error block condition in load Forecast function:', err);
         this.isLoading = false;
 
         this.forecastData = [];
@@ -234,5 +194,18 @@ export class HomePage implements OnInit {
 
   }
 
+
+  /**
+   * Function to refresh page on pull down and update the location
+  */
+  public doRefreshLocation = (event:RefresherCustomEvent) => {
+    console.log('Begin refresh operation to update users current location', event);
+
+    setTimeout(() => {
+      console.log('refresher operation has ended');
+      event.target.complete();
+    }, 2000);
+
+  }
 
 }

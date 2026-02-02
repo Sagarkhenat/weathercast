@@ -399,62 +399,6 @@ ion-header.common-header {
       min-height: 46px;
   }
 
-  /************* Page title ***********/
-  .page-title {
-    position: relative;
-
-    .toolbar-title{
-      @extend .common-title-style;
-        font-size: $font15;
-        color: $primaryTitleColor;
-        text-transform: uppercase;
-        &:first-letter {
-            font-size: 18px;
-        }
-
-        span{
-            font-size: $font15;
-            color: $primaryTitleColor;
-            &:first-letter {
-              font-size: 18px;
-          }
-        }
-    }//End of toolbar-title
-  } //End of page-title
-
-  .header-icons {
-      position: absolute;
-      background: transparent;
-      color: #424242;
-      box-shadow: none;
-      margin: 0;
-      padding: 0px 5px;
-      top: 0;
-      height: 2.3rem;
-      font-size: 1.5rem;
-      ion-icon {
-          font-size: 1.8em;
-          padding-right: 5px;
-      }
-      span {
-          font-size: 1.8rem;
-          color: red;
-          vertical-align: bottom;
-          text-transform: capitalize;
-      }
-  }//End of header-icons
-
-  /************** Override ios styling header buttons ***********/
-  .header-icons.button-ios {
-      top: 13px;
-      height: 2.8rem;
-  }
-
-  /************** Override ios styling of header icons ***********/
-  .header-icons.bar-buttons-ios {
-      top: 12px;
-      height: 3.2rem;
-  }
 
   /************** Assign value to the position left property ***********/
   .left {
@@ -494,43 +438,6 @@ ion-header.common-header {
       height: calc(30px + 20px) !important;
       padding-top: 0px !important;
   }
-
-  /************** Header search bar style ***********/
-  .header-search-bar{
-    padding: 0px 10px 5px 10px;
-    background: $headerBgColor;
-
-    .search-bar-wrappper{
-      .search-bar{
-        @extEnd .searchBar;
-      }//End of search-bar
-    }//End of search-bar-wrappper
-
-    /************** Filter style ***********/
-    .filter-wrapper{
-      text-align:center;
-      display: flex;
-      align-items: center;
-      justify-content: flex-End;
-
-      .filter-img{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        .filter-icon{
-          width:35px;
-          border:1px solid #c8c7cc;
-          border-radius: 5px;
-          height:33px;
-          &:active{
-              opacity: 0.5;
-          }
-        }//End of filter-icon
-      }//End of filter-img
-    }//End of filter-wrapper
-  } //End of header-search-bar
-
 }
 
 
