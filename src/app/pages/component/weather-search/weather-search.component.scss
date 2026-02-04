@@ -1,0 +1,107 @@
+/* 1. The Container (The White Card) */
+.search-container {
+  /* Match the width of the Satara card (approx 90% with margins) */
+  //margin: 16px 20px 24px 20px;
+
+  margin: 20px 0px 20px 0px;
+
+  /* White background like the Satara card */
+  background: #ffffff;
+
+  /* High border-radius to match the soft aesthetic */
+  border-radius: 20px;
+
+  /* Flexbox to align Input and Icon in one row */
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* This creates the separation */
+  padding: 12px 20px;
+
+  /* The "Magic" Shadow - matches the screenshot's elevation */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+
+  /* Smooth transition for interaction */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Interaction: Slight lift when user touches it */
+.search-container:focus-within {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+
+/* 2. The Input Field (Invisible styling) */
+.search-input {
+
+  background: transparent !important;
+  /* Remove default browser borders */
+  border: none;
+  outline: none;
+
+  /* Fix 3: Make it fill the space to push the icon to the right */
+  flex: 1;
+  width: 100%;
+
+  /* Typography to match the app */
+  font-family: 'Roboto', sans-serif; /* or the font used in app */
+  font-size: 1.1rem; /* Readable size (approx 17-18px) */
+  color: #333333; /* Dark Grey text */
+  font-weight: 500;
+  margin-right: 10px; /* Space between text and icon */
+
+  /* Take up all available space */
+  flex-grow: 1;
+}
+
+/* Placeholder text color (Lighter grey) */
+.search-input::placeholder {
+  color: #a0a0a0;
+  font-weight: 400;
+  opacity: 1;
+}
+
+/* 3. The Search Button/Icon */
+.search-icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 10px;
+
+  /* Flex center to ensure icon is perfectly middle */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Icon Color - match the "Satara" text or icon style */
+  color: #5A6D88;
+}
+
+.search-btn {
+  /* CRITICAL FIX: Match the class name used in HTML (was .search-icon-btn) */
+
+  /* 1. Remove the gray box background */
+  background: transparent !important;
+
+  /* 2. Remove default button borders */
+  border: none;
+  outline: none;
+
+  /* 3. Make the icon dark (Dark Charcoal) */
+  color: #333333;
+
+  /* Layout: Center the icon */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Interaction */
+  cursor: pointer;
+  padding: 0 10px; /* Adds a little hit-area for easier tapping */
+  margin-left: 5px;
+}
+
+/* Optional: Active state for the button */
+.search-icon-btn:active {
+  transform: scale(0.95);
+}

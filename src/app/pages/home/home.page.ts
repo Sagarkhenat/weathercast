@@ -2,6 +2,12 @@ import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Geolocation } from '@capacitor/geolocation';
 import { IonHeader, IonToolbar, IonTitle, IonContent,RefresherCustomEvent } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common'; // Required for *ngIf
+import { ModalController } from '@ionic/angular/standalone';
+
+import { Network } from '@capacitor/network';
+
+import { WeatherSearchComponent } from '../component/weather-search/weather-search.component'; // <--- Check this path matches your folder structure
+import { WeatherDetailComponent } from '../component/weather-detail/weather-detail.component';
 
 import { WeatherService,CommonService } from 'src/providers/providers';
 @Component({
@@ -9,7 +15,7 @@ import { WeatherService,CommonService } from 'src/providers/providers';
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone:true, //indicates a standalone component
-  imports: [CommonModule, IonContent],
+  imports: [CommonModule, IonContent, WeatherSearchComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class HomePage implements OnInit {
@@ -21,7 +27,9 @@ export class HomePage implements OnInit {
 
   forecastData: any[] = []; // Initialize as an empty array to store 5 day data of selected city
 
-  constructor(public weatherService: WeatherService, public commonService: CommonService) {
+  constructor(public weatherService: WeatherService, public commonService: CommonService, private modalCtrl: ModalController) {
+
+
   }
 
   async ngOnInit() {
@@ -195,6 +203,31 @@ export class HomePage implements OnInit {
   }
 
 
+
+
+  /**
+   * Function to pull modal and show selected day details
+  */
+  async openDetails(dayData: any) {
+    const modal = await this.modalCtrl.create({
+      component: WeatherDetailComponent,
+      componentProps: {
+        data: dayData // Pass the clicked day's object
+      },
+
+      // CHANGE THIS: 0.75 ensures enough room for all 4 items
+      breakpoints: [0, 0.75],
+      initialBreakpoint: 0.75,
+
+      // BONUS: Adds a little grey "drag bar" at the top so users know it slides
+      handle: true,
+      cssClass: 'custom-modal-style'
+    });
+
+    await modal.present();
+  }
+
+
   /**
    * Function to refresh page on pull down and update the location
   */
@@ -207,5 +240,7 @@ export class HomePage implements OnInit {
     }, 2000);
 
   }
+
+
 
 }

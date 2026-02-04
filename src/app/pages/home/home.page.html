@@ -1,23 +1,34 @@
 <ion-content [fullscreen]="true" class="ion-no-padding">
 
-  <!-- <ion-refresher slot="fixed" (ionRefresh)="doRefreshLocation($event)">
-    <ion-refresher-content
-      pullingIcon="arrow-dropdown"
-      refreshingSpinner="circles"
-      refreshingText="Updating...">
-    </ion-refresher-content>
-  </ion-refresher> -->
+
+  <div class="custom-header">
+    <div class="header-content">
+      <div class="app-title">WeatherCast</div>
+    </div>
+
+    <app-weather-search (citySearchEvent)="loadWeather($event)"></app-weather-search>
+  </div>
 
   <!-- Angular if condition to handle loading check-->
   @if (isLoading) {
 
-  }@else{
+    <!-- Show a skeleton card to show data will be filled after successful api response-->
 
-    <div class="custom-header">
-      <div class="header-content">
-        <div class="app-title">WeatherCast</div>
-      </div>
+    <div class="skeleton-card">
+      <div class="skeleton-line title-line"></div>
+      <div class="skeleton-circle"></div>
+      <div class="skeleton-line temp-line"></div>
+      <div class="skeleton-line desc-line"></div>
     </div>
+
+    <div class="skeleton-list">
+      @for (item of [1,2,3,4,5]; track $index) {
+        <div class="skeleton-row">
+          <div class="skeleton-box sm-box"></div>   <div class="skeleton-box md-box"></div>   <div class="skeleton-box lg-box"></div>   </div>
+      }
+    </div>
+
+  }@else{
 
     <!-- Show users location data current-->
     @if(weatherData){
@@ -44,8 +55,11 @@
           <!-- Forecast wrapper without using ion-list-->
           <div class="forecast-wrapper">
             <ion-grid class="common-list">
-              @for (day of forecastData; track $index) {
-                <ion-row class="common-list-item ripple-row">
+              @for (day of forecastData; track $index; let first = $first; let last =$last)  {
+                <ion-row class="common-list-item ripple-row"
+                  [class.first-forecast-row]="first"
+                  [class.last-forecast-row]="last"
+                  (click)="openDetails(day)" >
 
                   <!---Column to show required day-->
                   <ion-col col-3 class="forecast-col">
