@@ -6,26 +6,35 @@ import { ModalController } from '@ionic/angular/standalone';
 
 import { Network } from '@capacitor/network';
 
+/*------------------ Components ----------------------*/
 import { WeatherSearchComponent } from '../component/weather-search/weather-search.component'; // <--- Check this path matches your folder structure
 import { WeatherDetailComponent } from '../component/weather-detail/weather-detail.component';
 
+/*------------------ Providers ----------------------*/
 import { WeatherService,CommonService } from 'src/providers/providers';
+
+/*------------------Interfaces----------------------*/
+import { CurrentWeatherResponse, WeatherItem, ForecastResponse } from '../../../interface/common-dto';
+
+
+import { WeatherIconPipe } from 'src/pipes/weather-icon-pipe/weather-icon.pipe';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone:true, //indicates a standalone component
-  imports: [CommonModule, IonContent, WeatherSearchComponent],
+  imports: [CommonModule, IonContent, WeatherSearchComponent,WeatherIconPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class HomePage implements OnInit {
 
-  weatherData: any;
+  weatherData: CurrentWeatherResponse | null = null;
   isLoading = true; // Start true to show spinner immediately
   errorMsg = '';
   showLoader : HTMLIonLoadingElement | undefined;
 
-  forecastData: any[] = []; // Initialize as an empty array to store 5 day data of selected city
+  forecastData: WeatherItem[] = []; // Initialize as an array to store 5 day data of selected city
 
   constructor(public weatherService: WeatherService, public commonService: CommonService, private modalCtrl: ModalController) {
 
@@ -142,6 +151,11 @@ export class HomePage implements OnInit {
     this.errorMsg = ''; // Reset errors
     this.weatherData = null; // Clear old data while loading
 
+    // 1. Basic Validation: Don't call API if string is empty
+    if (!city || city.trim() === '') return;
+
+    console.log('Searching for city:', city);
+
     //1. Get current weather
     this.weatherService.getWeather(city).subscribe({
       next: (data) => {
@@ -159,9 +173,13 @@ export class HomePage implements OnInit {
         this.forecastData = [];
         // Handle standard 404 (City not found)
         if (err.status === 404) {
-          this.errorMsg = 'City not found. Please try again.';
+          this.errorMsg = `Could not find weather for "${city}". Please check for correct city name.`;
+        }else if (err.status === 0) {
+          // Network / Offline error
+          this.errorMsg = 'No internet connection. Please check your network.';
         } else {
-          this.errorMsg = 'Unable to connect to weather service.';
+          // Generic server error
+          this.errorMsg = 'Service unavailable. Please try again later.';
         }
       }
     });
@@ -175,11 +193,11 @@ export class HomePage implements OnInit {
   loadForecast(city: string) {
   console.log('City string passed to load the forecast call :::', city);
     this.weatherService.getForecast(city).subscribe({
-      next: (data) =>{
+      next: (data: ForecastResponse) =>{
         // Check if res and res.list exist to avoid the "undefined" error
         if (data && data.list) {
           // Filter the list to get one entry per day (usually at 12:00:00)
-          this.forecastData = data.list.filter((item: any) => item.dt_txt.includes('12:00:00'));
+          this.forecastData = data.list.filter((item: WeatherItem) => item.dt_txt?.includes('12:00:00'));
           console.log('Obtained forecastData for next 5 days in load Forecast function :::', this.forecastData, this.forecastData.length);
         }else{
           console.log('Forecast data list is missing in the response', data);
@@ -209,13 +227,15 @@ export class HomePage implements OnInit {
    * Function to pull modal and show selected day details
   */
   async openDetails(dayData: any) {
-    const modal = await this.modalCtrl.create({
+    console.log('Open details function called to show modal :::', dayData);
+    let myThis = this;
+
+    const modal = await myThis.modalCtrl.create({
       component: WeatherDetailComponent,
       componentProps: {
         data: dayData // Pass the clicked day's object
       },
 
-      // CHANGE THIS: 0.75 ensures enough room for all 4 items
       breakpoints: [0, 0.75],
       initialBreakpoint: 0.75,
 
