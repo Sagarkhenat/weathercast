@@ -1,15 +1,21 @@
 import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { WeatherService } from '../../../providers/weather-service/weather.service';
 import { Geolocation } from '@capacitor/geolocation';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonSpinner } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonTitle, IonContent,RefresherCustomEvent } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common'; // Required for *ngIf
+import { ModalController } from '@ionic/angular/standalone';
 
+import { Network } from '@capacitor/network';
+
+import { WeatherSearchComponent } from '../component/weather-search/weather-search.component'; // <--- Check this path matches your folder structure
+import { WeatherDetailComponent } from '../component/weather-detail/weather-detail.component';
+
+import { WeatherService,CommonService } from 'src/providers/providers';
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone:true, //indicates a standalone component
-  imports: [CommonModule,IonHeader, IonToolbar, IonTitle, IonContent, IonSpinner],
+  imports: [CommonModule, IonContent, WeatherSearchComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class HomePage implements OnInit {
@@ -17,22 +23,30 @@ export class HomePage implements OnInit {
   weatherData: any;
   isLoading = true; // Start true to show spinner immediately
   errorMsg = '';
+  showLoader : HTMLIonLoadingElement | undefined;
 
   forecastData: any[] = []; // Initialize as an empty array to store 5 day data of selected city
 
-  constructor(public weatherService: WeatherService) {
-    console.log('Home page constructor loaded:::');
+  constructor(public weatherService: WeatherService, public commonService: CommonService, private modalCtrl: ModalController) {
+
+
   }
 
   async ngOnInit() {
+
     await this.getCurrentLocation();
+
   }
 
   /**
    * Fetch the co-ordinates to show the current weather location
   */
   async getCurrentLocation() {
+
+    this.commonService.showLoading();
+
     try {
+
 
       // 1. Check user has granted location permissions first (Optional but recommended)
       const permission = await Geolocation.checkPermissions();
@@ -45,6 +59,7 @@ export class HomePage implements OnInit {
         if (request.location !== 'granted') {
 
           console.log('Request location is not granted condition :::');
+          this.commonService.hideLoading();
           // Fallback if user denies: Load default city
           this.loadWeather('Pune');
           return;
@@ -53,22 +68,25 @@ export class HomePage implements OnInit {
         }
       }
 
-      // 3. Get the actual position
+      // 3. Get the users actual position
       const obtainedCoordinates = await Geolocation.getCurrentPosition();
 
-      console.log('Obtained co-ordinates value in getCurrentLocation :::', obtainedCoordinates);
+      console.log('Obtained co-ordinates value in get Current Location function :::', obtainedCoordinates);
 
       // 4. Call API with coords
       this.loadWeatherByCoords(obtainedCoordinates.coords.latitude,obtainedCoordinates.coords.longitude);
 
+      this.commonService.hideLoading();
+
     }catch(error){
 
-    console.log('In catch block for Error getting location', error);
-    // Fallback: If location access fails (e.g. disabled), load default
-    this.loadWeather('Pune');
-
+      console.log('In catch block for Error getting location', error);
+      // Fallback: If location access fails (e.g. disabled), load default
+      this.loadWeather('Pune');
+      this.commonService.hideLoading();
     }
   }
+
 
   /**
    * Function used to call weather service after getting the co-ordinates
@@ -95,7 +113,8 @@ export class HomePage implements OnInit {
             if (data && data.list) {
               // Filter the list to get one entry per day (usually at 12:00:00)
               this.forecastData = data.list.filter((item: any) => item.dt_txt.includes('12:00:00'));
-              console.log('Obtained forecastData for next 5 days :::', this.forecastData,this.forecastData.length);
+              console.log('Obtained forecast Data for next 5 days in load weather by co-ords :::', this.forecastData,this.forecastData.length);
+              this.commonService.hideLoading();
             }else{
               console.log('Forecast data list is missing in the response', data);
               this.forecastData = [];
@@ -116,7 +135,7 @@ export class HomePage implements OnInit {
   }
 
   /**
-   * Fallback case for loading the weather
+   * Function called for loading the weather
   */
     loadWeather(city: string) {
     this.isLoading = true;
@@ -148,6 +167,11 @@ export class HomePage implements OnInit {
     });
   }
 
+
+  /**
+   * Function called for loading the forecast for selected city
+  */
+
   loadForecast(city: string) {
   console.log('City string passed to load the forecast call :::', city);
     this.weatherService.getForecast(city).subscribe({
@@ -156,14 +180,14 @@ export class HomePage implements OnInit {
         if (data && data.list) {
           // Filter the list to get one entry per day (usually at 12:00:00)
           this.forecastData = data.list.filter((item: any) => item.dt_txt.includes('12:00:00'));
-          console.log('Obtained forecastData for next 5 days in loadForecast function :::', this.forecastData, this.forecastData.length);
+          console.log('Obtained forecastData for next 5 days in load Forecast function :::', this.forecastData, this.forecastData.length);
         }else{
           console.log('Forecast data list is missing in the response', data);
           this.forecastData = [];
         }
       },
       error: (err) => {
-        console.error('Error block condition in loadForecast function:', err);
+        console.error('Error block condition in load Forecast function:', err);
         this.isLoading = false;
 
         this.forecastData = [];
@@ -177,6 +201,46 @@ export class HomePage implements OnInit {
     });
 
   }
+
+
+
+
+  /**
+   * Function to pull modal and show selected day details
+  */
+  async openDetails(dayData: any) {
+    const modal = await this.modalCtrl.create({
+      component: WeatherDetailComponent,
+      componentProps: {
+        data: dayData // Pass the clicked day's object
+      },
+
+      // CHANGE THIS: 0.75 ensures enough room for all 4 items
+      breakpoints: [0, 0.75],
+      initialBreakpoint: 0.75,
+
+      // BONUS: Adds a little grey "drag bar" at the top so users know it slides
+      handle: true,
+      cssClass: 'custom-modal-style'
+    });
+
+    await modal.present();
+  }
+
+
+  /**
+   * Function to refresh page on pull down and update the location
+  */
+  public doRefreshLocation = (event:RefresherCustomEvent) => {
+    console.log('Begin refresh operation to update users current location', event);
+
+    setTimeout(() => {
+      console.log('refresher operation has ended');
+      event.target.complete();
+    }, 2000);
+
+  }
+
 
 
 }

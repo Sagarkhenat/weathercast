@@ -1,3 +1,7 @@
+@import '../../../theme/common.scss';
+
+
+
 ion-content {
   --background: #eef1f5;
 }
@@ -5,7 +9,7 @@ ion-content {
 /* 1. Custom Header Styles */
 .custom-header {
   background-color: #4A90E2; /* Weather Blue */
-  height: 200px; /* Height for the background block */
+  height: 280px; /* Increased from 200px to fit the search bar */
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   padding: 50px 24px 0; /* Top padding pushes text down */
@@ -25,10 +29,11 @@ ion-content {
 
 /* 2. Main Card Styles */
 .main-card {
+  z-index: 10; /* This was beating the search bar previously */
   background: white;
   width: 90%;
-  margin: -90px auto 0; /* NEGATIVE MARGIN: Pulls card up over header */
-  padding: 24px;
+  margin: -100px auto 0; /* NEGATIVE MARGIN: Pulls card up over header */
+  padding: 20px;
   border-radius: 20px;
   text-align: center;
   position: relative;
@@ -46,27 +51,15 @@ ion-content {
 }
 
 .temp-container {
-  // display: flex;
   justify-content: center;
   align-items: center;
   gap: 15px;
-  margin: 10px 0;
+  margin: 15px 0;
 }
 
 .main-icon {
   font-size: 40px;
   font-weight:800;
-}
-
-.current-temp {
-  font-size: 30px;
-  color: #888;
-  font-weight:lighter;
-}
-
-.condition-text {
-  color: #666;
-  font-size: 16px;
 }
 
 /* 3. Forecast List Styles */
@@ -82,58 +75,127 @@ ion-content {
   padding-left: 5px;
 }
 
-.custom-list {
-  background: transparent;
-  padding: 0px !important;
-  border-bottom: 2px solid #dedede;
-}
-
-.forecast-item {
-  --background: transparent;
-  --padding-start: 0;
-  --inner-padding-end: 0;
-  margin-bottom: 8px;
-  border-bottom: 1px solid #e0e0e0;
-}
-
 .list-header{
   padding-left:0px;
 }
 
-.list-md{
-  padding-bottom: 0px !important;
+
+.first-forecast-row{
+  border-radius: 15px 15px 0 0; /* Top-left, top-right rounded */
+
+  overflow: hidden;
+}
+
+.last-forecast-row{
+  border-radius: 0px 0px 15px 15px ; /* Bottom-left, bottom-right rounded */
+  overflow: hidden;
+}
+.forecast-day-label{
+  margin:0px !important;
+}
+
+.forecast-col{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex:1;
+}
+
+.text-ellipsis{
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/*---------------------------Common list styling ----------------------*/
+.common-list{
+  padding: 10px;
+  .common-list-item{
+    background-color: $whiteColor;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    padding:10px;
+  } //End of common-list-item
+}//End of common-list
+
+/* FIX: Force the Search Component to sit ON TOP of the Main Card */
+app-weather-search {
+  position: relative; /* Required for z-index to work */
+  z-index: 999;        /* Much higher than main-card's 10 */
+  display: block;     /* Ensures it takes up space correctly */
+
+  /* Add a little bottom margin to push the card away if screen is small */
+  margin-bottom: 20px;
+}
+
+
+
+/*---------------------------SKELETON LOADING STYLES ----------------------*/
+
+/* 1. The Animation Keyframes */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+/* 2. Base Skeleton Class (The Grey Shimmer Effect) */
+.skeleton-line, .skeleton-circle, .skeleton-box {
+  background: #f6f7f8; /* Light Grey Base */
+
+  /* The Shimmer Gradient */
+  background-image: linear-gradient(
+    to right,
+    #f6f7f8 0%,
+    #edeef1 20%,
+    #f6f7f8 40%,
+    #f6f7f8 100%
+  );
+  background-repeat: no-repeat;
+  background-size: 1000px 100%;
+
+  /* Run the animation */
+  animation: shimmer 2s infinite linear;
+}
+
+/* 3. The Fake Main Card (Matches .main-card dimensions) */
+.skeleton-card {
+  background: white;
+  width: 90%;
+  margin: -50px auto 0; /* Same negative margin as real card */
+  padding: 30px;
   border-radius: 20px;
-}//End of list-md
-
-/* Column Widths for List Alignment */
-.col-day {
-  width: 50px;
-  font-weight: 600;
-  color: #555;
-  font-size: 15px;
-}
-
-.col-icon {
-  width: 40px;
-  text-align: center;
-  font-size: 20px;
-}
-
-.col-temp {
-  flex: 1;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.05);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  font-size: 13px;
-  color: #666;
-  padding-left: 15px;
+  align-items: center;
+  position: relative;
+  z-index: 10;
 }
 
-.col-desc {
-  text-align: right;
-  font-size: 14px;
-  color: #888;
-  width: 110px;
+/* Specific Shapes for the Card */
+.title-line { height: 24px; width: 40%; margin-bottom: 20px; border-radius: 4px; }
+.skeleton-circle { height: 80px; width: 80px; border-radius: 50%; margin-bottom: 15px; }
+.temp-line { height: 40px; width: 60%; margin-bottom: 10px; border-radius: 4px; }
+.desc-line { height: 16px; width: 30%; border-radius: 4px; }
+
+/* 4. The Fake Forecast List */
+.skeleton-list {
+  padding: 40px 20px;
 }
 
+.skeleton-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #eee;
+}
 
+/* Specific Shapes for List Items */
+.sm-box { width: 40px; height: 16px; border-radius: 4px; }
+.md-box { width: 30px; height: 30px; border-radius: 50%; }
+.lg-box { width: 80px; height: 16px; border-radius: 4px; }
