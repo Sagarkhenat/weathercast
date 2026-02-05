@@ -1,17 +1,17 @@
 import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA,inject } from '@angular/core';
 import { Geolocation } from '@capacitor/geolocation';
-import { IonHeader, IonToolbar, IonTitle, IonContent,RefresherCustomEvent } from '@ionic/angular/standalone';
+import { IonChip, IonIcon, IonLabel, IonContent,RefresherCustomEvent } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common'; // Required for *ngIf
 import { ModalController } from '@ionic/angular/standalone';
-
-import { Network } from '@capacitor/network';
+import { addIcons } from 'ionicons';
+import { heart, heartOutline, closeCircle } from 'ionicons/icons';
 
 /*------------------ Components ----------------------*/
 import { WeatherSearchComponent } from '../component/weather-search/weather-search.component'; // <--- Check this path matches your folder structure
 import { WeatherDetailComponent } from '../component/weather-detail/weather-detail.component';
 
 /*------------------ Providers ----------------------*/
-import { WeatherService,CommonService,UnitStateService } from 'src/providers/providers';
+import { WeatherService,CommonService,UnitStateService,FavoritesService } from 'src/providers/providers';
 
 /*------------------Interfaces----------------------*/
 import { CurrentWeatherResponse, WeatherItem, ForecastResponse } from '../../../interface/common-dto';
@@ -53,11 +53,22 @@ export class UnitToggleComponent {
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone:true, //indicates a standalone component
-  imports: [CommonModule, IonContent, WeatherSearchComponent,WeatherIconPipe,TempConvertPipe,UnitToggleComponent],
+  imports: [
+    CommonModule,
+    IonContent,
+    WeatherSearchComponent,
+    WeatherIconPipe,
+    TempConvertPipe,
+    UnitToggleComponent,
+    IonChip,
+    IonIcon,
+    IonLabel],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class HomePage implements OnInit {
 
+  // Inject the service PUBLICLY
+  public favoritesService = inject(FavoritesService);
   // Inject the service and make it PUBLIC so the HTML can see it
   public unitService = inject(UnitStateService);
 
@@ -70,12 +81,39 @@ export class HomePage implements OnInit {
 
   constructor(public weatherService: WeatherService, public commonService: CommonService, private modalCtrl: ModalController) {
 
+    // Register the icons so <ion-icon> can use them
+    addIcons({ heart, heartOutline, closeCircle });
 
   }
 
   async ngOnInit() {
 
-    await this.getCurrentLocation();
+    // App will always try to prioritize the GPS first (based on co-ordinates)
+    // Using fallback logic for if the GPS fails, get last searched city details on home page
+    try {
+
+      await this.getCurrentLocation();
+    } catch (error) {
+
+      console.log('In catch block for ng On Init :::', error);
+      //Check for a saved city in localStorage
+      const savedCity = localStorage.getItem('lastCity');
+
+      console.log('Found saved city value in local storage as :', savedCity);
+      this.loadWeather(savedCity || 'Pune');
+    }
+
+
+    // Alternative method to search for locally saved city item first
+    // const savedCity = localStorage.getItem('lastCity');
+
+    // if (savedCity) {
+    //   console.log('Found saved city value in local storage as :', savedCity);
+    //   this.loadWeather(savedCity);
+    // } else {
+    //   console.log('No saved city found, asking for location...');
+    //   await this.getCurrentLocation();
+    // }
 
   }
 
@@ -102,7 +140,7 @@ export class HomePage implements OnInit {
           console.log('Request location is not granted condition :::');
           this.commonService.hideLoading();
           // Fallback if user denies: Load default city
-          this.loadWeather('Pune');
+          this.loadFallbackCity();
           return;
         }else{
 
@@ -123,7 +161,8 @@ export class HomePage implements OnInit {
 
       console.log('In catch block for Error getting location', error);
       // Fallback: If location access fails (e.g. disabled), load default
-      this.loadWeather('Pune');
+      // Use the fallback helper here too
+      this.loadFallbackCity();
       this.commonService.hideLoading();
     }
   }
@@ -178,7 +217,7 @@ export class HomePage implements OnInit {
   /**
    * Function called for loading the weather
   */
-    loadWeather(city: string) {
+  loadWeather(city: string) {
     this.isLoading = true;
     this.errorMsg = ''; // Reset errors
     this.weatherData = null; // Clear old data while loading
@@ -194,6 +233,9 @@ export class HomePage implements OnInit {
         console.log('Obtained weather data in loadWeather function :::', data);
         this.weatherData = data;
         this.isLoading = false;
+
+        // Success! The city exists. Save it for next time.
+        localStorage.setItem('lastCity', city);
 
         //After getting current city weather-- call the loadForecast API (Chained call)
         this.loadForecast(city);
@@ -281,6 +323,20 @@ export class HomePage implements OnInit {
 
 
   /**
+   * Add this helper method to your class (or just put the logic inside catch)
+  */
+  loadFallbackCity() {
+    const lastCity = localStorage.getItem('lastCity');
+    if (lastCity) {
+      console.log('GPS failed. Falling back to saved city:', lastCity);
+      this.loadWeather(lastCity);
+    } else {
+      console.log('GPS failed and no saved city. Loading default city value.');
+      this.loadWeather('Pune');
+    }
+  }
+
+    /**
    * Function to refresh page on pull down and update the location
   */
   public doRefreshLocation = (event:RefresherCustomEvent) => {

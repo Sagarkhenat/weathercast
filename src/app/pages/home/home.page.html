@@ -1,16 +1,33 @@
 <ion-content [fullscreen]="true" class="ion-no-padding">
 
 
-  <div class="custom-header">
+  <div class="custom-header" [class.short-header]="favoritesService.favorites().length === 0">
     <div class="header-content">
       <div class="app-title">WeatherCast</div>
 
-      <!--Temperature toggle button-->
+      <!--Temperature toggle button from celsius to fahrenheir and vice-versa-->
       <app-unit-toggle></app-unit-toggle>
 
     </div>
 
     <app-weather-search (citySearchEvent)="loadWeather($event)"></app-weather-search>
+
+    <!-- horizontal scroll to show users favorites list of saved cities -->
+    @if (favoritesService.favorites().length > 0) {
+      <div class="favorites-scroll-container">
+        @for (city of favoritesService.favorites(); track city) {
+
+          <ion-chip (click)="loadWeather(city)" [outline]="true" class="fav-chip">
+            <ion-label>{{ city }}</ion-label>
+            <ion-icon name="close-circle" (click)="favoritesService.toggleFavorite(city); $event.stopPropagation()"></ion-icon>
+          </ion-chip>
+
+        }
+      </div>
+    }@else{
+
+    }
+
   </div>
 
   <!-- Angular if condition to handle loading check-->
@@ -60,19 +77,31 @@
       <!-- Show users location data current-->
       @if(weatherData){
         <div class="main-card">
-          <div class="city-name">{{ weatherData.name }}</div>
-
-          <div class="temp-container">
-            <div class="weather-row">
-                <img [src]="(weatherData.weather[0]?.main || '') | weatherIcon" class="weather-icon-lg" alt="weather icon">
-
-                <div class="main-temp">{{ weatherData.main.temp | temperaturePipe : unitService.unit() }}</div>
+          <div class="city-header-row">
+            <div class="city-name">
+                {{ weatherData.name }}
             </div>
 
-              <div class="current-temp">
-                {{ weatherData.weather[0]?.description | titlecase }}
-              </div>
+          <!--Option to have the city added to users favorites -->
+          <ion-icon
+            [name]="favoritesService.isFavorite(weatherData.name) ? 'heart' : 'heart-outline'"
+            (click)="favoritesService.toggleFavorite(weatherData.name)"
+            class="favorites-icon">
+          </ion-icon>
+
+        </div>
+
+        <div class="temp-container">
+          <div class="weather-row">
+              <img [src]="(weatherData.weather[0]?.main || '') | weatherIcon" class="weather-icon-lg" alt="weather icon">
+
+              <div class="main-temp">{{ weatherData.main.temp | temperaturePipe : unitService.unit() }}</div>
           </div>
+
+            <div class="current-temp">
+              {{ weatherData.weather[0]?.description | titlecase }}
+            </div>
+        </div>
 
         </div>
       }
