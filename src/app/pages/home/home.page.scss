@@ -51,16 +51,43 @@ ion-content {
 }
 
 .temp-container {
-  justify-content: center;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 15px;
-  margin: 15px 0;
+  justify-content: center;
+  margin-top: 10px;
+
+  /* Flex container for the Icon + Temp row */
+  .weather-row {
+    display: flex;
+    align-items: center; /* Vertically align icon and text */
+    justify-content: center;
+    gap: 15px; /* Space between Icon and Temperature */
+  }
+
+  .weather-icon-lg{
+    width: 65px;
+    height: 65px;
+    object-fit: contain;
+  }
+
+
+  .main-temp{
+    font-size: 40px;
+    font-weight: 600;
+  }
+
+
+  /* Description Styling */
+  .current-temp {
+    margin-top: 5px; /* Space between temp row and description */
+    font-size: 1.2rem;
+    color: #666;
+  }
+
+
 }
 
-.main-icon {
-  font-size: 40px;
-  font-weight:800;
-}
 
 /* 3. Forecast List Styles */
 .forecast-section {
@@ -99,6 +126,12 @@ ion-content {
     flex-direction: column;
     justify-content: center;
     flex:1;
+}
+
+.forecast-icon{
+  width: 35px;
+  height:35px;
+  object-fit: contain;
 }
 
 .text-ellipsis{

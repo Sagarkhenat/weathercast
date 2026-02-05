@@ -1,4 +1,4 @@
-import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA,inject } from '@angular/core';
 import { Geolocation } from '@capacitor/geolocation';
 import { IonHeader, IonToolbar, IonTitle, IonContent,RefresherCustomEvent } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common'; // Required for *ngIf
@@ -11,23 +11,55 @@ import { WeatherSearchComponent } from '../component/weather-search/weather-sear
 import { WeatherDetailComponent } from '../component/weather-detail/weather-detail.component';
 
 /*------------------ Providers ----------------------*/
-import { WeatherService,CommonService } from 'src/providers/providers';
+import { WeatherService,CommonService,UnitStateService } from 'src/providers/providers';
 
 /*------------------Interfaces----------------------*/
 import { CurrentWeatherResponse, WeatherItem, ForecastResponse } from '../../../interface/common-dto';
 
 
 import { WeatherIconPipe } from 'src/pipes/weather-icon-pipe/weather-icon.pipe';
+import { TempConvertPipe } from 'src/pipes/temp-convert-pipe/temp-convert.pipe';
 
+// --------------------------- 1. DEFINING THE TOGGLE COMPONENT FOR TEMPERATURE HERE ---------------------------
+@Component({
+  selector: 'app-unit-toggle',
+  standalone: true,
+  template: `
+    <button (click)="unitService.toggleUnit()" class="toggle-btn">
+      Switch to {{ unitService.unit() === 'C' ? 'Fahrenheit' : 'Celsius' }}
+    </button>
+  `,
+  styles: [`
+    .toggle-btn {
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.4);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-size: 0.8rem;
+    }
+  `]
+})
+export class UnitToggleComponent {
+  // Give it access to the service
+  public unitService = inject(UnitStateService);
+}
+
+
+
+// --------------------------- 2.  MAIN HOME PAGE COMPONENT ---------------------------
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone:true, //indicates a standalone component
-  imports: [CommonModule, IonContent, WeatherSearchComponent,WeatherIconPipe],
+  imports: [CommonModule, IonContent, WeatherSearchComponent,WeatherIconPipe,TempConvertPipe,UnitToggleComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class HomePage implements OnInit {
+
+  // Inject the service and make it PUBLIC so the HTML can see it
+  public unitService = inject(UnitStateService);
 
   weatherData: CurrentWeatherResponse | null = null;
   isLoading = true; // Start true to show spinner immediately

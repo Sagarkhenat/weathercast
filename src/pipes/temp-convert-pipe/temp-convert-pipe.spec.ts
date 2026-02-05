@@ -1,4 +1,4 @@
-import { TempConvertPipe} from './temp-convert-pipe-pipe';
+import { TempConvertPipe} from './temp-convert.pipe';
 
 describe('TempConvertPipePipe', () => {
   it('create an instance', () => {

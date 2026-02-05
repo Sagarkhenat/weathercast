@@ -1,23 +1,28 @@
-import { Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit, inject} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { ModalController } from '@ionic/angular/standalone';
 
 import { WeatherItem } from 'src/interface/common-dto';
 import { WeatherIconPipe } from 'src/pipes/weather-icon-pipe/weather-icon.pipe';
+import { TempConvertPipe } from 'src/pipes/temp-convert-pipe/temp-convert.pipe';
+
+import { UnitStateService } from 'src/providers/providers';
 
 @Component({
   selector: 'app-weather-detail',
   templateUrl: './weather-detail.component.html',
   styleUrls: ['./weather-detail.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule,WeatherIconPipe]
+  imports: [CommonModule, IonicModule,WeatherIconPipe, TempConvertPipe]
 
 })
 export class WeatherDetailComponent  implements OnInit {
 
   // @Input allows us to pass data INTO this component
   @Input() data: WeatherItem | undefined;
+  // Inject the service and make it PUBLIC so the HTML can see it
+  public unitService = inject(UnitStateService);
 
   constructor(private modalCtrl: ModalController) { }
 

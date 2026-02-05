@@ -48,6 +48,33 @@ export class WeatherService {
     return this.http.get(`${this.baseUrl}/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${this.apiKey}`);
   }
 
+  /**
+   * Function to get the weather-icon based on response sent by open weather map api
+  */
+
+  getIcon(condition: string): string {
+
+    switch (condition.toLowerCase()) {
+      case 'sunny':
+      case 'clear':
+        return 'assets/imgs/sun.svg';
+      case 'cloudy':
+      case 'clouds':
+      case 'overcast':
+        return 'assets/imgs/cloud.svg';
+      case 'rain':
+      case 'drizzle':
+        return 'assets/imgs/rain.svg';
+      case 'snow':
+        return 'assets/imgs/snow.svg';
+      case 'storm':
+      case 'thunder':
+        return 'assets/imgs/storm.svg';
+      default:
+        return 'assets/imgs/sun.svg';
+    }
+
+  }
 
 
 

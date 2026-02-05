@@ -42,6 +42,11 @@
   }
 }
 
+.weather-modal-icon{
+  width:60px;
+  height: 60px;
+  object-fit: contain;
+}
 
 .close-icon {
   font-size: 24px;
@@ -63,14 +68,14 @@
   }
 
   .temp-text {
-    font-size: 48px;
+    font-size: 50px;
     font-weight: 800;
     color: #1a1a1a;
     letter-spacing: -1px;
   }
 
   .desc-text {
-    font-size: 18px;
+    font-size: 25px;
     color: #666;
     font-weight: 500;
   }

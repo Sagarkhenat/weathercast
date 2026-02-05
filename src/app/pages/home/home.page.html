@@ -4,6 +4,10 @@
   <div class="custom-header">
     <div class="header-content">
       <div class="app-title">WeatherCast</div>
+
+      <!--Temperature toggle button-->
+      <app-unit-toggle></app-unit-toggle>
+
     </div>
 
     <app-weather-search (citySearchEvent)="loadWeather($event)"></app-weather-search>
@@ -13,7 +17,6 @@
   @if (isLoading) {
 
     <!-- Show a skeleton card to show data will be filled after successful api response-->
-
     <div class="skeleton-card">
       <div class="skeleton-line title-line"></div>
       <div class="skeleton-circle"></div>
@@ -60,7 +63,12 @@
           <div class="city-name">{{ weatherData.name }}</div>
 
           <div class="temp-container">
-              <div class="main-icon">{{ weatherData.weather[0]?.main | weatherIcon }} {{ weatherData.main.temp | number:'1.0-0' }}°C</div>
+            <div class="weather-row">
+                <img [src]="(weatherData.weather[0]?.main || '') | weatherIcon" class="weather-icon-lg" alt="weather icon">
+
+                <div class="main-temp">{{ weatherData.main.temp | temperaturePipe : unitService.unit() }}</div>
+            </div>
+
               <div class="current-temp">
                 {{ weatherData.weather[0]?.description | titlecase }}
               </div>
@@ -92,18 +100,16 @@
 
                     <!---Column to show required weather icon-->
                     <ion-col col-2 class="forecast-col">
-                      <div style="font-size: 24px; margin-right: 15px;">
-                        {{ day.weather[0]?.main | weatherIcon }}
-                      </div>
+                      <img [src]="day.weather[0]?.main | weatherIcon" class="forecast-icon">
                     </ion-col>
 
                     <!---Column to show min and max temperature values-->
                     <ion-col col-2 class="forecast-col">
-                      <div style="font-size: 13px; color: #666; font-weight: 500;">
-                        Max. &nbsp;{{ day.main.temp_max | number: '1.0-0' }}°
+                      <div style="font-size: 13px; color: #666; font-weight: 600;">
+                        Max. &nbsp;{{ day.main.temp_max | temperaturePipe : unitService.unit() }}
                       </div>
                       <div style="font-size: 13px; color: #666;">
-                        Min. &nbsp;{{ day.main.temp_min | number: '1.0-0' }}°
+                        Min. &nbsp;{{ day.main.temp_min | temperaturePipe : unitService.unit() }}
                       </div>
                     </ion-col>
 
