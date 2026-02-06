@@ -1,22 +1,28 @@
 const fs = require('fs');
 
-// Path to the file we want to write
+// 1. Define the path where the missing file should be
+const dir = './src/environments';
 const targetPath = './src/environments/environment.ts';
 
-// The content we want to write into the file
-// IMPORTANT: Use the exact variable name you have in Vercel (e.g., WEATHER_API_KEY)
+// 2. Create the folder if it doesn't exist
+if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir, { recursive: true });
+}
+
+// 3. Define the content of the file
+// We grab the API key from Vercel's settings
 const envConfigFile = `
 export const environment = {
   production: true,
-  weatherApiKey: '${process.env.apiKey}'
+  weatherApiKey: '${process.env.apiKey || "YOUR_API_KEY"}'
 };
 `;
 
-// Write the file
+// 4. Write the file to disk
 fs.writeFile(targetPath, envConfigFile, function (err) {
   if (err) {
-    console.log(err);
+    console.log('Error creating environment file:', err);
   } else {
-    console.log(`Output generated at ${targetPath}`);
+    console.log(`Successfully generated ${targetPath}`);
   }
 });
