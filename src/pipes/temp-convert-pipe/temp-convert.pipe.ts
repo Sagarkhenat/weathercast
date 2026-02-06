@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'tempConvertPipe'
+  name: 'temperaturePipe',
+  standalone: true
 })
 export class TempConvertPipe implements PipeTransform {
 
@@ -21,21 +22,20 @@ export class TempConvertPipe implements PipeTransform {
       return value;
     }
 
-    // Conversion formula
-    let outputTemp: number;
-
     // Convert Celsius to Fahrenheit
     if (outputUnit === 'F') {
        // F = (C * 9/5) + 32
-      outputTemp = (inputTemp * 9 / 5) + 32;
+      //outputTemp = (inputTemp * 9 / 5) + 32;
+      const fahrenheit = (value * 9/5) + 32;
+      return `${Math.round(fahrenheit)}°F`; //Rounding up to 1 decimal digit for clean UI
     }else{
       // Convert Fahrenheit to Celsius
       // C = (F - 32) * 5/9
-      outputTemp = (inputTemp - 32) * 5 / 9;
+      //outputTemp = (inputTemp - 32) * 5 / 9; //Mathematical formula
+
+       return `${Math.round(value)}°C`; //Rounding up to 1 decimal digit for clean UI
+
     }
-
-    return Math.round(outputTemp * 10) / 10; //Rounding up to 1 decimal digit for clean UI
-
   }
 
 }

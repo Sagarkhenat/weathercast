@@ -1,43 +1,54 @@
 <div class="modal-content">
-  <div class="modal-header">
-    <div class="date-title">
-      {{ data.dt_txt | date: 'EEEE, d MMM' }}
-    </div>
-    <div class="close-icon" (click)="close()">
-      ✕
-    </div>
-  </div>
 
-  <div class="main-temp-section">
-    <div class="big-icon">⛅</div> <div class="temp-text">
-      {{ data.main.temp | number:'1.0-0' }}°C
-    </div>
-    <div class="desc-text">
-      {{ data.weather[0].description | titlecase }}
-    </div>
-  </div>
+  @if (data) {
 
-  <div class="details-grid">
-
-    <div class="detail-item">
-      <div class="label">Humidity</div>
-      <div class="value">💧 {{ data.main.humidity }}%</div>
+    <div class="modal-header">
+      <div class="date-title">
+        {{ data.dt * 1000| date: 'EEEE, d MMM' }}
+      </div>
+      <div class="close-icon" (click)="close()">
+        ✕
+      </div>
     </div>
 
-    <div class="detail-item">
-      <div class="label">Wind</div>
-      <div class="value">💨 {{ data.wind.speed }} m/s</div>
+    <div class="main-temp-section">
+
+      <img [src]="data.weather[0]?.main  | weatherIcon" class="weather-modal-icon" alt="weather icon">
+      <div class="temp-text">
+        {{ data.main.temp | temperaturePipe : unitService.unit()}}
+      </div>
+      <div class="desc-text">
+        {{ data.weather[0].description | titlecase }}
+      </div>
     </div>
 
-    <div class="detail-item">
-      <div class="label">Pressure</div>
-      <div class="value">📉 {{ data.main.pressure }} hPa</div>
+    <div class="details-grid">
+
+      <div class="detail-item">
+        <div class="label">Humidity</div>
+        <div class="value">💧 {{ data.main.humidity }}%</div>
+      </div>
+
+      <div class="detail-item">
+        <div class="label">Wind</div>
+        <div class="value">💨 {{ data.wind.speed }} m/s</div>
+      </div>
+
+      <div class="detail-item">
+        <div class="label">Pressure</div>
+        <div class="value">📉 {{ data.main.pressure }} hPa</div>
+      </div>
+
+      <div class="detail-item">
+        <div class="label">Feels Like</div>
+        <div class="value">🌡️ {{ data.main.feels_like | number:'1.0-0' }}°</div>
+      </div>
+
     </div>
 
-    <div class="detail-item">
-      <div class="label">Feels Like</div>
-      <div class="value">🌡️ {{ data.main.feels_like | number:'1.0-0' }}°</div>
-    </div>
+  }@else {
 
-  </div>
+
+  }
+
 </div>
