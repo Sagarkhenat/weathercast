@@ -12,16 +12,16 @@
 
 ### **Overview**
 
- Unlike standard portfolio apps, WeatherCast demonstrates a **Secure CI/CD Pipeline**, ensuring that sensitive API keys are never exposed in the source code while maintaining automated deployments[cite: 7].
+ Unlike standard portfolio apps, WeatherCast demonstrates a **Secure CI/CD Pipeline**, ensuring that sensitive API keys are never exposed in the source code while maintaining automated deployments.
 
 ### **✨ Key Features**
 
-  **📍 Smart Geolocation:** Automatically detects user location on startup to display local weather[cite: 27].
-  **🔍 Global Search:** Search for current weather conditions in any city worldwide[cite: 28].
-  **📅 5-Day Forecast:** Horizontal scrolling view of the upcoming week's weather[cite: 29].
-  **🛡️ Robust Error Handling:** Dedicated "Error State" logic that gracefully handles network failures, invalid city names, or API timeouts, guiding the user back to a safe state[cite: 10].
- **🔄 Pull-to-Refresh:** Instantly reload data with native gestures[cite: 30].
-  **📱 Native Mobile Support:** Fully compiled for Android and iOS using Capacitor[cite: 31].
+  **📍 Smart Geolocation:** Automatically detects user location on startup to display local weather.
+  **🔍 Global Search:** Search for current weather conditions in any city worldwide.
+  **📅 5-Day Forecast:** Horizontal scrolling view of the upcoming week's weather.
+  **🛡️ Robust Error Handling:** Dedicated "Error State" logic that gracefully handles network failures, invalid city names, or API timeouts, guiding the user back to a safe state.
+ **🔄 Pull-to-Refresh:** Instantly reload data with native gestures.
+  **📱 Native Mobile Support:** Fully compiled for Android and iOS using Capacitor.
 
 ---
 
@@ -32,15 +32,15 @@ This project implements senior-level practices for security and stability.
 #### **1. Secure CI/CD Pipeline (The `set-env` Workflow)**
 
 One of the core challenges in frontend deployment is managing secrets.
-  **The Problem:** API keys stored in `environment.ts` are often accidentally committed to GitHub, posing a security risk[cite: 12].
-  **The Solution:** This project uses a custom **DevOps script (`set-env.js`)** injected into the Vercel build process[cite: 13].
-    1.   The `environment.ts` file is **excluded** from Git via `.gitignore`[cite: 14].
-    2.   During deployment, Vercel executes `node set-env.js` *before* the Angular build[cite: 14].
-    3.   The script dynamically generates the environment file using encrypted environment variables stored securely in the Vercel dashboard[cite: 15].
+  **The Problem:** API keys stored in `environment.ts` are often accidentally committed to GitHub, posing a security risk.
+  **The Solution:** This project uses a custom **DevOps script (`set-env.js`)** injected into the Vercel build process.
+    1.   The `environment.ts` file is **excluded** from Git via `.gitignore`.
+    2.   During deployment, Vercel executes `node set-env.js` *before* the Angular build.
+    3.   The script dynamically generates the environment file using encrypted environment variables stored securely in the Vercel dashboard.
 
 #### **2. User Experience Engineering**
 
-  **Glassmorphism UI:** Custom CSS implementation for modern aesthetics[cite: 26].
+  **Glassmorphism UI:** Custom CSS implementation for modern aesthetics.
   **Resilient State Management:** The app anticipates API failures (e.g., rate limits or bad queries) and presents user-friendly feedback instead of breaking.
 
 ---
