@@ -91,13 +91,13 @@ ion-content {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
   margin-bottom: 5px;
 }
 
 /* Style the Heart Icon */
 .favorites-icon {
-  font-size: 28px;
+  font-size: 1.8rem;
   color: #ff4040; /* Red color */
   cursor: pointer;
   transition: transform 0.2s;
@@ -164,6 +164,18 @@ ion-content {
 /* 3. Forecast List Styles */
 .forecast-section {
   padding: 30px 20px;
+}
+
+
+/* Add this to your weekly forecast component SCSS */
+.forecast-wrapper {
+  cursor: pointer; /* Changes cursor to a hand */
+  transition: background-color 0.2s ease; /* Smooth transition for hover effect */
+}
+
+/* Optional: Add a subtle background color change on hover for better UX */
+.forecast-wrapper:hover {
+  //background-color: rgba(0, 0, 0, 0.05); /* Very light grey overlay */
 }
 
 .section-title {
