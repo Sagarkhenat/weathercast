@@ -14,7 +14,8 @@ if (!fs.existsSync(dir)){
 const envConfigFile = `
 export const environment = {
   production: true,
-  weatherApiKey: '${process.env.apiKey || "YOUR_API_KEY"}'
+  apiKey: '${process.env.apiKey || "YOUR_API_KEY"}',
+  weatherBaseUrl:'https://api.openweathermap.org/data/2.5'
 };
 `;
 
