@@ -16,6 +16,7 @@
 
 ### **✨ Key Features**
 
+  **🌙 Dark Mode:** Fully adaptive UI featuring a "Midnight Blue" theme, glassmorphism search elements, and high-contrast accessibility.
   **📍 Smart Geolocation:** Automatically detects user location on startup to display local weather.
   **🔍 Global Search:** Search for current weather conditions in any city worldwide.
   **📅 5-Day Forecast:** Horizontal scrolling view of the upcoming week's weather.

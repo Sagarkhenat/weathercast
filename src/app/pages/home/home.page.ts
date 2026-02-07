@@ -1,10 +1,10 @@
 import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA,inject } from '@angular/core';
 import { Geolocation } from '@capacitor/geolocation';
-import { IonChip, IonIcon, IonLabel, IonContent,RefresherCustomEvent } from '@ionic/angular/standalone';
+import { IonChip, IonIcon, IonLabel, IonContent,RefresherCustomEvent, IonButton } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common'; // Required for *ngIf
 import { ModalController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { heart, heartOutline, closeCircle } from 'ionicons/icons';
+import {moon, sunny, heart, heartOutline, closeCircle } from 'ionicons/icons';
 
 /*------------------ Components ----------------------*/
 import { WeatherSearchComponent } from '../component/weather-search/weather-search.component'; // <--- Check this path matches your folder structure
@@ -20,26 +20,66 @@ import { CurrentWeatherResponse, WeatherItem, ForecastResponse } from '../../../
 import { WeatherIconPipe } from 'src/pipes/weather-icon-pipe/weather-icon.pipe';
 import { TempConvertPipe } from 'src/pipes/temp-convert-pipe/temp-convert.pipe';
 
-// --------------------------- 1. DEFINING THE TOGGLE COMPONENT FOR TEMPERATURE HERE ---------------------------
+// --------------------------- DEFINING THE TOGGLE COMPONENT FOR TEMPERATURE HERE ---------------------------
 @Component({
   selector: 'app-unit-toggle',
   standalone: true,
   template: `
-    <button (click)="unitService.toggleUnit()" class="toggle-btn">
-      Switch to {{ unitService.unit() === 'C' ? 'Fahrenheit' : 'Celsius' }}
+    <button (click)="unitService.toggleUnit()" class="pill-toggle">
+
+      <span [class.active-unit]="unitService.unit() === 'C'" class="unit-label">
+        °C
+      </span>
+      <span class="divider"></span>
+      <span [class.active-unit]="unitService.unit() === 'F'" class="unit-label">
+        °F
+      </span>
+
     </button>
   `,
   styles: [`
-    .toggle-btn {
-      background: rgba(255,255,255,0.2);
-      border: 1px solid rgba(255,255,255,0.4);
-      color: white;
-      padding: 5px 10px;
-      border-radius: 15px;
-      font-size: 0.8rem;
+    /* The Pill Container */
+    .pill-toggle {
+      background: rgba(255, 255, 255, 0.15); /* Glassy background */
+      border: 1px solid rgba(255, 255, 255, 0.25); /* Subtle border */
+      border-radius: 50px;       /* Full rounding for pill shape */
+      padding: 6px 14px;         /* Padding defines the pill size */
+      display: flex;
+      align-items: center;
+      gap: 8px;                  /* Space between C, Divider, and F */
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    /* Optional: Hover effect */
+    .pill-toggle:active {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    /* The Text Labels (Inactive State) */
+    .unit-label {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.5); /* Dimmed by default */
+      transition: color 0.2s;
+    }
+
+    /* The Active Unit (Bright & Bold) */
+    .active-unit {
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    /* The Vertical Divider Line */
+    .divider {
+      width: 1px;
+      height: 14px;
+      background-color: rgba(255, 255, 255, 0.2);
     }
   `]
 })
+
+
 export class UnitToggleComponent {
   // Give it access to the service
   public unitService = inject(UnitStateService);
@@ -62,7 +102,8 @@ export class UnitToggleComponent {
     UnitToggleComponent,
     IonChip,
     IonIcon,
-    IonLabel],
+    IonLabel,
+    IonButton],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class HomePage implements OnInit {
@@ -79,10 +120,13 @@ export class HomePage implements OnInit {
 
   forecastData: WeatherItem[] = []; // Initialize as an array to store 5 day data of selected city
 
-  constructor(public weatherService: WeatherService, public commonService: CommonService, private modalCtrl: ModalController) {
+  constructor(public weatherService: WeatherService,
+    public commonService: CommonService,
+    private modalCtrl: ModalController,
+    public unitStateService :  UnitStateService) {
 
     // Register the icons so <ion-icon> can use them
-    addIcons({ heart, heartOutline, closeCircle });
+    addIcons({ moon, sunny, heart, 'heart-outline': heartOutline, 'close-circle': closeCircle });
 
   }
 

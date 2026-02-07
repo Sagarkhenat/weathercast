@@ -11,6 +11,7 @@
 
 /* Core CSS required for Ionic components to work properly */
 @import "@ionic/angular/css/core.css";
+@import '/src/theme/variables.scss';
 
 /* Basic CSS for apps built with Ionic */
 @import "@ionic/angular/css/normalize.css";
@@ -27,6 +28,25 @@
 
 /* Import Google Font 'Poppins' */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth toggle */
+}
+
+.weather-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--card-shadow);
+}
+
+/* Target the modal content globally */
+ion-modal {
+  --background: var(--card-background);
+  --ion-background-color: var(--card-background);
+  --color: var(--text-color);
+}
 
 /**
  * Ionic Dark Mode
