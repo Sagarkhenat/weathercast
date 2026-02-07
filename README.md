@@ -16,13 +16,34 @@
 
 ### **✨ Key Features**
 
-  **🌙 Dark Mode:** Fully adaptive UI featuring a "Midnight Blue" theme, glassmorphism search elements, and high-contrast accessibility.
-  **📍 Smart Geolocation:** Automatically detects user location on startup to display local weather.
-  **🔍 Global Search:** Search for current weather conditions in any city worldwide.
-  **📅 5-Day Forecast:** Horizontal scrolling view of the upcoming week's weather.
-  **🛡️ Robust Error Handling:** Dedicated "Error State" logic that gracefully handles network failures, invalid city names, or API timeouts, guiding the user back to a safe state.
- **🔄 Pull-to-Refresh:** Instantly reload data with native gestures.
-  **📱 Native Mobile Support:** Fully compiled for Android and iOS using Capacitor.
+#### 1. Real-Time Weather & Forecast
+  
+  Fetches current weather and a 5-day forecast using the **OpenWeatherMap API**.
+  Displays critical data: Temperature, Humidity, Wind Speed, and Weather Conditions.
+
+### 2. **🌙 Dark Mode:**
+
+  Fully adaptive UI featuring a "Midnight Blue" theme, glassmorphism search elements, and high-contrast accessibility.
+
+### 3. **📍 Smart Geolocation:**
+  
+   Automatically detects user location on startup to display local weather.
+
+### 4. **🔍 Global Search:**
+
+  Search for current weather conditions in any city worldwide.
+
+### 5. 🛡️ Robust Error Handling:**
+
+  Dedicated "Error State" logic that gracefully handles network failures, invalid city names, or API timeouts, guiding the user back to a safe state.
+
+### 6. 🔄 Pull-to-Refresh:**
+
+  Instantly reload data with native gestures.
+
+### 7. 📱 Native Mobile Support:**
+
+  Fully compiled for Android and iOS using Capacitor.
 
 ---
 
@@ -43,6 +64,18 @@ One of the core challenges in frontend deployment is managing secrets.
 
   **Glassmorphism UI:** Custom CSS implementation for modern aesthetics.
   **Resilient State Management:** The app anticipates API failures (e.g., rate limits or bad queries) and presents user-friendly feedback instead of breaking.
+
+#### **3. ⚡ Performance Optimization**
+
+  **Lazy Loading:** Implemented **Route-Based Lazy Loading** (`loadComponent`) to split the application into smaller chunks, significantly reducing the initial bundle size
+  **Preloading Strategy:** Configured `PreloadAllModules` to fetch remaining bundles in the background, ensuring instant navigation without wait times
+
+### 🏗️ Clean Code Principles
+
+* **Standalone Components:** Fully migrated to Angular 17's module-free architecture.
+* **Services:** Business logic is strictly separated from UI components (`WeatherService`, `FavoritesService`).
+* **Strict Typing:** utilized TypeScript Interfaces (`WeatherResponse`) to prevent runtime errors.
+* **Pure Pipes:** Logic for icon mapping and unit conversion is abstracted into pure pipes (`WeatherIconPipe`) for performance and reusability.
 
 ---
 
