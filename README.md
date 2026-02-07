@@ -33,15 +33,15 @@
 
   Search for current weather conditions in any city worldwide.
 
-### 5. 🛡️ Robust Error Handling:**
+### 5. **🛡️ Robust Error Handling:**
 
   Dedicated "Error State" logic that gracefully handles network failures, invalid city names, or API timeouts, guiding the user back to a safe state.
 
-### 6. 🔄 Pull-to-Refresh:**
+### 6. **🔄 Pull-to-Refresh:**
 
   Instantly reload data with native gestures.
 
-### 7. 📱 Native Mobile Support:**
+### 7. **📱 Native Mobile Support:**
 
   Fully compiled for Android and iOS using Capacitor.
 
