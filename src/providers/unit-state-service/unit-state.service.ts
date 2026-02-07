@@ -20,7 +20,7 @@ export class UnitStateService {
   private renderer!: Renderer2;
   private isDarkTheme = new BehaviorSubject<boolean>(false);
 
-  isDarkTheme$ = this.isDarkTheme.asObservable();
+  isDarkThemeOn = this.isDarkTheme.asObservable();
 
   constructor( @Inject(DOCUMENT) private document: Document, rendererFactory: RendererFactory2) {
 

@@ -15,7 +15,7 @@ ion-content {
   height: 340px; /* CHANGED: Increased from 280px to 340px after adding favorites list */
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  padding: 50px 24px 0;
+  padding: 50px 20px 0;
   color: white;
   position: relative; /* Ensure z-index works inside here */
 
@@ -26,14 +26,21 @@ ion-content {
 
 /* 2. Short Header (Applied dynamically when list is empty) */
 .short-header {
-  height: 280px !important; /* SHORT HEIGHT (adjust to fit your search bar tight) */
+  height: 280px !important;
 }
 
 .header-content {
   display: flex;
   justify-content: space-between; /* Pushes title left, buttons right */
   align-items: center;
-  padding: 0 16px;
+  width: 100%;
+  //padding: 0 16px; // commented for having the toggle buttons at far-right section
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Adjust spacing between Sun/Moon and Toggle here */
 }
 
 .app-title {
@@ -55,7 +62,7 @@ ion-content {
 
 /* Spacing between the dark mode btn and unit toggle */
 app-unit-toggle {
-  margin-left: 8px;
+  flex-shrink: 0;
 }
 
 .favorites-scroll-container{
