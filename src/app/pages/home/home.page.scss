@@ -1,14 +1,17 @@
 @import '../../../theme/common.scss';
-
+@import '/src/theme/variables.scss';
 
 
 ion-content {
-  --background: #eef1f5;
+  /* --background: #eef1f5; */
+
+  --background: var(--page-background);
 }
 
 /* 1. Custom Header Styles */
 .custom-header {
-  background-color: #4A90E2; /* Weather Blue */
+  // background-color: #4A90E2; /* Weather Blue */
+  background-color: var(--header-background);
   height: 340px; /* CHANGED: Increased from 280px to 340px after adding favorites list */
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
@@ -28,13 +31,31 @@ ion-content {
 
 .header-content {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* Pushes title left, buttons right */
   align-items: center;
+  padding: 0 16px;
 }
 
 .app-title {
+  flex: 1;
   font-size: 24px;
   font-weight: 700;
+}
+
+.theme-btn {
+  --color: #FFFFFF; /* Forces the icon to be white */
+  --padding-start: 8px;
+  --padding-end: 8px;
+
+  /* Ensure it doesn't look too small compared to the unit toggle */
+  ion-icon {
+    font-size: 24px;
+  }
+}
+
+/* Spacing between the dark mode btn and unit toggle */
+app-unit-toggle {
+  margin-left: 8px;
 }
 
 .favorites-scroll-container{
@@ -64,7 +85,8 @@ ion-content {
 /* 2. Main Card Styles */
 .main-card {
   z-index: 10; /* This was beating the search bar previously */
-  background: white;
+  background: var(--card-background);
+  color: var(--text-color);
   width: 90%;
   margin: -100px auto 0; /* NEGATIVE MARGIN: Pulls card up over header */
   padding: 20px;
@@ -73,8 +95,10 @@ ion-content {
   position: relative;
   z-index: 10;
 
-  /* The requested Box Shadow */
   box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+
+  /* for card definition in dark mode */
+  border: 1px solid var(--ion-color-step-100, #333);
 }
 
 /* Individual Chip Styling */
@@ -117,7 +141,7 @@ ion-content {
 
 .city-name {
   font-size: 28px;
-  color: #333333;
+  color: var(--text-color);
   margin-bottom: 10px;
   font-weight: 500;
 }
@@ -154,7 +178,7 @@ ion-content {
   .current-temp {
     margin-top: 5px; /* Space between temp row and description */
     font-size: 1.2rem;
-    color: #666;
+    color: var(--secondary-text);
   }
 
 
@@ -166,7 +190,13 @@ ion-content {
   padding: 30px 20px;
 }
 
+.secondary-text {
+  color: var(--text-secondary); /* Will switch between #666 and #aaa */
+}
 
+.tertiary-text, ion-note {
+  color: var(--text-tertiary) !important; /* Force override of Ionic default */
+}
 /* Add this to your weekly forecast component SCSS */
 .forecast-wrapper {
   cursor: pointer; /* Changes cursor to a hand */
@@ -181,7 +211,7 @@ ion-content {
 .section-title {
   font-size: 18px;
   font-weight: 700;
-  color: #333;
+  color: var(--text-color);
   margin-bottom: 10px;
   padding-left: 5px;
 }
@@ -228,8 +258,9 @@ ion-content {
 .common-list{
   padding: 10px;
   .common-list-item{
-    background-color: $whiteColor;
-    border-bottom: 1px solid #e0e0e0;
+    background-color: var(--card-background);
+    color: var(--text-color); /* Ensure list text adapts */
+    border-bottom: 1px solid var(--ion-color-step-150, #e0e0e0);
     display: flex;
     padding:10px;
   } //End of common-list-item
@@ -237,12 +268,19 @@ ion-content {
 
 /* FIX: Force the Search Component to sit ON TOP of the Main Card */
 app-weather-search {
+
+  --ion-background-color: rgba(255, 255, 255, 0.2) !important;
+  --color: white;
   position: relative; /* Required for z-index to work */
   z-index: 999;        /* Much higher than main-card's 10 */
   display: block;     /* Ensures it takes up space correctly */
 
   /* Add a little bottom margin to push the card away if screen is small */
   margin-bottom: 20px;
+  --placeholder-color: rgba(255, 255, 255, 0.6);
+  --icon-color: rgba(255, 255, 255, 0.6);
+
+  border-radius: 10px;
 }
 
 
@@ -344,13 +382,13 @@ app-weather-search {
   .error-title {
     font-size: 20px;
     font-weight: 700;
-    color: #333;
+    color: var(--text-color)3;
     margin: 0 0 8px 0;
   }
 
   .error-text {
     font-size: 15px;
-    color: #666;
+    color: var(--secondary-text);
     max-width: 250px; /* Prevents text from stretching too wide */
     line-height: 1.5;
   }

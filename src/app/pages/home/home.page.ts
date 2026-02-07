@@ -1,10 +1,10 @@
 import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA,inject } from '@angular/core';
 import { Geolocation } from '@capacitor/geolocation';
-import { IonChip, IonIcon, IonLabel, IonContent,RefresherCustomEvent } from '@ionic/angular/standalone';
+import { IonChip, IonIcon, IonLabel, IonContent,RefresherCustomEvent, IonButton } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common'; // Required for *ngIf
 import { ModalController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { heart, heartOutline, closeCircle } from 'ionicons/icons';
+import {moon, sunny, heart, heartOutline, closeCircle } from 'ionicons/icons';
 
 /*------------------ Components ----------------------*/
 import { WeatherSearchComponent } from '../component/weather-search/weather-search.component'; // <--- Check this path matches your folder structure
@@ -62,7 +62,8 @@ export class UnitToggleComponent {
     UnitToggleComponent,
     IonChip,
     IonIcon,
-    IonLabel],
+    IonLabel,
+    IonButton],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class HomePage implements OnInit {
@@ -79,10 +80,13 @@ export class HomePage implements OnInit {
 
   forecastData: WeatherItem[] = []; // Initialize as an array to store 5 day data of selected city
 
-  constructor(public weatherService: WeatherService, public commonService: CommonService, private modalCtrl: ModalController) {
+  constructor(public weatherService: WeatherService,
+    public commonService: CommonService,
+    private modalCtrl: ModalController,
+    public themeService :  UnitStateService) {
 
     // Register the icons so <ion-icon> can use them
-    addIcons({ heart, heartOutline, closeCircle });
+    addIcons({ moon, sunny, heart, 'heart-outline': heartOutline, 'close-circle': closeCircle });
 
   }
 

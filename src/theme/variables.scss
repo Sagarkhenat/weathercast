@@ -15,9 +15,70 @@
   --ion-color-primary-shade: #417fc7;
   --ion-color-primary-tint: #5c9be5;
 
-  /* Secondary Color (Sun Yellow) */
-  --ion-color-secondary: #f5a623;
-  --ion-color-secondary-rgb: 245, 166, 35;
-  --ion-color-secondary-contrast: #000000;
-  --ion-color-secondary-contrast-rgb: 0, 0, 0;
+  /* Light Mode Defaults */
+  --page-background: #eef1f5;
+  --card-background: #ffffff; /* Cards are white in light mode */
+  --header-background: #4A90E2;
+  --text-color: #333333;
+  --text-secondary: #666666; /* Dark Grey for light mode */
+  --text-tertiary: #888888;  /* Even lighter grey for less important text */
+  --detail-box-bg: #f8f9fa;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f4f6f8;
+  --text-primary: #333333;
+  --accent-color: #007bff;
+  --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --border-color: #e0e0e0;
+
+  /* Search Bar specific vars */
+  --search-bg: #ffffff;
+  --search-text: #333333;
+  --search-placeholder: #a0a0a0;
+  --search-icon: #333333;
+  --search-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --search-border: transparent; /* No border in light mode */
+
+
+  /* The Override (Dark Mode) */
+  .dark-theme {
+    --bg-primary: #121212;   /* classic dark mode bg */
+    --bg-secondary: #1e1e1e; /* slightly lighter for cards/nav */
+    --text-primary: #e0e0e0;
+    --text-secondary: #a0a0a0;
+    --accent-color: #4da3ff; /* lighter accent for better contrast on dark */
+    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+    --border-color: #333333;
+  }
+
+  body.dark-theme {
+    /* Define the dark colors */
+    --page-background: #121212;
+    --card-background: #1e1e1e; /* Cards become dark grey in dark mode */
+    --header-background: #0d253f;
+    --text-color: #ffffff;
+    --card-background: #1e1e1e;
+    --detail-box-bg: #2c2c2c; /* Slightly lighter than the card bg */
+
+    //--text-secondary: #b0b0b0; /* Light Grey for dark mode (READABLE) */
+    //--text-tertiary: #888888;  /* Stays middle-grey, or make lighter if needed */
+
+
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --text-tertiary: rgba(255, 255, 255, 0.5);
+
+    /* REQUIRED: Tell Ionic components to update too */
+    --ion-background-color: #121212;
+    --ion-text-color: #ffffff;
+
+    /* Ionic Search Bar Variables */
+    /* NEW: Glassmorphism for Search Bar */
+    --search-bg: rgba(255, 255, 255, 0.15); /* 15% White Transparent */
+    --search-text: #ffffff;
+    --search-placeholder: rgba(255, 255, 255, 0.6);
+    --search-icon: rgba(255, 255, 255, 0.8);
+    --search-shadow: none; /* No shadow on glass */
+    --search-border: rgba(255, 255, 255, 0.1); /* Subtle border for definition */
+    --placeholder-color: #aaaaaa;
+
+  }
 }

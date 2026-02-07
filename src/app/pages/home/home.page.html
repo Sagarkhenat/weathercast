@@ -5,6 +5,13 @@
     <div class="header-content">
       <div class="app-title">WeatherCast</div>
 
+      <ion-button fill="clear" class="theme-btn" (click)="themeService.toggleTheme()">
+        <ion-icon
+          slot="icon-only"
+          [name]="(themeService.isDarkTheme$ | async) ? 'sunny' : 'moon'">
+        </ion-icon>
+      </ion-button>
+
       <!--Temperature toggle button from celsius to fahrenheir and vice-versa-->
       <app-unit-toggle></app-unit-toggle>
 
@@ -98,7 +105,7 @@
               <div class="main-temp">{{ weatherData.main.temp | temperaturePipe : unitService.unit() }}</div>
           </div>
 
-            <div class="current-temp">
+            <div class="current-temp tertiary-text" >
               {{ weatherData.weather[0]?.description | titlecase }}
             </div>
         </div>
@@ -134,17 +141,17 @@
 
                     <!---Column to show min and max temperature values-->
                     <ion-col col-2 class="forecast-col">
-                      <div style="font-size: 13px; color: #666; font-weight: 600;">
+                      <div style="font-size: 13px; font-weight: 600;" class="secondary-text">
                         Max. &nbsp;{{ day.main.temp_max | temperaturePipe : unitService.unit() }}
                       </div>
-                      <div style="font-size: 13px; color: #666;">
+                      <div style="font-size: 13px;"  class="secondary-text">
                         Min. &nbsp;{{ day.main.temp_min | temperaturePipe : unitService.unit() }}
                       </div>
                     </ion-col>
 
                     <!---Column to give description of the forecast-->
-                    <ion-col col-5 class="forecast-col">
-                      <ion-note style="font-size: 14px; color: #888;">
+                    <ion-col col-5 class="forecast-col tertiary-text">
+                      <ion-note style="font-size: 14px;">
                         {{ day.weather[0].description | titlecase }}
                       </ion-note>
                     </ion-col>
