@@ -95,7 +95,8 @@ app-unit-toggle {
   background: var(--card-background);
   color: var(--text-color);
   width: 90%;
-  margin: -100px auto 0; /* NEGATIVE MARGIN: Pulls card up over header */
+  margin: -80px auto 0;
+  //margin: -100px auto 0; /* NEGATIVE MARGIN: Pulls card up over header */
   padding: 20px;
   border-radius: 20px;
   text-align: center;
@@ -210,10 +211,6 @@ app-unit-toggle {
   transition: background-color 0.2s ease; /* Smooth transition for hover effect */
 }
 
-/* Optional: Add a subtle background color change on hover for better UX */
-.forecast-wrapper:hover {
-  //background-color: rgba(0, 0, 0, 0.05); /* Very light grey overlay */
-}
 
 .section-title {
   font-size: 18px;
@@ -294,73 +291,67 @@ app-weather-search {
 
 /*---------------------------SKELETON LOADING STYLES ----------------------*/
 
-/* 1. The Animation Keyframes */
-@keyframes shimmer {
-  0% {
-    background-position: -1000px 0;
-  }
-  100% {
-    background-position: 1000px 0;
+
+/* The Fake Main Card (Matches .main-card dimensions) */
+/* 1. Base Skeleton Style */
+.skeleton-card, .skeleton-box, .skeleton-line, .skeleton-circle {
+  background: #e0e0e0; /* Light gray base */
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+
+  /* The Shimmer Animation */
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: translateX(-100%);
+    background-image: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0) 0,
+      rgba(255, 255, 255, 0.2) 20%,
+      rgba(255, 255, 255, 0.5) 60%,
+      rgba(255, 255, 255, 0)
+    );
+    animation: shimmer 2s infinite;
   }
 }
 
-/* 2. Base Skeleton Class (The Grey Shimmer Effect) */
-.skeleton-line, .skeleton-circle, .skeleton-box {
-  background: #f6f7f8; /* Light Grey Base */
-
-  /* The Shimmer Gradient */
-  background-image: linear-gradient(
-    to right,
-    #f6f7f8 0%,
-    #edeef1 20%,
-    #f6f7f8 40%,
-    #f6f7f8 100%
-  );
-  background-repeat: no-repeat;
-  background-size: 1000px 100%;
-
-  /* Run the animation */
-  animation: shimmer 2s infinite linear;
-}
-
-/* 3. The Fake Main Card (Matches .main-card dimensions) */
+/* 3. Sizing to match your real UI (Approximate) */
 .skeleton-card {
-  background: white;
-  width: 90%;
-  margin: -50px auto 0; /* Same negative margin as real card */
-  padding: 30px;
-  border-radius: 20px;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+  margin: -80px;
+  padding: 20px;
+  background: white; /* Card background */
+  border-radius: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
-  z-index: 10;
+  gap: 10px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.05);
 }
 
-/* Specific Shapes for the Card */
-.title-line { height: 24px; width: 40%; margin-bottom: 20px; border-radius: 4px; }
-.skeleton-circle { height: 80px; width: 80px; border-radius: 50%; margin-bottom: 15px; }
-.temp-line { height: 40px; width: 60%; margin-bottom: 10px; border-radius: 4px; }
-.desc-line { height: 16px; width: 30%; border-radius: 4px; }
+.title-line { width: 40%; height: 24px; }
+.temp-line  { width: 30%; height: 40px; }
+.desc-line  { width: 50%; }
 
-/* 4. The Fake Forecast List */
+/* List rows */
 .skeleton-list {
-  padding: 40px 20px;
+  padding: 0 16px;
 }
-
 .skeleton-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 15px 0;
-  border-bottom: 1px solid #eee;
+  margin-bottom: 16px;
+  height: 40px; /* Height of a list item */
 }
 
-/* Specific Shapes for List Items */
-.sm-box { width: 40px; height: 16px; border-radius: 4px; }
-.md-box { width: 30px; height: 30px; border-radius: 50%; }
-.lg-box { width: 80px; height: 16px; border-radius: 4px; }
+.sm-box { width: 15%; }
+.md-box { width: 20%; }
+.lg-box { width: 40%; }
+
 
 
 .error-container {

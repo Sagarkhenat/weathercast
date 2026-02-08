@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, effect } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,15 @@ export class FavoritesService {
   // Read-only signal for the UI to track
   readonly favorites = this._favorites.asReadonly();
 
-  // 2. Add or Remove a city (Toggle Logic)
+  constructor() {
+    // This runs automatically whenever 'this._favorites()' changes.
+    effect(() => {
+      const currentList = this._favorites();
+      localStorage.setItem('favoriteCities', JSON.stringify(currentList));
+    });
+  }
+
+  // Add or Remove a city (Toggle Logic)
   toggleFavorite(city: string) {
     if (!city) return;
 
@@ -20,6 +28,7 @@ export class FavoritesService {
 
     // Check if city exists (case-insensitive)
     const exists = currentList.some(c => c.toLowerCase() === cityLower);
+
     let newList: string[];
     if (exists) {
       // Remove it
@@ -29,9 +38,8 @@ export class FavoritesService {
       newList = [city, ...currentList];
     }
 
-    // Update State and Storage
+    // 3. Update State ONLY. The effect() above handles the storage!
     this._favorites.set(newList);
-    localStorage.setItem('favoriteCities', JSON.stringify(newList));
   }
 
   // 3. Helper to check if a city is favorited (for the Heart Icon)

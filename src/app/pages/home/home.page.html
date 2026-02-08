@@ -44,18 +44,21 @@
 
     <!-- Show a skeleton card to show data will be filled after successful api response-->
     <div class="skeleton-card">
-      <div class="skeleton-line title-line"></div>
-      <div class="skeleton-circle"></div>
-      <div class="skeleton-line temp-line"></div>
-      <div class="skeleton-line desc-line"></div>
+      <ion-skeleton-text animated style="width: 40%; height: 24px; border-radius: 4px;"></ion-skeleton-text>
+
+      <ion-skeleton-text animated style="width: 80px; height: 80px; border-radius: 50%;"></ion-skeleton-text>
+
+      <ion-skeleton-text animated style="width: 30%; height: 40px; border-radius: 4px;"></ion-skeleton-text>
+
+      <ion-skeleton-text animated style="width: 50%; height: 16px; border-radius: 4px;"></ion-skeleton-text>
     </div>
 
     <div class="skeleton-list">
       @for (item of [1,2,3,4,5]; track $index) {
-        <div class="skeleton-row">
-          <div class="skeleton-box sm-box"></div>
-          <div class="skeleton-box md-box"></div>
-          <div class="skeleton-box lg-box"></div>
+        <div class="skeleton-row" style="display: flex; justify-content: space-between; margin-bottom: 16px;">
+          <ion-skeleton-text animated style="width: 15%; height: 20px; border-radius: 4px;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 20%; height: 20px; border-radius: 4px;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 40%; height: 20px; border-radius: 4px;"></ion-skeleton-text>
         </div>
       }
     </div>
