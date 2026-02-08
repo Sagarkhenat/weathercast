@@ -7,6 +7,7 @@
 ![Ionic](https://img.shields.io/badge/Ionic-7.0-3880FF?style=flat&logo=ionic)
 ![Angular](https://img.shields.io/badge/Angular-17+-DD0031?style=flat&logo=angular)
 ![Capacitor](https://img.shields.io/badge/Capacitor-Native-1199EE?style=flat&logo=capacitor)
+![PWA](https://img.shields.io/badge/PWA-Installable-5A0FC8?style=flat&logo=pwa)
 
 ---
 
@@ -59,11 +60,13 @@ One of the core challenges in frontend deployment is managing secrets.
     1.   The `environment.ts` file is **excluded** from Git via `.gitignore`.
     2.   During deployment, Vercel executes `node set-env.js` *before* the Angular build.
     3.   The script dynamically generates the environment file using encrypted environment variables stored securely in the Vercel dashboard.
+  
+#### **2. Progressive Web App (PWA) Implementation**
 
-#### **2. User Experience Engineering**
-
-  **Glassmorphism UI:** Custom CSS implementation for modern aesthetics.
-  **Resilient State Management:** The app anticipates API failures (e.g., rate limits or bad queries) and presents user-friendly feedback instead of breaking.
+Transformed the standard Angular app into an installable native-like experience.
+  **Installability:** Configured `manifest.webmanifest` with custom branding, allowing users to "Add to Home Screen" on iOS and Android.
+  **Asset Management:** Automated generation of 20+ icon sizes (adaptive & maskable) using `pwa-asset-generator` to meet strict mobile standards.
+  **Angular 17 Compatibility:** Re-architected asset delivery to utilize the modern `public/` directory structure, ensuring correct service worker registration and caching strategies.
 
 #### **3. ⚡ Performance Optimization**
 
@@ -83,6 +86,7 @@ One of the core challenges in frontend deployment is managing secrets.
 
   **Frontend:** Ionic 7, Angular 17 (Standalone Components)
   **Runtime:** Capacitor 5/6 (Native iOS/Android)
+  **PWA:** Angular Service Workers & Manifest
   **API:** OpenWeatherMap (Free Tier)
   **Hosting:** Vercel (Production)
   **DevOps:** Custom Node.js scripts for Environment Injection
@@ -133,7 +137,16 @@ export const environment = {
 
 **4. Run the App:**
 
-* **Web / Browser:**
+ **Web / PWA (with Proxy):**
+  
+```bash
+
+ionic build --prod
+npx http-server ./www --proxy http://localhost:8080?
+
+```
+
+**Web:**
 
 ```bash
 ionic serve
