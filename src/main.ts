@@ -7,6 +7,8 @@ import { defineCustomElements } from '@ionic/pwa-elements/loader';
 
 import { MyApp } from './app/app.component';
 import {routes} from './app/app-routing.module';
+import { isDevMode } from '@angular/core';
+import { provideServiceWorker } from '@angular/service-worker';
 
 // Call the loader before bootstrapping
 defineCustomElements(window);
@@ -16,6 +18,9 @@ bootstrapApplication(MyApp, {
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular(), // This is the modern way
     provideRouter(routes, withPreloading(PreloadAllModules)),
-    provideHttpClient() // <--- ADD THIS LINE
+    provideHttpClient(), provideServiceWorker('ngsw-worker.js', {
+            enabled: !isDevMode(),
+            registrationStrategy: 'registerWhenStable:30000'
+          }) // <--- ADD THIS LINE
   ],
 });
