@@ -1,6 +1,6 @@
 import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA,inject } from '@angular/core';
 import { Geolocation } from '@capacitor/geolocation';
-import { IonChip, IonIcon, IonLabel, IonContent,RefresherCustomEvent, IonButton } from '@ionic/angular/standalone';
+import { IonChip, IonIcon, IonLabel, IonContent,RefresherCustomEvent, IonButton, IonSkeletonText } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common'; // Required for *ngIf
 import { ModalController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -103,7 +103,8 @@ export class UnitToggleComponent {
     IonChip,
     IonIcon,
     IonLabel,
-    IonButton],
+    IonButton,
+    IonSkeletonText],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class HomePage implements OnInit {
@@ -269,7 +270,7 @@ export class HomePage implements OnInit {
     // 1. Basic Validation: Don't call API if string is empty
     if (!city || city.trim() === '') return;
 
-    console.log('Searching for city:', city);
+    console.log('Searching for city in load weather function :::', city);
 
     //1. Get current weather
     this.weatherService.getWeather(city).subscribe({

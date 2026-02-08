@@ -1,22 +1,24 @@
 /* Search Container Class */
 .search-container {
   /* Match the width of the Satara card (approx 90% with margins) */
-  //margin: 16px 20px 24px 20px;
+  //margin: 20px 0px 20px 0px;
 
-  margin: 20px 0px 20px 0px;
+  margin: 15px 0px 0px 0px;
   background: var(--search-bg);
 
   /* High border-radius to match the soft aesthetic */
   border-radius: 20px;
+  padding: 12px 20px;
+  position: relative;
 
   /* Flexbox to align Input and Icon in one row */
   display: flex;
   align-items: center;
   justify-content: space-between; /* This creates the separation */
-  padding: 12px 20px;
+
   box-shadow: var(--search-shadow);
   border: 1px solid var(--search-border);
-  /* Smooth transition for interaction */
+
   transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
 }
 
@@ -31,7 +33,8 @@
   /* Remove default browser borders */
   border: none;
   outline: none;
-  flex: 1;
+  flex: 1; /* Takes up all remaining space */
+  padding: 5px;
   width: 100%;
 
   /* Typography to match the app */
@@ -45,6 +48,20 @@
 
   /* Take up all available space */
   flex-grow: 1;
+}
+
+.clear-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #999; /* Subtle gray color */
+  display: flex;
+  align-items: center;
+  padding: 8px;
+
+  &:hover {
+    color: #333; /* Darker on hover */
+  }
 }
 
 
