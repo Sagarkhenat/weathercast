@@ -1,8 +1,8 @@
-# 🌦️ WeatherCast
+# 🌦️ WeatherCast: Resilient Cross-Platform Weather App
 
 ##
 
-### [🔴 **View Live Demo**](https://weathercast-beige.vercel.app)
+### [🔴 **View Live Demo**](https://weathercast-beige.vercel.app)Stack: Ionic 7 • Angular 17 • Capacitor • OpenWeatherMap
 
 ![Ionic](https://img.shields.io/badge/Ionic-7.0-3880FF?style=flat&logo=ionic)
 ![Angular](https://img.shields.io/badge/Angular-17+-DD0031?style=flat&logo=angular)
@@ -11,8 +11,9 @@
 
 ---
 
-### **Overview**
+### **Project Overview**
 
+ WeatherCast is a robust, mobile-first weather application designed to provide accurate real-time data and forecasts for travelers. Built with the latest web technologies, it bridges the gap between web and native mobile experiences using Capacitor, allowing it to run seamlessly as a PWA and an Android app.
  Unlike standard portfolio apps, WeatherCast demonstrates a **Secure CI/CD Pipeline**, ensuring that sensitive API keys are never exposed in the source code while maintaining automated deployments.
 
 ### **✨ Key Features**
@@ -82,12 +83,12 @@ Transformed the standard Angular app into an installable native-like experience.
 
 ---
 
-### **🛠️ Tech Stack**
+### **🛠️ Tech Stack & Architecture**
 
   **Frontend:** Ionic 7, Angular 17 (Standalone Components)
   **Runtime:** Capacitor 5/6 (Native iOS/Android)
   **PWA:** Angular Service Workers & Manifest
-  **API:** OpenWeatherMap (Free Tier)
+  **API:** OpenWeatherMap API (Current Weather + 5-Day Forecast)
   **Hosting:** Vercel (Production)
   **DevOps:** Custom Node.js scripts for Environment Injection
 
