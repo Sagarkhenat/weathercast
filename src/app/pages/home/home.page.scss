@@ -322,10 +322,15 @@ app-weather-search {
 
 /* 3. Sizing to match your real UI (Approximate) */
 .skeleton-card {
-  margin: -80px;
+
+  /* Top: -80px (pull up), Left/Right: auto (center), Bottom: 20px (push list down) */
+  margin: -80px auto 20px auto;
+
+  width: 90%;
+
   padding: 20px;
-  background: white; /* Card background */
-  border-radius: 16px;
+  background: var(--card-background); /* Card background */
+  border-radius: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;

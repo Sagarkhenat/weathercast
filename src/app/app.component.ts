@@ -1,6 +1,7 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA  } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA , inject } from '@angular/core';
 import { MainPage } from '../app/pages/pages';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { OfflineService } from 'src/providers/providers';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +17,8 @@ export class MyApp {
   private cancelBtnText: string = "";
   private okBtnText: string = "";
   private PLEASE_WAIT_TEXT: string = "";
+
+  public offlineService = inject(OfflineService);
 
   constructor() {
 
