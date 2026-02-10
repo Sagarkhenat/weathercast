@@ -149,18 +149,6 @@ export class HomePage implements OnInit {
       this.loadWeather(savedCity || 'Pune');
     }
 
-
-    // Alternative method to search for locally saved city item first
-    // const savedCity = localStorage.getItem('lastCity');
-
-    // if (savedCity) {
-    //   console.log('Found saved city value in local storage as :', savedCity);
-    //   this.loadWeather(savedCity);
-    // } else {
-    //   console.log('No saved city found, asking for location...');
-    //   await this.getCurrentLocation();
-    // }
-
   }
 
   /**
@@ -374,7 +362,7 @@ export class HomePage implements OnInit {
   loadFallbackCity() {
     const lastCity = localStorage.getItem('lastCity');
     if (lastCity) {
-      console.log('GPS failed. Falling back to saved city:', lastCity);
+      console.log('GPS failed. Falling back to saved city from local storage:', lastCity);
       this.loadWeather(lastCity);
     } else {
       console.log('GPS failed and no saved city. Loading default city value.');
