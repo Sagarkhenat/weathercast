@@ -96,6 +96,7 @@ Transformed the standard Angular app into an installable native-like experience.
   **API:** OpenWeatherMap API (Current Weather + 5-Day Forecast)
   **Hosting:** Vercel (Production)
   **DevOps:** Custom Node.js scripts for Environment Injection
+  **Notification:** Firebase cloud messaging
 
 ---
 
