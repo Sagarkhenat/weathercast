@@ -14,10 +14,14 @@ export class PushNotificationService {
   async registerForPushNotification() {
 
 
-    try {
+    // Check if we are NOT on the web
+    if (Capacitor.getPlatform() === 'web') {
+      console.log('Push notification feature skipped as platform is WEB');
+      return;
+    }else{
+    }
 
-      // Check if we are NOT on the web
-      if (Capacitor.getPlatform() !== 'web') {
+    try {
 
         let permStatus = await PushNotifications.checkPermissions();
 
@@ -40,9 +44,6 @@ export class PushNotificationService {
         await PushNotifications.register();
         this.addNotificationListeners();
 
-      }else{
-        console.log('Push notification feature not yet added on web code.');
-      }
 
 
 
