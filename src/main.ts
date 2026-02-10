@@ -10,6 +10,11 @@ import {routes} from './app/app-routing.module';
 import { isDevMode } from '@angular/core';
 import { provideServiceWorker } from '@angular/service-worker';
 
+// Firebase Imports
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { provideMessaging, getMessaging } from '@angular/fire/messaging';
+import { environment } from './environments/environment';
+
 // Call the loader before bootstrapping
 defineCustomElements(window);
 
@@ -21,6 +26,10 @@ bootstrapApplication(MyApp, {
     provideHttpClient(), provideServiceWorker('ngsw-worker.js', {
             enabled: !isDevMode(),
             registrationStrategy: 'registerWhenStable:30000'
-          }) // <--- ADD THIS LINE
+    }),
+
+    // Initialize Firebase
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideMessaging(() => getMessaging()),
   ],
 });

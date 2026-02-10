@@ -7,9 +7,9 @@ import { addIcons } from 'ionicons';
 import {moon, sunny, heart, heartOutline, closeCircle } from 'ionicons/icons';
 
 /*------------------ Components ----------------------*/
-import { WeatherSearchComponent } from '../component/weather-search/weather-search.component'; // <--- Check this path matches your folder structure
+import { WeatherSearchComponent } from '../component/weather-search/weather-search.component';
 import { WeatherDetailComponent } from '../component/weather-detail/weather-detail.component';
-
+import { ErrorStateComponent } from '../component/error-state/error-state.component';
 /*------------------ Providers ----------------------*/
 import { WeatherService,CommonService,UnitStateService,FavoritesService } from 'src/providers/providers';
 
@@ -104,7 +104,8 @@ export class UnitToggleComponent {
     IonIcon,
     IonLabel,
     IonButton,
-    IonSkeletonText],
+    IonSkeletonText,
+    ErrorStateComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class HomePage implements OnInit {
