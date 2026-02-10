@@ -2,6 +2,8 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { CommonService,PushNotificationService } from 'src/providers/providers';
+import { addIcons } from 'ionicons';
+import { cloudOfflineOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-error-state',
@@ -15,7 +17,14 @@ export class ErrorStateComponent {
   public commonService = inject(CommonService);
   private pushService = inject(PushNotificationService);
 
-  constructor() {}
+  constructor() {
+
+    // Register the icon so the component can find it by name
+    addIcons({
+      'cloud-offline-outline': cloudOfflineOutline,
+    });
+
+  }
 
   /**
    * Clears the error UI and re-triggers the registration flow

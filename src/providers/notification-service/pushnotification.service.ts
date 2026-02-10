@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { PushNotifications, Token } from '@capacitor/push-notifications';
 import { CommonService} from '../providers';
+
+import { Capacitor } from '@capacitor/core';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -10,28 +13,38 @@ export class PushNotificationService {
 
   async registerForPushNotification() {
 
+
     try {
 
-      let permStatus = await PushNotifications.checkPermissions();
+      // Check if we are NOT on the web
+      if (Capacitor.getPlatform() !== 'web') {
 
-      console.log('Permission status OP for notification is ::::', permStatus);
+        let permStatus = await PushNotifications.checkPermissions();
 
-      if (permStatus.receive === 'prompt') {
-        permStatus = await PushNotifications.requestPermissions();
+        console.log('Permission status OP for notification is ::::', permStatus);
+
+        if (permStatus.receive === 'prompt') {
+          permStatus = await PushNotifications.requestPermissions();
+        }else{
+
+        }
+
+        if (permStatus.receive !== 'granted') {
+          console.log('User has denied permission for sending push notification');
+          return;
+        }else{
+
+        }
+
+        // Only if granted, proceed to register hardware
+        await PushNotifications.register();
+        this.addNotificationListeners();
+
       }else{
-
+        console.log('Push notification feature not yet added on web code.');
       }
 
-      if (permStatus.receive !== 'granted') {
-        console.log('User has denied permission for sending push notification');
-        return;
-      }else{
 
-      }
-
-      // Only if granted, proceed to register hardware
-      await PushNotifications.register();
-      this.addNotificationListeners();
 
     }catch(error: any){
       // Triggers the 'Error State' logic by setting errorStatus to true
