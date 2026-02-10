@@ -8,6 +8,7 @@ import { Platform } from '@ionic/angular';
 
 export class OfflineService implements OnDestroy {
   //Defining a Signal for reactive state (easier than BehaviorSubject)
+
   public isOnline = signal<boolean>(true);
   private listenerHandle: any;
 
@@ -17,6 +18,7 @@ export class OfflineService implements OnDestroy {
 
   async initNetworkListener() {
 
+    // Get initial status on startup
     const status = await Network.getStatus();
     this.updateStatus(status);
 

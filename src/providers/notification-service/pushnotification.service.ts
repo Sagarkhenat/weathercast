@@ -18,8 +18,7 @@ export class PushNotificationService {
     if (Capacitor.getPlatform() === 'web') {
       console.log('Push notification feature skipped as platform is WEB');
       return;
-    }else{
-    }
+    }else{ }
 
     try {
 
@@ -33,19 +32,14 @@ export class PushNotificationService {
 
         }
 
-        if (permStatus.receive !== 'granted') {
+        if (permStatus.receive === 'granted') {
+          // Only if granted, proceed to register hardware
+          await PushNotifications.register();
+          this.addNotificationListeners();
+        }else{
           console.log('User has denied permission for sending push notification');
           return;
-        }else{
-
         }
-
-        // Only if granted, proceed to register hardware
-        await PushNotifications.register();
-        this.addNotificationListeners();
-
-
-
 
     }catch(error: any){
       // Triggers the 'Error State' logic by setting errorStatus to true
@@ -55,23 +49,23 @@ export class PushNotificationService {
       this.commonService.handleError('Push Notification Setup Failed', error.message || error, true );
     }
 
-    }
+  }
 
-    private addNotificationListeners() {
+  private addNotificationListeners() {
 
-      // Get the FCM token to send to your backend
-      PushNotifications.addListener('registration', (token: Token) => {
-        console.log('Push registration success for weather cast, token value is: ' + token.value);
-      });
+    // Get the FCM token to send to your backend
+    PushNotifications.addListener('registration', (token: Token) => {
+      console.log('Push registration success for weather cast, token value is: ' + token.value);
+    });
 
-      // Handle incoming notifications while app is open
-      PushNotifications.addListener('pushNotificationReceived', notification => {
-        console.log('Push received show to the user :: ', notification, notification.title);
+    // Handle incoming notifications while app is open
+    PushNotifications.addListener('pushNotificationReceived', notification => {
+      console.log('Push received show to the user :: ', notification, notification.title);
 
-        // Optional: Trigger your existing Error State logic or a Toast
-        // to show a weather alert even if the OS doesn't show a banner
-        this.commonService.handleError(`Alert: ${notification.title}`, notification.body,false);
+      // Optional: Trigger your existing Error State logic or a Toast
+      // to show a weather alert even if the OS doesn't show a banner
+      this.commonService.handleError(`Alert: ${notification.title}`, notification.body,false);
 
-      });
-    }
+    });
+  }
 }

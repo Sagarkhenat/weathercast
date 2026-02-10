@@ -445,3 +445,45 @@ ion-header.common-header {
 .back-button.show-back-button{
 	display:none;
 }
+
+
+/*************** Define the pulse keyframes ************/
+@keyframes pulse-shimmer {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+    filter: drop-shadow(0 0 0px rgba(255, 255, 255, 0));
+  }
+  50% {
+    transform: scale(1.15); /* Slightly enlarge */
+    opacity: 0.8;
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6)); /* Create glow */
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+    filter: drop-shadow(0 0 0px rgba(255, 255, 255, 0));
+  }
+}
+
+/* Apply the animation class */
+.pulse-animation {
+  animation: pulse-shimmer 2s infinite ease-in-out; /* Loop infinitely */
+}
+
+/* Animation to slide up and fade in */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px); /* Start 20px lower */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0); /* End at original position */
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.35s cubic-bezier(0.25, 0.8, 0.25, 1) forwards; /* 'forwards' keeps the final state */
+}
+
