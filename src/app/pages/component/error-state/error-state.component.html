@@ -1,0 +1,18 @@
+@if (commonService.errorStatus | async) {
+  <div  class="error-overlay">
+    <div class="glass-card">
+      <ion-icon name="cloud-offline-outline" class="error-icon"></ion-icon>
+
+      <h2>Oops! Connection Lost</h2>
+      <p>We're having trouble reaching the weather servers. Please check your network or try again.</p>
+
+      <ion-button fill="outline" color="light" (click)="retry()">
+        <ion-icon slot="start" name="refresh-outline"></ion-icon>
+        Try Again
+      </ion-button>
+    </div>
+  </div>
+}@else(){
+
+}
+

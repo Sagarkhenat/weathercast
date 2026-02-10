@@ -19,31 +19,36 @@
 ### **✨ Key Features**
 
 #### 1. Real-Time Weather & Forecast
-  
-  Fetches current weather and a 5-day forecast using the **OpenWeatherMap API**.
-  Displays critical data: Temperature, Humidity, Wind Speed, and Weather Conditions.
 
-### 2. **🌙 Dark Mode:**
+Fetches current weather and a 5-day midday forecast using the OpenWeatherMap API.
 
-  Fully adaptive UI featuring a "Midnight Blue" theme, glassmorphism search elements, and high-contrast accessibility.
+Displays critical data: Temperature, Humidity, Wind Speed, and Weather Conditions.
 
-### 3. **📍 Smart Geolocation:**
-  
-   Automatically detects user location on startup to display local weather.
+#### 2. 🌙 Midnight Blue Dark Mode
 
-### 4. **🔍 Global Search:**
+Fully adaptive UI featuring a "Midnight Blue" theme.
 
-  Search for current weather conditions in any city worldwide.
+Implements glassmorphism search elements and high-contrast accessibility standards.
 
-### 5. **🛡️ Robust Error Handling:**
+#### 3. 📍 Smart Geolocation & Global Search
 
-  Dedicated "Error State" logic that gracefully handles network failures, invalid city names, or API timeouts, guiding the user back to a safe state.
+Automatically detects user location on startup via native geolocation plugins.
 
-### 6. **🔄 Pull-to-Refresh:**
+Provides global search capabilities for current weather conditions in any city worldwide.
 
-  Instantly reload data with native gestures.
+#### 4. 🛡️ Robust "Safe-State" Error Handling
 
-### 7. **📱 Native Mobile Support:**
+Dedicated Error State logic that handles network failures, invalid city names, or API timeouts.
+
+A specialized standalone UI component acts as an overlay to guide users back to a safe state during critical failures.
+
+#### 5. 🔔 Push Notification System
+
+Successfully integrated Firebase Cloud Messaging (FCM) into the AppComponent launch sequence.apabilities: Ready to receive weather alerts and daily briefings.
+
+Privacy-Aware: Logic distinguishes between user-denied permissions (graceful skip) and technical system-level crashes.
+
+### 6. **📱 Native Mobile Support:**
 
   Fully compiled for Android and iOS using Capacitor.
 
