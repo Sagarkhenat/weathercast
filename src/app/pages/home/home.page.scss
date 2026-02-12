@@ -10,8 +10,12 @@ ion-content {
 
 /* 1. Custom Header Styles */
 .custom-header {
-  // background-color: #4A90E2; /* Weather Blue */
+
   background-color: var(--header-background);
+
+  //background: var(--app-header-bg); // Theming service change
+  //transition: background 0.5s ease-in-out;
+
   height: 340px; /* CHANGED: Increased from 280px to 340px after adding favorites list */
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;

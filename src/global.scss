@@ -35,6 +35,10 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease; /* Smooth toggle */
 }
 
+// body {
+//   transition: background 0.5s ease-in-out, --ion-color-primary 0.5s ease-in-out;
+// }
+
 .weather-card {
   background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
@@ -46,6 +50,60 @@ ion-modal {
   --background: var(--card-background);
   --ion-background-color: var(--card-background);
   --color: var(--text-color);
+}
+
+/* Default Theme (Cool Blue) */
+// body.default-theme {
+//   --app-header-bg: linear-gradient(180deg, #4facfe 0%, #00f2fe 100%);
+//   --app-card-bg: #ffffff;
+// }
+
+/* Sunny Theme (Amber/Blue Gradient) */
+body.sunny-theme {
+  --app-header-bg: linear-gradient(180deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+  --ion-color-primary: #ff9800;
+}
+
+/* Rainy Theme (Deep Indigo/Slate) */
+body.rainy-theme {
+  --app-header-bg: linear-gradient(180deg, #30cfd0 0%, #330867 100%);
+  --ion-color-primary: #5c6bc0;
+}
+
+/* Thunderstorm: Dark and dramatic */
+body.thunderstorm-theme {
+  --app-header-bg: linear-gradient(180deg, #1a2a6c 0%, #b21f1f 50%, #fdbb2d 100%);
+  --ion-color-primary: #fdbb2d;
+}
+
+/* Mist/Fog: Low contrast and muted */
+body.mist-theme {
+  --app-header-bg: linear-gradient(180deg, #bdc3c7 0%, #2c3e50 100%);
+  --ion-color-primary: #7f8c8d;
+}
+
+/* Cloudy: Soft and calm */
+body.cloudy-theme {
+  --app-header-bg: linear-gradient(180deg, #757f9a 0%, #d7dde8 100%);
+  --ion-color-primary: #757f9a;
+}
+
+/* Clear Night Theme */
+body.sunny-night-theme {
+  --app-header-bg: linear-gradient(180deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+  --ion-color-primary: #8e9eab;
+}
+
+/* Rainy Night Theme */
+body.rainy-night-theme {
+  --app-header-bg: linear-gradient(180deg, #141e30 0%, #243b55 100%);
+  --ion-color-primary: #3a6186;
+}
+
+/* Generic Night Theme (Catch-all) */
+body.night-theme {
+  --app-header-bg: linear-gradient(180deg, #232526 0%, #414345 100%);
+  --ion-color-primary: #ffffff;
 }
 
 /**

@@ -1,4 +1,5 @@
 import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA,inject } from '@angular/core';
+import { Network, ConnectionStatus } from '@capacitor/network';
 import { Geolocation } from '@capacitor/geolocation';
 import { IonChip, IonIcon, IonLabel, IonContent,RefresherCustomEvent, IonButton, IonSkeletonText } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common'; // Required for *ngIf
@@ -11,7 +12,7 @@ import { WeatherSearchComponent } from '../component/weather-search/weather-sear
 import { WeatherDetailComponent } from '../component/weather-detail/weather-detail.component';
 import { ErrorStateComponent } from '../component/error-state/error-state.component';
 /*------------------ Providers ----------------------*/
-import { WeatherService,CommonService,UnitStateService,FavoritesService } from 'src/providers/providers';
+import { WeatherService,CommonService,UnitStateService,FavoritesService,OfflineService } from 'src/providers/providers';
 
 /*------------------Interfaces----------------------*/
 import { CurrentWeatherResponse, WeatherItem, ForecastResponse } from '../../../interface/common-dto';
@@ -19,6 +20,10 @@ import { CurrentWeatherResponse, WeatherItem, ForecastResponse } from '../../../
 
 import { WeatherIconPipe } from 'src/pipes/weather-icon-pipe/weather-icon.pipe';
 import { TempConvertPipe } from 'src/pipes/temp-convert-pipe/temp-convert.pipe';
+
+// For initial load and manual refresh load
+import { forkJoin } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 // --------------------------- DEFINING THE TOGGLE COMPONENT FOR TEMPERATURE HERE ---------------------------
 @Component({
@@ -125,7 +130,8 @@ export class HomePage implements OnInit {
   constructor(public weatherService: WeatherService,
     public commonService: CommonService,
     private modalCtrl: ModalController,
-    public unitStateService :  UnitStateService) {
+    public unitStateService :  UnitStateService,
+    public offlineService: OfflineService) {
 
     // Register the icons so <ion-icon> can use them
     addIcons({ moon, sunny, heart, 'heart-outline': heartOutline, 'close-circle': closeCircle });
@@ -141,7 +147,7 @@ export class HomePage implements OnInit {
       await this.getCurrentLocation();
     } catch (error) {
 
-      console.log('In catch block for ng On Init :::', error);
+      console.log('In catch block for ngOn Init :::', error);
       //Check for a saved city in localStorage
       const savedCity = localStorage.getItem('lastCity');
 
@@ -205,46 +211,69 @@ export class HomePage implements OnInit {
   /**
    * Function used to call weather service after getting the co-ordinates
   */
-  loadWeatherByCoords(lat: number, lon: number) {
+  loadWeatherByCoords(lat: number, lon: number, event?: any) {
+
     console.log('Inside load weather by coords function  lat-long values :::', lat,lon);
     this.isLoading = true;
     this.errorMsg = '';
 
-    //1. Get current weather by co-ordinates
-    this.weatherService.getWeatherByCoords(lat, lon).subscribe({
-      next: (res) => {
+    // Use forkJoin to run both API calls in parallel
 
-        console.log('res obtained in load Weather By Coords function :::', res);
+    if (!this.offlineService.isOnline()) {
+      this.errorMsg = 'No internet connection. Please check your network.';
+      this.isLoading = false;
+      if (event) event.target.complete();
+      return;
+    }
 
-        this.weatherData = res;
+    forkJoin({
+      current: this.weatherService.getWeatherByCoords(lat, lon),
+      forecast: this.weatherService.getForecastByCoords(lat, lon)
+    })
+    .pipe(
+      // finalize runs whether the call succeeds or fails
+      finalize(() => {
+        this.isLoading = false;
+        if (event) event.target.complete(); // Stop the refresher spinner
+      })
+    ).subscribe({
+
+      next: (res:{ current: any, forecast: any }) => {
+
+        // Handle Current Weather
+        this.weatherData = res.current;
+
+        // Extract condition ID and icon string (e.g., "01n")
+        const conditionId = res.current.weather[0].id;
+        const icon = res.current.weather[0].icon;
+
+        console.log('conditionId and icon value received :::', conditionId,icon);
+
+        //Theming action change - based on condition and icon received from response
+        //this.weatherService.updateTheme(conditionId, icon);
+
         this.isLoading = false;
 
-        //After getting current city weather-- call the getforecast API by passing co-ordinates (Chained call)
+        // Handle Forecast
+        if (res.forecast && res.forecast.list) {
+          // Filter the list to get one entry per day (usually at 12:00:00)
+          this.forecastData = res.forecast.list.filter((item: any) => item.dt_txt.includes('12:00:00'));
+          console.log('Obtained forecast Data for next 5 days in load weather by co-ords :::', this.forecastData,this.forecastData.length);
+          this.commonService.hideLoading();
+        }else{
+          console.log('Forecast data list is missing in the response', res);
+          this.forecastData = [];
+        }
 
-        this.weatherService.getForecastByCoords(lat, lon).subscribe({
-          next: (data) => {
-            console.log('Data received for obtaining forecast by co-ordinates :::', data);
-            if (data && data.list) {
-              // Filter the list to get one entry per day (usually at 12:00:00)
-              this.forecastData = data.list.filter((item: any) => item.dt_txt.includes('12:00:00'));
-              console.log('Obtained forecast Data for next 5 days in load weather by co-ords :::', this.forecastData,this.forecastData.length);
-              this.commonService.hideLoading();
-            }else{
-              console.log('Forecast data list is missing in the response', data);
-              this.forecastData = [];
-            }
-          },
-          error: (err) => {
+      },error:(err) =>{
 
-          }
-        });
-
-      },
-      error: (err) => {
-        this.errorMsg = 'Error fetching your local weather.';
+        this.errorMsg = 'Error fetching weather data.';
         this.isLoading = false;
         this.forecastData = [];
+
+        this.commonService.handleError('Error fetching weather data', err.message, false);
       }
+
     });
   }
 
@@ -264,7 +293,7 @@ export class HomePage implements OnInit {
     //1. Get current weather
     this.weatherService.getWeather(city).subscribe({
       next: (data) => {
-        console.log('Obtained weather data in loadWeather function :::', data);
+        console.log('Obtained weather data in load Weather function :::', data);
         this.weatherData = data;
         this.isLoading = false;
 
@@ -276,7 +305,7 @@ export class HomePage implements OnInit {
 
       },
       error: (err) => {
-        console.error('Error block condition in loadWeather function:', err);
+        console.error('Error block condition in load Weather function:', err);
         this.isLoading = false;
         this.forecastData = [];
         // Handle standard 404 (City not found)
@@ -365,23 +394,34 @@ export class HomePage implements OnInit {
       console.log('GPS failed. Falling back to saved city from local storage:', lastCity);
       this.loadWeather(lastCity);
     } else {
-      console.log('GPS failed and no saved city. Loading default city value.');
-      this.loadWeather('Pune');
+      console.log('GPS failed and there is no saved city in storage. Loading default city value.');
+      this.loadWeather('London');
     }
   }
 
-    /**
+  /**
    * Function to refresh page on pull down and update the location
   */
-  public doRefreshLocation = (event:RefresherCustomEvent) => {
-    console.log('Begin refresh operation to update users current location', event);
+  async doManualRefresh(event: any) {
+  console.log('User requested manual refresh to fetch weather against users current location :::', event);
 
-    setTimeout(() => {
-      console.log('refresher operation has ended');
-      event.target.complete();
-    }, 2000);
+  try {
+    // We get users current coordinates first
+    const coordinates = await Geolocation.getCurrentPosition();
+    console.log('Co-ordinates value obtained after manual refresh action :::', coordinates);
 
+    const { latitude, longitude } = coordinates.coords;
+
+    // Pass coordinates AND the refresher event
+    this.loadWeatherByCoords(latitude, longitude, event);
+
+  } catch (error) {
+    console.error('Error getting location after manual refresh action :::', error);
+    this.commonService.handleError('Location Error', 'Please enable GPS to refresh weather.', false);
+    event.target.complete();
   }
+}
+
 
 
 

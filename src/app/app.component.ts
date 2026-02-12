@@ -32,7 +32,7 @@ export class MyApp {
     // Wait for the native platform to be ready before calling native plugins
     await this.platform.ready();
 
-    // STEP 1: Request Geolocation (High Priority)
+    // PERMISSION 1: Request Geolocation (High Priority)
     try {
       const geoStatus = await Geolocation.requestPermissions();
       console.log('Geolocation status:', geoStatus.location);
@@ -40,8 +40,10 @@ export class MyApp {
       console.warn('Geolocation permission denied or skipped');
     }
 
+    // Small delay to ensure the first native dialog is completely gone
+    await new Promise(resolve => setTimeout(resolve, 900));
 
-    // Trigger the push notification registration flow
+    // PERMISSION 2: Trigger the push notification registration flow
     // This will wait until the Geolocation dialog is closed
     this.pushService.registerForPushNotification();
   }
