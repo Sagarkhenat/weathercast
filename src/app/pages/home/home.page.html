@@ -14,23 +14,26 @@
 
   <div class="custom-header"
     [class.short-header]="favoritesService.favorites().length === 0"
-    [class]="'header-' + (weatherData?.weather?.[0]?.main | lowercase)"><!--[style.background]="'var(--app-header-bg)'" THEMING CHANGE-->
+    [class]="'header-' + (weatherData?.weather?.[0]?.main | lowercase)">
+
+
     <div class="header-content">
-      <div class="app-title">WeatherCast</div>
 
-      <!-- Theme toggle and celsius/fahrenheit toggle container-->
-      <div class="header-actions">
-        <ion-button fill="clear" class="theme-btn" (click)="unitStateService.toggleTheme()">
-          <ion-icon
-            slot="icon-only"
-            [name]="(unitStateService.isDarkThemeOn | async) ? 'sunny' : 'moon'">
-          </ion-icon>
-        </ion-button>
+      <ion-toolbar color="transparent" style="--border-style: none;">
+        <ion-buttons slot="start">
+          <ion-menu-button color="light" autoHide="false" (click)="clearFocus($event)"></ion-menu-button>
+        </ion-buttons>
 
-        <app-unit-toggle></app-unit-toggle>
-      </div>
+        <div class="app-title">WeatherCast</div>
 
-    </div>
+
+        <ion-buttons slot="end">
+          <app-unit-toggle></app-unit-toggle>
+        </ion-buttons>
+
+      </ion-toolbar>
+
+    </div> <!-- End of header-content class-->
 
     <app-weather-search (citySearchEvent)="loadWeather($event)"></app-weather-search>
 

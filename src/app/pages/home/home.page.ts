@@ -1,7 +1,6 @@
 import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA,inject } from '@angular/core';
-import { Network, ConnectionStatus } from '@capacitor/network';
 import { Geolocation } from '@capacitor/geolocation';
-import { IonChip, IonIcon, IonLabel, IonContent,RefresherCustomEvent, IonButton, IonSkeletonText } from '@ionic/angular/standalone';
+import { IonChip, IonIcon, IonLabel, IonContent, IonSkeletonText, IonButtons,IonMenuButton, IonToolbar } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common'; // Required for *ngIf
 import { ModalController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -108,9 +107,11 @@ export class UnitToggleComponent {
     IonChip,
     IonIcon,
     IonLabel,
-    IonButton,
     IonSkeletonText,
-    ErrorStateComponent],
+    ErrorStateComponent,
+    IonButtons,
+    IonMenuButton,
+    IonToolbar],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class HomePage implements OnInit {
@@ -155,6 +156,17 @@ export class HomePage implements OnInit {
       this.loadWeather(savedCity || 'Pune');
     }
 
+  }
+
+  clearFocus = (event: any) => {
+    console.log('Inside clear focus function call on side-menu click action :::', event);
+    // Removes focus from the native button inside the web component
+    const target = event.target as HTMLElement;
+    if (target) {
+      target.blur();
+    }else{
+
+    }
   }
 
   /**

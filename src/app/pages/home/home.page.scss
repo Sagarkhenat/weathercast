@@ -9,6 +9,12 @@ ion-content {
   //--background: var(--app-bg-gradient) !important;
 }
 
+ion-menu-button {
+  display: block !important;
+  --color: white; /* Ensure it is visible against the blue background */
+  visibility: visible !important;
+}
+
 /* 1. Custom Header Styles */
 .custom-header {
 
@@ -39,6 +45,13 @@ ion-content {
   justify-content: space-between; /* Pushes title left, buttons right */
   align-items: center;
   width: 100%;
+
+  padding-bottom: 10px; // Add space above search bar
+
+  ion-buttons {
+    margin-right: 8px; /* Spacing between menu icon and "WeatherCast" */
+    display: block !important; /* Ensure it isn't hidden by default */
+  }
   //padding: 0 16px; // commented for having the toggle buttons at far-right section
 }
 

@@ -21,7 +21,7 @@ defineCustomElements(window);
 bootstrapApplication(MyApp, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    provideIonicAngular(), // This is the modern way
+    provideIonicAngular({mode: 'md'}),  // Forces Material Design look, helpful for testing menu visibility
     provideRouter(routes, withPreloading(PreloadAllModules)),
     provideHttpClient(), provideServiceWorker('ngsw-worker.js', {
             enabled: !isDevMode(),
