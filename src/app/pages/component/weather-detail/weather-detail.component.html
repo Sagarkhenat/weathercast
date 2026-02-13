@@ -1,4 +1,4 @@
-<div class="modal-content">
+<div class="modal-content" [class]="'modal-weather-' + (data?.weather?.[0]?.main | lowercase)">
 
   @if (data) {
 

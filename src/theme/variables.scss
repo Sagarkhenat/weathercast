@@ -6,6 +6,7 @@
   /* Background color */
   --ion-background-color: #ffffff;
   --ion-text-color: #333333;
+  --app-bg-gradient: linear-gradient(180deg, #f4f4f4 0%, #ffffff 100%);
 
   /* Primary Color (Sky Blue) */
   --ion-color-primary: $4a90e2;
@@ -59,8 +60,6 @@
     --card-background: #1e1e1e;
     --detail-box-bg: #2c2c2c; /* Slightly lighter than the card bg */
 
-    //--text-secondary: #b0b0b0; /* Light Grey for dark mode (READABLE) */
-    //--text-tertiary: #888888;  /* Stays middle-grey, or make lighter if needed */
 
 
     --text-secondary: rgba(255, 255, 255, 0.7);
@@ -71,7 +70,6 @@
     --ion-text-color: #ffffff;
 
     /* Ionic Search Bar Variables */
-    /* NEW: Glassmorphism for Search Bar */
     --search-bg: rgba(255, 255, 255, 0.15); /* 15% White Transparent */
     --search-text: #ffffff;
     --search-placeholder: rgba(255, 255, 255, 0.6);
@@ -81,4 +79,16 @@
     --placeholder-color: #aaaaaa;
 
   }
+
+  /* Base Modal Styling (Glassmorphism) */
+  .modal-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 20px;
+    color: white; /* Default text for dark/colorful backgrounds */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
 }

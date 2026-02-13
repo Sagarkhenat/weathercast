@@ -35,9 +35,15 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease; /* Smooth toggle */
 }
 
-// body {
-//   transition: background 0.5s ease-in-out, --ion-color-primary 0.5s ease-in-out;
-// }
+/* This is the magic line that makes it all work with ion-content */
+body[class*="weather-"] ion-content {
+  --background: var(--app-bg-gradient) !important;
+}
+
+/* Home Page Dynamic Backgrounds */
+.weather-clear { --background: linear-gradient(180deg, #4facfe 0%, #00f2fe 100%); }
+.weather-clouds { --background: linear-gradient(180deg, #95a5a6 0%, #2c3e50 100%); }
+.weather-rain { --background: linear-gradient(180deg, #616161 0%, #9bc5c3 100%); }
 
 .weather-card {
   background-color: var(--bg-secondary);
@@ -52,58 +58,180 @@ ion-modal {
   --color: var(--text-color);
 }
 
+/* Apply to your components */
+ion-content {
+  //--background: var(--app-bg-gradient);
+}
+
 /* Default Theme (Cool Blue) */
-// body.default-theme {
-//   --app-header-bg: linear-gradient(180deg, #4facfe 0%, #00f2fe 100%);
-//   --app-card-bg: #ffffff;
-// }
-
-/* Sunny Theme (Amber/Blue Gradient) */
-body.sunny-theme {
-  --app-header-bg: linear-gradient(180deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
-  --ion-color-primary: #ff9800;
+body.weather-clear {
+  --app-bg-gradient: linear-gradient(180deg, #FFD166 0%, #FFFCF2 100%);
+  --app-header-bg: #FFD166;
+  --app-card-bg: rgba(255, 255, 255, 0.7);
+  --section-title-color: #6D4C41; /* Darker brown for better contrast on yellow */
 }
 
-/* Rainy Theme (Deep Indigo/Slate) */
-body.rainy-theme {
-  --app-header-bg: linear-gradient(180deg, #30cfd0 0%, #330867 100%);
-  --ion-color-primary: #5c6bc0;
+
+/* Dark + Clear */ //--background: var(--app-bg-gradient) !important;
+body.ion-palette-dark.weather-clear {
+  --app-bg-gradient: linear-gradient(to bottom, #1e3c72 0%, #2a5298 100%);
+  --app-card-bg: rgba(30, 30, 30, 0.9);
 }
 
-/* Thunderstorm: Dark and dramatic */
-body.thunderstorm-theme {
-  --app-header-bg: linear-gradient(180deg, #1a2a6c 0%, #b21f1f 50%, #fdbb2d 100%);
-  --ion-color-primary: #fdbb2d;
+/* Ensure Dark Mode Cloud stays light */
+body.ion-palette-dark.weather-clouds {
+  .section-title {
+    color: #ffffff !important;
+  }
 }
 
-/* Mist/Fog: Low contrast and muted */
-body.mist-theme {
-  --app-header-bg: linear-gradient(180deg, #bdc3c7 0%, #2c3e50 100%);
-  --ion-color-primary: #7f8c8d;
+/* Clouds (Light) */
+body.weather-clouds {
+  --app-bg-gradient: linear-gradient(180deg, #CFD8DC 0%, #ECEFF1 100%);
+  --app-card-bg: rgba(255, 255, 255, 0.8);
+  --section-title-color: #455A64;
 }
 
-/* Cloudy: Soft and calm */
-body.cloudy-theme {
-  --app-header-bg: linear-gradient(180deg, #757f9a 0%, #d7dde8 100%);
-  --ion-color-primary: #757f9a;
+
+
+/* Thunderstorm Weather - Light Mode */
+/* Even in "Light" mode, a storm should feel darker than a clear day */
+body.weather-thunderstorm {
+  --app-bg-gradient: linear-gradient(180deg, #4B3F72 0%, #1F2041 100%);
+  --app-header-bg: #4B3F72;
+  --app-card-bg: rgba(255, 255, 255, 0.15); /* Glassmorphism look */
+  --ion-color-primary: #9EF01A; /* Electric lime/yellow for "lightning" accents */
+  --section-title-color: #FFFFFF;
 }
 
-/* Clear Night Theme */
-body.sunny-night-theme {
-  --app-header-bg: linear-gradient(180deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
-  --ion-color-primary: #8e9eab;
+/* Thunderstorm Weather - Dark Mode */
+body.ion-palette-dark.weather-thunderstorm {
+  --app-bg-gradient: linear-gradient(180deg, #141115 0%, #2E294E 100%);
+  --app-card-bg: rgba(20, 20, 20, 0.8);
 }
 
-/* Rainy Night Theme */
-body.rainy-night-theme {
-  --app-header-bg: linear-gradient(180deg, #141e30 0%, #243b55 100%);
-  --ion-color-primary: #3a6186;
+
+/* Snow/Winter Weather - Light Mode */
+body.weather-snow {
+  --app-bg-gradient: linear-gradient(180deg, #E0F7FA 0%, #FFFFFF 100%);
+  --app-header-bg: #B2EBF2;
+  --app-card-bg: rgba(255, 255, 255, 0.85);
+  --section-title-color: #006064;
+  --ion-color-primary: #00838F; /* Slightly darker cyan for better text contrast */
+  --card-border: 1px solid #B2EBF2;
+  --card-shadow: 0 4px 15px rgba(0, 96, 100, 0.1);
 }
 
-/* Generic Night Theme (Catch-all) */
-body.night-theme {
-  --app-header-bg: linear-gradient(180deg, #232526 0%, #414345 100%);
-  --ion-color-primary: #ffffff;
+/* Dark Mode (Parent has ion-palette-dark, ion-content has .weather-snow) */
+/* Snow/Winter Weather - Dark Mode */
+body.ion-palette-dark.weather-snow {
+  --app-bg-gradient: linear-gradient(180deg, #01579B 0%, #001B2E 100%);
+  --app-card-bg: rgba(255, 255, 255, 0.08);
+  --section-title-color: #E1F5FE;
+  --card-border: 1px solid rgba(255, 255, 255, 0.1);
+  --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+}
+
+/* Apply the same "Cloudy/Misty" look to multiple conditions */
+body.weather-mist,
+body.weather-fog,
+body.weather-haze {
+  --app-bg-gradient: linear-gradient(180deg, #CFD8DC 0%, #ECEFF1 100%);
+  --background: var(--app-bg-gradient) !important;
+  --section-title-color: #455A64;
+}
+
+
+/* Dynamic Weather Backgrounds for Modal */
+.modal-weather-clear {
+  background: linear-gradient(180deg, rgba(255, 209, 102, 0.9) 0%, rgba(255, 252, 242, 0.9) 100%);
+  color: #444;
+}
+
+.modal-weather-clouds {
+  background: linear-gradient(180deg, rgba(149, 165, 166, 0.8) 0%, rgba(44, 62, 80, 0.8) 100%);
+}
+
+.modal-weather-rain {
+  background: linear-gradient(180deg, rgba(75, 108, 183, 0.8) 0%, rgba(24, 40, 72, 0.8) 100%);
+}
+
+/* Modal Specifics for Thunderstorm */
+.modal-weather-thunderstorm {
+  background: linear-gradient(180deg, rgba(75, 63, 114, 0.95) 0%, rgba(31, 32, 65, 0.95) 100%);
+  color: #ffffff;
+  border: 1px solid rgba(158, 240, 26, 0.3); /* Subtle electric lime border */
+}
+
+/* Modal Specifics for Snow */
+.modal-weather-snow {
+  background: linear-gradient(180deg, rgba(224, 247, 250, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
+  color: #004D40; /* Dark teal text for readability */
+}
+
+/* Dark Mode Modal for Snow */
+body.ion-palette-dark.modal-weather-snow {
+  background: linear-gradient(180deg, rgba(1, 87, 155, 0.95) 0%, rgba(0, 27, 46, 0.95) 100%);
+  color: #FFFFFF;
+}
+
+
+
+/* Dark Mode Overrides for High Contrast */
+.ion-palette-dark {
+  .modal-content {
+    background: rgba(0, 0, 0, 0.4);
+    color: #ffffff;
+  }
+  .common-list-item {
+    background: rgba(255, 255, 255, 0.05);
+    margin-bottom: 8px;
+    border-radius: 12px;
+  }
+}
+
+
+.weather-clear .weather-icon-lg,
+.modal-weather-clear .weather-modal-icon {
+  filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+/* Enhanced cards for the Clear Sky theme */
+.modal-weather-clear .detail-item {
+  background: #1e1e1e;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 15px rgba(180, 140, 0, 0.3);
+  .label { color: rgba(255, 255, 255, 0.7); }
+  .value { color: #ffffff; font-weight: 600; }
+}
+
+
+/* Icon glow for Thunderstorms */
+.weather-thunderstorm .weather-icon-lg,
+.modal-weather-thunderstorm .weather-modal-icon {
+  filter: drop-shadow(0px 0px 12px rgba(158, 240, 26, 0.6));
+  animation: bolt-flicker 3s infinite;
+}
+
+/* Subtle flicker animation to mimic distant lightning */
+@keyframes bolt-flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+  52% { opacity: 1; }
+  54% { opacity: 0.9; }
+}
+
+/* Frost effect for main containers */
+.weather-snow .main-card,
+.modal-weather-snow .details-grid {
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 15px rgba(178, 235, 242, 0.5);
+}
+
+/* Make white icons visible on light snow background */
+.weather-snow .weather-icon-lg,
+.modal-weather-snow .weather-modal-icon {
+  filter: drop-shadow(0px 0px 8px rgba(0, 172, 193, 0.4));
 }
 
 /**
