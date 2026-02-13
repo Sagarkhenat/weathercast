@@ -1,8 +1,10 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, signal  } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 import { environment } from 'src/environments/environment';
+
+export type WeatherType = 'clear' | 'clouds' | 'rain' | 'snow' | 'thunderstorm';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +15,9 @@ export class WeatherService {
   private apiKey = environment.apiKey;
   private baseUrl = environment.weatherBaseUrl;
 
+  // Use Angular Signals for reactive state
+  isDarkMode = signal<boolean>(false);
+  currentWeather = signal<WeatherType>('clear');
 
    // Use @Inject(DOCUMENT) instead of Renderer2
   constructor(private http: HttpClient,@Inject(DOCUMENT) private document: Document) {
@@ -128,5 +133,44 @@ export class WeatherService {
   }
 
 
+  updateWeatherTheme(condition: string) {
+    console.log('Inside update weather theme condition value passed :::', condition);
 
+    const weather = this.mapConditionToType(condition);
+
+    console.log('Weather value received from function to set at home page ::',weather);
+
+    this.currentWeather.set(weather);
+
+    this.applyThemeClasses();
+  }
+
+  toggleDarkMode() {
+    this.isDarkMode.update(v => !v);
+    this.applyThemeClasses();
+  }
+
+    private applyThemeClasses() {
+    const body = document.body;
+    // Use a regex or a list to remove ANY existing weather- class
+    // to prevent "weather-clear" and "weather-snow" from being active at once
+    const classesToRemove = Array.from(body.classList).filter(c => c.startsWith('weather-'));
+    body.classList.remove(...classesToRemove);
+
+    // Add current states
+    body.classList.toggle('ion-palette-dark', this.isDarkMode());
+    body.classList.add(`weather-${this.currentWeather()}`);
+  }
+
+  private mapConditionToType(cond: string): WeatherType {
+    // Map API strings (e.g., "Broken Clouds") to your internal types
+    const c = cond.toLowerCase();
+    if (c.includes('thunderstorm')) return 'thunderstorm';
+    if (c.includes('snow')) return 'snow';
+    if (c.includes('cloud')) return 'clouds';
+    if (c.includes('rain')) return 'rain';
+    // Add atmospheric conditions here
+    if (c.includes('mist') || c.includes('fog') || c.includes('haze')) return 'clouds';
+    return 'clear';
+  }
 }

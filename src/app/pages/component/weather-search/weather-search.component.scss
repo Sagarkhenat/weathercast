@@ -45,6 +45,7 @@
   margin-right: 10px; /* Space between text and icon */
   color: var(--search-text);
   background: transparent !important;
+  --webkit-box-shadow: none !important;
 
   /* Take up all available space */
   flex-grow: 1;

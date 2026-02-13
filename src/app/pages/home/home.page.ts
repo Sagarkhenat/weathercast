@@ -250,7 +250,7 @@ export class HomePage implements OnInit {
         console.log('conditionId and icon value received :::', conditionId,icon);
 
         //Theming action change - based on condition and icon received from response
-        //this.weatherService.updateTheme(conditionId, icon);
+        this.weatherService.updateWeatherTheme(res.current.weather[0].main);
 
         this.isLoading = false;
 
@@ -294,7 +294,12 @@ export class HomePage implements OnInit {
     this.weatherService.getWeather(city).subscribe({
       next: (data) => {
         console.log('Obtained weather data in load Weather function :::', data);
+
         this.weatherData = data;
+
+        //Theming action change 2 - based on condition and icon received from response
+        this.weatherService.updateWeatherTheme((data.weather[0].main));
+
         this.isLoading = false;
 
         // Success! The city exists. Save it for next time.
@@ -332,6 +337,7 @@ export class HomePage implements OnInit {
     this.weatherService.getForecast(city).subscribe({
       next: (data: ForecastResponse) =>{
         // Check if res and res.list exist to avoid the "undefined" error
+
         if (data && data.list) {
           // Filter the list to get one entry per day (usually at 12:00:00)
           this.forecastData = data.list.filter((item: WeatherItem) => item.dt_txt?.includes('12:00:00'));
@@ -376,7 +382,7 @@ export class HomePage implements OnInit {
       breakpoints: [0, 0.75],
       initialBreakpoint: 0.75,
 
-      // BONUS: Adds a little grey "drag bar" at the top so users know it slides
+      // Adds a little grey "drag bar" at the top so users know it slides
       handle: true,
       cssClass: 'custom-modal-style'
     });
@@ -403,24 +409,24 @@ export class HomePage implements OnInit {
    * Function to refresh page on pull down and update the location
   */
   async doManualRefresh(event: any) {
-  console.log('User requested manual refresh to fetch weather against users current location :::', event);
+    console.log('User requested manual refresh to fetch weather against users current location :::', event);
 
-  try {
-    // We get users current coordinates first
-    const coordinates = await Geolocation.getCurrentPosition();
-    console.log('Co-ordinates value obtained after manual refresh action :::', coordinates);
+    try {
+      // We get users current coordinates first
+      const coordinates = await Geolocation.getCurrentPosition();
+      console.log('Co-ordinates value obtained after manual refresh action :::', coordinates);
 
-    const { latitude, longitude } = coordinates.coords;
+      const { latitude, longitude } = coordinates.coords;
 
-    // Pass coordinates AND the refresher event
-    this.loadWeatherByCoords(latitude, longitude, event);
+      // Pass coordinates AND the refresher event
+      this.loadWeatherByCoords(latitude, longitude, event);
 
-  } catch (error) {
-    console.error('Error getting location after manual refresh action :::', error);
-    this.commonService.handleError('Location Error', 'Please enable GPS to refresh weather.', false);
-    event.target.complete();
+    } catch (error) {
+      console.error('Error getting location after manual refresh action :::', error);
+      this.commonService.handleError('Location Error', 'Please enable GPS to refresh weather.', false);
+      event.target.complete();
+    }
   }
-}
 
 
 
