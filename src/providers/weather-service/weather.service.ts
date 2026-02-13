@@ -83,56 +83,6 @@ export class WeatherService {
 
   }
 
-  // Map OpenWeather codes to Theme Names
-  updateTheme(conditionCode: number, iconCode: string) {
-    let theme = 'default-theme';
-    const isNight = iconCode.endsWith('n'); // Detects the 'n' suffix for night
-
-    // Map Broad Conditions -- DETAILED THEME SET BASED ON VALUE RECEIVED
-    // if (conditionCode >= 200 && conditionCode <= 232) {
-    //   theme = isNight ? 'thunderstorm-night-theme' : 'thunderstorm-theme';
-    // } else if (conditionCode >= 300 && conditionCode <= 531) {
-    //   theme = isNight ? 'rainy-night-theme' : 'rainy-theme';
-    // } else if (conditionCode >= 600 && conditionCode <= 622) {
-    //   theme = isNight ? 'snowy-night-theme' : 'snowy-theme';
-    // } else if (conditionCode === 800) {
-    //   theme = isNight ? 'sunny-night-theme' : 'sunny-theme';
-    // } else {
-    //   theme = isNight ? 'night-theme' : 'default-theme';
-    // }
-
-    theme = isNight ? 'night-theme' : 'day-theme';
-
-    console.log('theme to be applied at home page ::', theme);
-
-    // Apply the class to the <body> tag
-    this.setBodyClass(theme);
-  }
-
-
-  setBodyClass(theme: string) {
-    const body = this.document.body; // Use the injected document
-    // Remove all possible weather themes first
-    // List all themes to clear previous ones
-
-    // const themes = [
-    //   'sunny-theme', 'sunny-night-theme',
-    //   'rainy-theme', 'rainy-night-theme',
-    //   'thunderstorm-theme', 'thunderstorm-night-theme',
-    //   'mist-theme', 'mist-night-theme',
-    //   'cloudy-theme', 'cloudy-night-theme',
-    //   'default-theme'
-    // ];
-
-    // themes.forEach(t => body.classList.remove(t));
-    // body.classList.add(theme);
-
-    body.classList.remove('day-theme', 'night-theme');
-    body.classList.add(theme);
-
-  }
-
-
   updateWeatherTheme(condition: string) {
     console.log('Inside update weather theme condition value passed :::', condition);
 

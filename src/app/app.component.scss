@@ -2,36 +2,11 @@
 // @import "../theme/common.scss";
 @use "../theme/common.scss";
 
-// DARK MODE OVERRIDES
-// These apply automatically when the dark theme is active
-body.ion-palette-dark {
 
-  ion-menu {
-    --ion-background-color: #121212;
-    --ion-text-color: #f4f4f4;
-
-    ion-toolbar {
-      --background: #1a1a1a; /* Darker toolbar for dark mode */
-      --color: #ffffff;
-    }
-
-    /* Update icons to be lighter in dark mode */
-    ion-icon {
-      color: #bbbbbb !important;
-    }
-
-    .developer-header {
-      background: #1e1e1e;
-      --color: #aaaaaa;
-    }
-
-  }
-
-  /* Force divider visibility in dark mode */
-  .menu-divider {
-    background-color: rgba(255, 255, 255, 0.1) !important;
-  }
-
+.app-name-info{
+  flex: 1;
+  font-size: 24px;
+  //background-color: #4a90e2
 }
 
 .offline-banner {
@@ -58,6 +33,16 @@ body.ion-palette-dark {
 @keyframes slide-in {
   0% { transform: translateY(-100%); }
   100% { transform: translateY(0); }
+}
+
+/* Smooth fade-in for the list items when menu opens */
+.menu-list-container {
+  animation: fadeIn 0.5s ease-out both;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .detailed-menu-section{
@@ -89,49 +74,5 @@ body.ion-palette-dark {
 }
 
 
-ion-menu {
-  // Light Mode Defaults
-  --ion-background-color: #ffffff;
-  --ion-text-color: #333333;
 
-  ion-toolbar {
-    /* This ensures the blue header appears in light mode */
-    --background: var(--ion-color-primary);
-    --color: #ffffff;
-  }
-
-  ion-item {
-    --min-height: 55px;
-    --padding-start: 16px;
-    --background: transparent;
-    --color: var(--ion-text-color);
-    --transition: 0.3s ease-in-out;
-
-    ion-icon {
-      color: #666666; // Grey icons for light mode
-      font-size: 22px;
-      margin-right: 12px;
-    }
-  }
-
-  // Header text styling
-  .developer-header {
-    --color: #8a8a8a; // Muted grey text
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    margin-top: 20px;
-    min-height: 45px;
-    background: var(--ion-item-background, #f4f4f4); // Slight contrast background
-  }
-
-  // Thin horizontal line
-  .menu-divider {
-    width: 100%;
-    height: 1px;
-    background-color: var(--ion-color-step-250, #dcdcdc);
-    margin: 10px 0;
-  }
-
-}
 

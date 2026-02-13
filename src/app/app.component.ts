@@ -1,11 +1,13 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA , inject, Renderer2 } from '@angular/core';
-import { IonApp, IonRouterOutlet,Platform , MenuController, NavController, AlertController} from '@ionic/angular/standalone';
+import { IonApp, IonRouterOutlet,Platform , MenuController, NavController, AlertController, ModalController} from '@ionic/angular/standalone';
 import { OfflineService } from 'src/providers/providers';
 import { Geolocation } from '@capacitor/geolocation';
 import { CommonModule, AsyncPipe } from '@angular/common';
+import { PushNotifications } from '@capacitor/push-notifications';
+
 
 import { Browser } from '@capacitor/browser'; // For Privacy Policy
-import { PushNotificationService, UnitStateService } from 'src/providers/providers';
+import { PushNotificationService, UnitStateService, WeatherService } from 'src/providers/providers';
 
 import { addIcons } from 'ionicons';
 import {moon, sunnyOutline,
@@ -26,6 +28,11 @@ import {moon, sunnyOutline,
 })
 export class MyApp {
 
+  // Add this line here
+  selectedLanguage: string = 'en';
+
+  notificationsEnabled: boolean = false;
+
   isDarkMode: boolean = false;
 
   protected rootPage: any;
@@ -43,19 +50,28 @@ export class MyApp {
     private pushService: PushNotificationService,
     private menu: MenuController,
     private navCtrl: NavController,
-    private renderer: Renderer2,
-    private alertCtrl: AlertController) {
-
+    private alertCtrl: AlertController,
+    public weatherService: WeatherService) {
 
       // Register the icons so <ion-icon> can use them
       addIcons({ moon, sunnyOutline,
         notificationsOutline, mapOutline,
         globeOutline,shieldCheckmarkOutline,
         chatbubbleOutline, starOutline,homeOutline });
-    }
+  }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.initializeApp();
+
+    // Load the saved preference on startup
+    this.notificationsEnabled = await this.pushService.getNotificationState()
+
+    // If it was previously enabled, re-run registration to ensure listeners are active
+    if (this.notificationsEnabled) {
+      await this.pushService.registerForPushNotification();
+    }else{
+
+    }
 
     // Ensure the menu is enabled and active
     this.menu.enable(true, 'main-menu');
@@ -83,19 +99,33 @@ export class MyApp {
 
     // PERMISSION 2: Trigger the push notification registration flow
     // This will wait until the Geolocation dialog is closed
-    this.pushService.registerForPushNotification();
+    // Previously app was asking for notification permission at startup
+    //this.pushService.registerForPushNotification();
   }
 
 
   async changeLanguage() {
     const alert = await this.alertCtrl.create({
       header: 'Select Language',
+      cssClass: 'weather-custom-alert', // This is our custom hook
       inputs: [
-        { name: 'lang', type: 'radio', label: 'English', value: 'en', checked: true },
-        { name: 'lang', type: 'radio', label: 'Deutsch', value: 'de' },
-        // Add more as per your screenshots
+        { type: 'radio', label: 'English', value: 'en', checked: this.selectedLanguage === 'en' },
+        { type: 'radio', label: 'Deutsch', value: 'de', checked: this.selectedLanguage === 'de' },
+        { type: 'radio', label: 'Français', value: 'fr', checked: this.selectedLanguage === 'fr' },
+        { type: 'radio', label: 'Italiano', value: 'it', checked: this.selectedLanguage === 'it' }
       ],
-      buttons: ['Cancel', 'Done']
+      buttons: [
+        { text: 'CANCEL', role: 'cancel', cssClass: 'alert-button-cancel' },
+        {
+          text: 'DONE',
+          handler: (data) => {
+
+            console.log('Selected language output :::', data);
+            this.selectedLanguage = data;
+
+          }
+        }
+      ]
     });
     await alert.present();
   }
@@ -112,16 +142,66 @@ export class MyApp {
   }
 
   rateApp = () => {
-    if (this.platform.is('ios')) {
-      window.open('itms-apps://itunes.apple.com/app/your-app-id', '_system');
-    } else {
-      window.open('market://details?id=your.package.id', '_system');
-    }
+    window.open('market://details?id=your.package.id', '_system');
   }
 
   requestNotifications = () => {
 
   }
+
+  async toggleNotifications(event: any) {
+    const isChecked = event.detail.checked;
+
+    // Save the new state to storage
+    await this.pushService.setNotificationState(isChecked);
+
+    if (isChecked) {
+      // Use your existing service to handle permissions and registration
+      await this.pushService.registerForPushNotification();
+
+    }else{
+
+      // The user wants to toggle off
+      await this.pushService.unregisterFromPushNotification();
+      console.log('PushNotifications disabled by user');
+    }
+  }
+
+
+  private async performNativeRegistration(): Promise<boolean> {
+    try {
+      // 1. Request system permissions
+      let permStatus = await PushNotifications.checkPermissions();
+
+      if (permStatus.receive === 'prompt') {
+        permStatus = await PushNotifications.requestPermissions();
+      }
+
+      if (permStatus.receive !== 'granted') {
+        this.showPermissionDeniedAlert();
+        return false;
+      }
+
+      // 2. Register with Apple/Google push services
+      await PushNotifications.register();
+      console.log('Push registration successful');
+      return true;
+
+    } catch (error) {
+      console.error('Error during push registration', error);
+      return false;
+    }
+  }
+
+  async showPermissionDeniedAlert() {
+    const alert = await this.alertCtrl.create({
+      header: 'Permission Required',
+      message: 'To receive weather updates, please enable notifications in your device settings.',
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+
 
 
 }

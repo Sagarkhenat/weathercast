@@ -32,18 +32,117 @@
 body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth toggle */
+
+  // below line commented for light-dark mode toggle action
+  //transition: background-color 0.3s ease, color 0.3s ease;
+
+  transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
 }
 
 /* This is the magic line that makes it all work with ion-content */
 body[class*="weather-"] ion-content {
-  --background: var(--app-bg-gradient) !important;
+ // --background: var(--app-bg-gradient) !important;
 }
 
+
+/* ------------------------ Side Menu Dynamic Theming START-------------------------- */
+/* --- Fixed Side Menu Theming (Light/Dark Only) --- */
+
+ion-menu,
+ion-item,
+ion-toolbar,
+ion-label,
+ion-icon {
+  /* This 'all' condition covers background, color, and transforms */
+  //transition: all 0.5s ease-in-out !important;
+
+  /* Unified transition for all background and color changes */
+  transition: background 0.5s ease-in-out, color 0.5s ease-in-out !important;
+  --transition: all 0.5s ease-in-out !important;
+
+  /* Ionic-specific variable to pierce the Shadow DOM */
+  //--transition: all 0.5s ease-in-out !important;
+
+  /* ADD THIS: Forces internal background states to transition smoothly too */
+  --inner-padding-end: 0;
+  --background-focused: transparent;
+  --background-hover: transparent;
+
+  /* This variable is the culprit for 'rough' resets in light mode */
+  --ion-item-background: var(--background);
+
+}
+
+
+
+/* Light Mode (Default) */
+ion-menu {
+
+  --background: #ffffff;
+  --color: #333333;
+
+  ion-toolbar {
+    --background: #f4f5f8;
+    --color: #1e1e1e;
+  }
+
+
+  /* Target the toggle specifically so its track color fades smoothly */
+  ion-toggle {
+    --handle-transition: all 0.5s ease-in-out !important;
+    transition: all 0.5s ease-in-out !important;
+  }
+
+  ion-item {
+
+    --border-radius: 12px;
+    --background: transparent;
+    --color: #444444;
+    --ion-icon-color: #555555;
+    margin: 5px 10px; // Gives a nice floating card effect in the menu
+
+    &:hover {
+      //--background: rgba(0, 0, 0, 0.04) !important;
+      cursor: pointer;
+      transform: translateX(5px); /* Slight slide-in effect */
+    }
+
+    ion-icon {
+      color: #555555 !important;
+    }
+
+  }
+
+  .developer-header ion-label {
+    opacity: 0.7;
+    font-weight: bold;
+  }
+
+  .menu-divider {
+    height: 1px;
+    background: rgba(0, 0, 0, 0.1);
+    opacity: 0.1;
+    margin: 8px 16px;
+  }
+}
+
+/* ------------------------ Side Menu Dynamic Theming END-------------------------- */
+
+
 /* Home Page Dynamic Backgrounds */
-.weather-clear { --background: linear-gradient(180deg, #4facfe 0%, #00f2fe 100%); }
-.weather-clouds { --background: linear-gradient(180deg, #95a5a6 0%, #2c3e50 100%); }
-.weather-rain { --background: linear-gradient(180deg, #616161 0%, #9bc5c3 100%); }
+.weather-clear {
+  --background: linear-gradient(180deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.weather-clouds {
+  --background: linear-gradient(180deg, #95a5a6 0%, #2c3e50 100%);
+
+}
+
+.weather-rain {
+  --background: linear-gradient(180deg, #616161 0%, #9bc5c3 100%);
+}
+
 
 .weather-card {
   background-color: var(--bg-secondary);
@@ -59,9 +158,9 @@ ion-modal {
 }
 
 /* Apply to your components */
-ion-content {
-  //--background: var(--app-bg-gradient);
-}
+// ion-content {
+//   --background: var(--app-bg-gradient);
+// }
 
 /* Default Theme (Cool Blue) */
 body.weather-clear {
@@ -176,7 +275,6 @@ body.ion-palette-dark.modal-weather-snow {
 }
 
 
-
 /* Dark Mode Overrides for High Contrast */
 .ion-palette-dark {
   .modal-content {
@@ -233,6 +331,50 @@ body.ion-palette-dark.modal-weather-snow {
 .modal-weather-snow .weather-modal-icon {
   filter: drop-shadow(0px 0px 8px rgba(0, 172, 193, 0.4));
 }
+
+/* Custom WeatherCast Alert Styling */
+/* Styling using the Dark/Light variables */
+.weather-custom-alert {
+  --background: var(--card-background);
+
+  .alert-wrapper {
+    border-radius: 16px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+
+  .alert-head {
+    padding-bottom: 15px;
+    .alert-title {
+      color: var(--ion-color-primary);
+      font-weight: 700;
+      font-size: 20px;
+    }
+  }
+
+  .alert-radio-group {
+    max-height: 300px;
+    .alert-radio-button {
+      height: 55px;
+
+      .alert-radio-label {
+        font-size: 16px;
+        color: var(--text-primary);
+      }
+
+    }
+  }
+
+  /* Styled Buttons */
+  .alert-button-group {
+    padding: 10px;
+    .alert-button {
+      color: var(--ion-color-primary);
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+  }
+}
+
 
 /**
  * Ionic Dark Mode

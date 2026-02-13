@@ -1,9 +1,9 @@
 <ion-app>
   <ion-menu content-id="main-content" type="overlay" menuId="main-menu" [disabled]="false">
     <ion-header class="ion-no-border" >
-      <ion-toolbar class="detailed-menu-section">
+      <ion-toolbar class="menu-header-toolbar">
         <ion-title class="app-name-info">
-          WeatherCast
+          SETTING
         </ion-title>
       </ion-toolbar>
     </ion-header>
@@ -11,7 +11,7 @@
     <ion-content no-bounce>
 
 
-      <ion-list lines="none">
+      <ion-list lines="none" class="menu-list-container">
         <ion-menu-toggle auto-hide="false">
           <ion-item button (click)="navigateHome()" detail="false">
             <ion-icon slot="start" name="home-outline"></ion-icon>
@@ -23,8 +23,11 @@
 
 
         <ion-item>
-            <ion-icon slot="start" [name]="(unitService.isDarkThemeOn | async) ? 'moon' : 'sunny-outline'"></ion-icon>
-            <ion-label>Dark Background</ion-label>
+            <ion-icon slot="start"
+              [name]="(unitService.isDarkThemeOn | async) ? 'moon' : 'sunny-outline'"
+              [color]="(unitService.isDarkThemeOn | async) ? 'light' : 'dark'">
+            </ion-icon>
+            <ion-label>Dark Mode</ion-label>
 
             <ion-toggle slot="end"  [checked]="unitService.isDarkThemeOn | async" (ionChange)="unitService.toggleTheme()">
 
@@ -37,7 +40,14 @@
         <ion-menu-toggle auto-hide="false">
           <ion-item button (click)="requestNotifications()">
             <ion-icon slot="start" name="notifications-outline"></ion-icon>
+
             <ion-label>Notifications</ion-label>
+
+            <ion-toggle slot="end"
+            [(ngModel)]="notificationsEnabled"
+            (ionChange)="toggleNotifications($event)">
+
+            </ion-toggle>
           </ion-item>
         </ion-menu-toggle>
 
@@ -79,7 +89,7 @@
 
         <ion-item button (click)="rateApp()" detail="false">
           <ion-icon slot="start" name="star-outline"></ion-icon>
-          <ion-label>Rate</ion-label>
+          <ion-label>Rate Us</ion-label>
         </ion-item>
 
 
