@@ -21,7 +21,7 @@
 
       <ion-toolbar color="transparent" style="--border-style: none;">
         <ion-buttons slot="start">
-          <ion-menu-button color="light" autoHide="false" (click)="clearFocus($event)"></ion-menu-button>
+          <ion-menu-button color="light" autoHide="false" (click)="clearFocus($event)"></ion-menu-button><!-- (click)="clearFocus($event)"-->
         </ion-buttons>
 
         <div class="app-title">WeatherCast</div>
@@ -44,7 +44,9 @@
 
           <ion-chip (click)="loadWeather(city)" [outline]="true" class="fav-chip">
             <ion-label>{{ city }}</ion-label>
-            <ion-icon name="close-circle" (click)="favoritesService.toggleFavorite(city); $event.stopPropagation()"></ion-icon>
+            <ion-icon name="close-circle"
+              (touchstart)="$event.stopImmediatePropagation()"
+              (click)="favoritesService.toggleFavorite(city); $event.stopPropagation()"></ion-icon>
           </ion-chip>
 
         }

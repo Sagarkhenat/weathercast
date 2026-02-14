@@ -1,18 +1,20 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA , inject, Renderer2 } from '@angular/core';
-import { IonApp, IonRouterOutlet,Platform , MenuController, NavController, AlertController, ModalController} from '@ionic/angular/standalone';
 import { OfflineService } from 'src/providers/providers';
 import { Geolocation } from '@capacitor/geolocation';
 import { CommonModule, AsyncPipe } from '@angular/common';
-import { PushNotifications } from '@capacitor/push-notifications';
+import { Router } from '@angular/router';
 
+import { IonApp, IonRouterOutlet,Platform , MenuController, NavController, AlertController,
+        IonMenu,IonHeader,IonToolbar,IonTitle,
+        IonMenuToggle,IonContent,IonItem,IonIcon,
+        IonLabel,IonToggle,IonListHeader,} from '@ionic/angular/standalone';
 
 import { Browser } from '@capacitor/browser'; // For Privacy Policy
 import { PushNotificationService, UnitStateService, WeatherService } from 'src/providers/providers';
 
 import { addIcons } from 'ionicons';
-import {moon, sunnyOutline,
-        notificationsOutline, mapOutline,
-        globeOutline,shieldCheckmarkOutline,
+import {moon, sunnyOutline,notificationsOutline,
+        mapOutline,globeOutline,shieldCheckmarkOutline,
         chatbubbleOutline, starOutline, homeOutline } from 'ionicons/icons';
 
 @Component({
@@ -20,10 +22,10 @@ import {moon, sunnyOutline,
   standalone: true,
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
-  imports: [IonApp,
-          IonRouterOutlet,
-          CommonModule,
-          AsyncPipe],
+  imports: [IonApp,IonRouterOutlet,CommonModule,AsyncPipe,
+          IonMenu,IonHeader,IonToolbar,IonTitle,
+        IonContent,IonItem,IonIcon,IonLabel,IonToggle,
+        IonMenuToggle,IonListHeader,],
   schemas: [CUSTOM_ELEMENTS_SCHEMA] // Add this line
 })
 export class MyApp {
@@ -51,7 +53,8 @@ export class MyApp {
     private menu: MenuController,
     private navCtrl: NavController,
     private alertCtrl: AlertController,
-    public weatherService: WeatherService) {
+    public weatherService: WeatherService,
+  private router: Router) {
 
       // Register the icons so <ion-icon> can use them
       addIcons({ moon, sunnyOutline,
@@ -131,7 +134,7 @@ export class MyApp {
   }
 
   openPrivacy = async() => {
-    await Browser.open({ url: 'https://your-weather-app.com/privacy' });
+    this.router.navigate(['/privacy-policy']);
   }
 
   reportProblem = () => {
@@ -142,7 +145,7 @@ export class MyApp {
   }
 
   rateApp = () => {
-    window.open('market://details?id=your.package.id', '_system');
+    window.open('market://details?id=com.weathercast.app', '_system');
   }
 
   requestNotifications = () => {
@@ -167,31 +170,6 @@ export class MyApp {
     }
   }
 
-
-  private async performNativeRegistration(): Promise<boolean> {
-    try {
-      // 1. Request system permissions
-      let permStatus = await PushNotifications.checkPermissions();
-
-      if (permStatus.receive === 'prompt') {
-        permStatus = await PushNotifications.requestPermissions();
-      }
-
-      if (permStatus.receive !== 'granted') {
-        this.showPermissionDeniedAlert();
-        return false;
-      }
-
-      // 2. Register with Apple/Google push services
-      await PushNotifications.register();
-      console.log('Push registration successful');
-      return true;
-
-    } catch (error) {
-      console.error('Error during push registration', error);
-      return false;
-    }
-  }
 
   async showPermissionDeniedAlert() {
     const alert = await this.alertCtrl.create({

@@ -110,6 +110,9 @@ export class WeatherService {
     // Add current states
     body.classList.toggle('ion-palette-dark', this.isDarkMode());
     body.classList.add(`weather-${this.currentWeather()}`);
+
+    // This is the key for mobile: force the class onto the body
+    //document.body.classList.toggle('ion-palette-dark', this.isDarkMode());
   }
 
   private mapConditionToType(cond: string): WeatherType {

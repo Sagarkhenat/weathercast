@@ -10,10 +10,13 @@ export const routes: Routes = [
   },
   {
     path: 'home',
-    // Point directly to the standalone component
-    //loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule)
     loadComponent: () => import('./pages/home/home.page').then(m => m.HomePage)
+  },
+  {
+    path: 'privacy-policy',
+    loadComponent: () => import('./pages/privacy-policy/privacy-policy.page').then( m => m.PrivacyPolicyPage)
   }
+
 ];
 
 @NgModule({

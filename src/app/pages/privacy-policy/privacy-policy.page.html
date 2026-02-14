@@ -1,0 +1,60 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="transparent">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Privacy Policy</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" [class]="'weather-' + weatherCondition">
+  <div class="policy-container">
+    <ion-text color="medium">
+      <p>Last Updated: February 14, 2026</p>
+    </ion-text>
+
+    <section>
+      <h2>1. Information We Collect</h2>
+      <p>
+        Weather Track collects location data to provide accurate local weather forecasts.
+        This data is processed locally on your device and is not stored on our servers.
+      </p>
+    </section>
+
+    <ion-card class="info-card">
+      <ion-card-header>
+        <ion-card-title>Data Usage</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ul>
+          <li><strong>Location:</strong> To fetch weather for your current coordinates.</li>
+          <li><strong>Storage:</strong> To save your favorite cities for offline viewing.</li>
+          <li><strong>Device Info:</strong> To optimize the display for your specific screen size.</li>
+        </ul>
+      </ion-card-content>
+    </ion-card>
+
+    <section>
+      <h2>2. Third-Party Services</h2>
+      <p>
+        We use Capacitor plugins to access device hardware. Weather data is fetched via
+        reputable APIs (like OpenWeatherMap), which may receive your coordinates to
+        return the correct forecast.
+      </p>
+    </section>
+
+    <section>
+      <h2>3. Security</h2>
+      <p>
+        We prioritize your data security. Since Weather Cast is a client-side application
+        built with Angular, your personal settings remain within the app's local sandbox.
+      </p>
+    </section>
+
+    <div class="ion-margin-top ion-text-center">
+      <ion-note>
+        Questions? Contact us at support@weathercast.example
+      </ion-note>
+    </div>
+  </div>
+</ion-content>

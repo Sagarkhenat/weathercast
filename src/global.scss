@@ -73,9 +73,18 @@ ion-icon {
 
 }
 
+/* Target the underlying container of the menu for smooth fades */
+.ion-menu::part(container) {
+  transition: background 0.5s ease-in-out;
+}
+
+/* Force items to transition their internal parts */
+.ion-item::part(native) {
+  transition: background 0.5s ease-in-out, color 0.5s ease-in-out;
+}
 
 
-/* Light Mode (Default) */
+/* Light Mode Implementation Menu List items at side-menu (Default) */
 ion-menu {
 
   --background: #ffffff;
