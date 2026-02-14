@@ -98,20 +98,10 @@ export class UnitToggleComponent {
   styleUrls: ['./home.page.scss'],
   standalone:true, //indicates a standalone component
   imports: [
-    CommonModule,
-    IonContent,
-    WeatherSearchComponent,
-    WeatherIconPipe,
-    TempConvertPipe,
-    UnitToggleComponent,
-    IonChip,
-    IonIcon,
-    IonLabel,
-    IonSkeletonText,
-    ErrorStateComponent,
-    IonButtons,
-    IonMenuButton,
-    IonToolbar],
+    CommonModule,IonContent,WeatherSearchComponent,
+    WeatherIconPipe,TempConvertPipe,UnitToggleComponent,
+    IonChip,IonIcon,IonLabel,IonSkeletonText,ErrorStateComponent,
+    IonButtons,IonMenuButton,IonToolbar],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class HomePage implements OnInit {

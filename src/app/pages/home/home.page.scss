@@ -1,14 +1,6 @@
 @import '../../../theme/common.scss';
 @import '/src/theme/variables.scss';
 
-
-ion-content {
-  /* --background: #eef1f5; */
-
-  //--background: var(--page-background);
-  //--background: var(--app-bg-gradient) !important;
-}
-
 ion-menu-button {
   display: block !important;
   --color: white; /* Ensure it is visible against the blue background */
