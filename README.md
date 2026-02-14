@@ -58,8 +58,15 @@ Privacy-Aware: Logic distinguishes between user-denied permissions (graceful ski
 
 This project implements senior-level practices for security and stability.
 
-#### **1. Secure CI/CD Pipeline (The `set-env` Workflow)**
+#### **1. Advanced Weather Radar Engine**
 
+* **Interactive Mapping**: Integrated the **Leaflet.js** library to provide a high-performance geography interface optimized for mobile touch gestures.
+* **Dynamic Weather Layers**: Developed a sophisticated toggle system allowing users to overlay real-time data for **Temperature, Precipitation, Wind, Clouds, and Pressure** using OpenWeatherMap Maps 2.0 tiles.
+* **Visual Data Interpolation**: Engineered a custom, responsive color-gradient legend (e.g., -40°C to +40°C) to enable immediate user interpretation of complex atmospheric data.
+
+#### **2.Modern Architecture & DevOps**
+
+**Angular 17 Migration**: Successfully migrated the entire application to a **Standalone Component** architecture, removing the overhead of traditional NgModules.
 One of the core challenges in frontend deployment is managing secrets.
   **The Problem:** API keys stored in `environment.ts` are often accidentally committed to GitHub, posing a security risk.
   **The Solution:** This project uses a custom **DevOps script (`set-env.js`)** injected into the Vercel build process.
@@ -67,17 +74,19 @@ One of the core challenges in frontend deployment is managing secrets.
     2.   During deployment, Vercel executes `node set-env.js` *before* the Angular build.
     3.   The script dynamically generates the environment file using encrypted environment variables stored securely in the Vercel dashboard.
   
-#### **2. Progressive Web App (PWA) Implementation**
+#### **3. Progressive Web App (PWA) Implementation**
 
 Transformed the standard Angular app into an installable native-like experience.
   **Installability:** Configured `manifest.webmanifest` with custom branding, allowing users to "Add to Home Screen" on iOS and Android.
   **Asset Management:** Automated generation of 20+ icon sizes (adaptive & maskable) using `pwa-asset-generator` to meet strict mobile standards.
   **Angular 17 Compatibility:** Re-architected asset delivery to utilize the modern `public/` directory structure, ensuring correct service worker registration and caching strategies.
+  **Performance Optimization**: Utilized **Route-Based Lazy Loading** (`loadComponent`) and advanced preloading strategies to minimize initial bundle size and ensure instant page transitions.
 
-#### **3. ⚡ Performance Optimization**
+#### **4. ⚡ Resilience & Connectivity**
 
-  **Lazy Loading:** Implemented **Route-Based Lazy Loading** (`loadComponent`) to split the application into smaller chunks, significantly reducing the initial bundle size
-  **Preloading Strategy:** Configured `PreloadAllModules` to fetch remaining bundles in the background, ensuring instant navigation without wait times
+  **"Safe-State" Error Handling**: Developed robust error-handling logic to manage network failures or API timeouts, guiding users back to a functional state via a specialized standalone UI component.
+  **Offline Awareness**: Integrated an **OfflineService** to monitor network status and provide real-time feedback to the user when connectivity is lost.
+  **Push Notifications**: Integrated **Firebase Cloud Messaging (FCM)** with privacy-aware permission handling to support future weather alert features.
 
 ### 🏗️ Clean Code Principles
 
@@ -90,12 +99,12 @@ Transformed the standard Angular app into an installable native-like experience.
 
 ### **🛠️ Tech Stack & Architecture**
 
-  **Frontend:** Ionic 7, Angular 17 (Standalone Components)
-  **Runtime:** Capacitor 5/6 (Native iOS/Android)
+  **Frontend:** Ionic 7, Angular 17 (Standalone Components), TypeScript, SCSS (Safe Areas/Viewport-fit)
+  **Runtime**: Capacitor (Native Android/iOS Build), Geolocation API, FCM.
   **PWA:** Angular Service Workers & Manifest
   **API:** OpenWeatherMap API (Current Weather + 5-Day Forecast)
   **Hosting:** Vercel (Production)
-  **DevOps:** Custom Node.js scripts for Environment Injection
+  **DevOps:** Vercel CI/CD, Secret Management,Custom Node.js scripts for Environment Injection
   **Notification:** Firebase cloud messaging
 
 ---

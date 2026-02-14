@@ -1,0 +1,115 @@
+.status-bar-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(env(safe-area-inset-top) + 20px);
+  background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 100%);
+  pointer-events: none; /* Allows you to still click map elements underneath */
+  z-index: 500;
+}
+
+.layer-selector {
+  position: absolute;
+  top: 100px; // Stay below the top FAB button
+  right: 15px;
+  width: 260px;
+  background: rgba(35, 35, 35, 0.9); // Dark solid background
+  backdrop-filter: blur(10px); // Blur the map behind it
+  border-radius: 16px;
+  padding: 8px;
+  z-index: 1000;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  .menu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .layer-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    border-radius: 12px;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.05);
+    transition: 0.2s ease-in-out;
+
+    &.active {
+      background: rgba(56, 128, 255, 0.2); // Light blue tint
+      color: #3880ff; // Ionic Primary Blue
+      border: 1px solid #3880ff;
+
+      ion-icon { color: #3880ff; }
+    }
+
+    ion-icon {
+      font-size: 22px;
+      margin-bottom: 4px;
+      color: #bbb;
+    }
+
+    ion-label {
+      font-size: 11px;
+      font-weight: 500;
+    }
+  }
+}
+
+.map-legend {
+  position: absolute;
+
+  bottom: calc(env(safe-area-inset-bottom) + 80px);
+  //bottom: 110px; // Above the locate button
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.85);
+  padding: 5px 15px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  z-index: 1001;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); // Add depth
+  border: 1px solid rgba(255, 255, 255, 0.2); // Subtle border to define edges
+
+  .gradient-bar.temp {
+    width: 180px; // Wider bar
+    height: 12px;  //Thicker bar
+    border-radius: 6px;
+    background: linear-gradient(
+      to right,
+      #0000ff, // -40 (Deep Blue)
+      #00ffff, // 0 (Cyan)
+      #00ff00, // 15 (Green)
+      #ffff00, // 25 (Yellow)
+      #ff0000  // +40 (Red)
+    );
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .gradient-bar.rain {
+    width: 180px;
+    height: 12px;
+    border-radius: 6px;
+    background: linear-gradient(to right, #ffffff, #88ff88, #00ff00, #008800, #ffff00, #ff0000);
+  }
+}
+
+
+// Top FABs (Layers and Back button)
+ion-fab[vertical="top"] {
+  margin-top: calc(env(safe-area-inset-top) + 10px); // Adds space for the status bar
+}
+
+// Bottom FAB (Locate button)
+ion-fab[vertical="bottom"] {
+  margin-bottom: calc(env(safe-area-inset-bottom) + 10px); // Adds space for bottom nav bar
+}

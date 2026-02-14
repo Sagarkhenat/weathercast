@@ -15,7 +15,12 @@ export const routes: Routes = [
   {
     path: 'privacy-policy',
     loadComponent: () => import('./pages/privacy-policy/privacy-policy.page').then( m => m.PrivacyPolicyPage)
+  },
+  {
+    path: 'weather-radar',
+    loadComponent: () => import('./pages/weather-radar/weather-radar.page').then( m => m.WeatherRadarPage)
   }
+
 
 ];
 
