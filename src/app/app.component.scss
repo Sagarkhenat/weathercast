@@ -2,6 +2,88 @@
 // @import "../theme/common.scss";
 @use "../theme/common.scss";
 
+
+/* Ensure the menu's header never overlaps the main content area when closed */
+
+/* Ensure the menu's header stays behind the overlay until opened */
+ion-menu {
+  z-index: 999;
+}
+
+ion-menu:not(.show-menu) {
+
+  display: none; /* Completely remove from layout flow when closed */
+  // visibility: hidden;
+  // pointer-events: none;
+}
+
+ion-menu.show-menu {
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.menu-header-toolbar {
+  /* This prevents the "SETTING" text from leaking out */
+  /* Force it to stay within its own bounds */
+  position: relative !important;
+  --background: var(--menu-header-bg);
+  --color: var(--menu-header-text);
+  height: 80px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+}
+
+
+.app-name-info{
+  flex: 1;
+  font-size: 24px;
+  //background-color: #4a90e2
+}
+
+.menu-items-container {
+  padding-top: 20px; /* This creates the space between Title and List */
+}
+
+.developer-header {
+  background-color: var(--section-divider-bg) !important;/* Light gray background for the section divider */
+  margin-top: 15px;
+  margin-bottom: 5px;
+  min-height: 45px;
+
+  ion-label {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ion-text-color) !important;
+  }
+}
+
+.developer-header ion-label {
+  transition: color 0.5s ease-in-out, font-size 0.5s ease-in-out;
+}
+
+/* To remove the bottom border on the list/items */
+ion-list, ion-item {
+  --inner-border-width: 0px !important;
+  --border-width: 0 !important;
+  border: none !important;
+  --ion-item-border-color: transparent !important;
+}
+
+/* Ensure Dark Mode compatibility for the developer section */
+.dark-theme {
+  .developer-header {
+    background-color: var(--divider-bg) !important;
+    ion-label {
+      color: var(--ion-color-step-400) !important;
+    }
+  }
+}
+
+
 .offline-banner {
   background: var(--ion-color-danger);
   color: white;
@@ -27,3 +109,57 @@
   0% { transform: translateY(-100%); }
   100% { transform: translateY(0); }
 }
+
+/* Smooth fade-in for the list items when menu opens */
+.menu-list-container {
+  animation: fadeIn 0.5s ease-out both;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Ensure the main content div takes up the full screen */
+#main-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+.detailed-menu-section{
+  padding: 0px;
+
+  .item{
+    .item-inner{
+        border:0px;
+        .label{
+            display: flex;
+            align-items: center;
+        }
+    }
+  }//End of item
+
+  .app-name-info{
+    padding: 0px;
+    position: unset;
+    display: flex;
+    width: 60%;
+    padding-left: 10px;
+    --ion-background-color: #ffffff;
+    --ion-text-color: #333333;
+      .toolbar-title {
+          text-align: left;
+          padding: 0px;
+      }
+    }//End of user-info
+}
+
+
+
+

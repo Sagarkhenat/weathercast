@@ -1,13 +1,127 @@
 <ion-app>
-  @if (!offlineService.isOnline()) {
-    <div class="offline-banner slide-in-top">
-      <ion-icon name="cloud-offline-outline"></ion-icon>
-      <span>No Internet Connection</span>
-    </div>
-  }@else {
+  <ion-menu [contentId]="'main-content'" type="overlay" menuId="main-menu" [disabled]="false"><!--content-id="main-content"-->
+    <ion-header class="ion-no-border" >
+      <ion-toolbar class="menu-header-toolbar">
+        <ion-title class="app-name-info">
+          SETTING
+        </ion-title>
+      </ion-toolbar>
+    </ion-header>
 
-  }
-  <ion-router-outlet></ion-router-outlet>
+    <ion-content no-bounce>
+
+      <div class="menu-items-container">
+        <ion-list lines="none" class="menu-list-container">
+
+          <!--Back to Home page navigation-->
+          <ion-menu-toggle auto-hide="false">
+            <ion-item button (click)="navigateHome()" detail="false">
+              <ion-icon slot="start" name="home-outline"></ion-icon>
+              <ion-label>Home</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
+          <div class="menu-divider"></div>
+
+          <!--Light Mode/Dark mode toggle action-->
+          <ion-item>
+              <ion-icon slot="start"
+                [name]="(unitService.isDarkThemeOn | async) ? 'moon' : 'sunny-outline'"
+                [color]="(unitService.isDarkThemeOn | async) ? 'light' : 'dark'">
+              </ion-icon>
+              <ion-label>Dark Mode</ion-label>
+
+              <ion-toggle slot="end"  [checked]="unitService.isDarkThemeOn | async" (ionChange)="unitService.toggleTheme()">
+
+              </ion-toggle>
+
+          </ion-item>
+
+          <div class="menu-divider"></div>
+
+          <!--Push Notification permisison request/handling-->
+          <ion-menu-toggle auto-hide="false">
+            <ion-item>
+              <ion-icon slot="start" name="notifications-outline"></ion-icon>
+
+              <ion-label>Notifications</ion-label>
+
+              <ion-toggle slot="end"
+              [(ngModel)]="notificationsEnabled"
+              (ionChange)="toggleNotifications($event)">
+
+              </ion-toggle>
+            </ion-item>
+          </ion-menu-toggle>
+
+          <div class="menu-divider"></div>
+
+          <!--Weather radar navigation-->
+          <ion-menu-toggle auto-hide="false">
+            <ion-item button routerLink="/radar">
+              <ion-icon slot="start" name="map-outline"></ion-icon>
+              <ion-label>Weather Radar</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
+          <div class="menu-divider"></div>
+
+          <!--Change language of the app feature-->
+          <ion-item button (click)="changeLanguage()" detail="false">
+            <ion-icon slot="start" name="globe-outline"></ion-icon>
+            <ion-label>Languages</ion-label>
+          </ion-item>
+
+          <!--- DEVELOPER SECTION CODE-->
+
+          <ion-list-header class="developer-header">
+            <ion-label>DEVELOPER SECTION</ion-label>
+          </ion-list-header>
+
+          <!--Privacy policy page navigation-->
+          <ion-menu-toggle auto-hide="false">
+              <ion-item button routerLink="/privacy-policy" (click)="openPrivacy()" detail="false">
+                <ion-icon slot="start" name="shield-checkmark-outline"></ion-icon>
+                <ion-label>Privacy Policy</ion-label>
+              </ion-item>
+          </ion-menu-toggle>
+
+
+          <div class="menu-divider"></div>
+
+          <!-- Report a problem to support team - Open MailTo-->
+          <ion-item button (click)="reportProblem()" detail="false">
+            <ion-icon slot="start" name="chatbubble-outline"></ion-icon>
+            <ion-label>Report problem</ion-label>
+          </ion-item>
+
+          <div class="menu-divider"></div>
+
+          <!-- Rate the app on google play-->
+          <ion-item button (click)="rateApp()" detail="false">
+            <ion-icon slot="start" name="star-outline"></ion-icon>
+            <ion-label>Rate Us</ion-label>
+          </ion-item>
+
+
+        </ion-list>
+
+      </div>
+
+
+
+
+    </ion-content>
+  </ion-menu>
+
+  <div id="main-content" class="ion-page">
+    <ion-router-outlet></ion-router-outlet>
+
+    @if (!offlineService.isOnline()) {
+        <div class="offline-banner slide-in-top">
+          <ion-icon name="cloud-offline-outline"></ion-icon>
+          <span>No Internet Connection</span>
+        </div>
+    }
+  </div>
 </ion-app>
-
-

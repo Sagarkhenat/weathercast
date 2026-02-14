@@ -3,7 +3,7 @@ import { PushNotifications, Token } from '@capacitor/push-notifications';
 import { CommonService} from '../providers';
 
 import { Capacitor } from '@capacitor/core';
-
+import { Preferences } from '@capacitor/preferences';
 @Injectable({
   providedIn: 'root'
 })
@@ -68,4 +68,35 @@ export class PushNotificationService {
 
     });
   }
+
+  async unregisterFromPushNotification() {
+    if (Capacitor.getPlatform() === 'web') return;
+
+    try {
+      // Stopping the device from receiving pushes from APNS/FCM
+      await PushNotifications.removeAllListeners();
+      console.log('Push notification listeners removed');
+
+      // Optional: If you want to completely unregister the token from the hardware
+      await PushNotifications.unregister();
+
+    }catch (error) {
+        console.log('Inside Error block for unregistering notifications', error);
+    }
+  }
+
+  async setNotificationState(enabled: boolean) {
+    await Preferences.set({
+      key: 'notifications_enabled',
+      value: enabled.toString(),
+    });
+  }
+
+
+  async getNotificationState(): Promise<boolean> {
+    const { value } = await Preferences.get({ key: 'notifications_enabled' });
+    // Default to false as originally requested
+    return value === 'true';
+  }
+
 }

@@ -9,7 +9,7 @@
   --app-bg-gradient: linear-gradient(180deg, #f4f4f4 0%, #ffffff 100%);
 
   /* Primary Color (Sky Blue) */
-  --ion-color-primary: $4a90e2;
+  --ion-color-primary: #4a90e2;
   --ion-color-primary-rgb: 74, 144, 226;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
@@ -39,47 +39,6 @@
   --search-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   --search-border: transparent; /* No border in light mode */
 
-
-  /* The Override (Dark Mode) */
-  .dark-theme {
-    --bg-primary: #121212;   /* classic dark mode bg */
-    --bg-secondary: #1e1e1e; /* slightly lighter for cards/nav */
-    --text-primary: #e0e0e0;
-    --text-secondary: #a0a0a0;
-    --accent-color: #4da3ff; /* lighter accent for better contrast on dark */
-    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
-    --border-color: #333333;
-  }
-
-  body.dark-theme {
-    /* Define the dark colors */
-    --page-background: #121212;
-    --card-background: #1e1e1e; /* Cards become dark grey in dark mode */
-    --header-background: #0d253f;
-    --text-color: #ffffff;
-    --card-background: #1e1e1e;
-    --detail-box-bg: #2c2c2c; /* Slightly lighter than the card bg */
-
-
-
-    --text-secondary: rgba(255, 255, 255, 0.7);
-    --text-tertiary: rgba(255, 255, 255, 0.5);
-
-    /* REQUIRED: Tell Ionic components to update too */
-    --ion-background-color: #121212;
-    --ion-text-color: #ffffff;
-
-    /* Ionic Search Bar Variables */
-    --search-bg: rgba(255, 255, 255, 0.15); /* 15% White Transparent */
-    --search-text: #ffffff;
-    --search-placeholder: rgba(255, 255, 255, 0.6);
-    --search-icon: rgba(255, 255, 255, 0.8);
-    --search-shadow: none; /* No shadow on glass */
-    --search-border: rgba(255, 255, 255, 0.1); /* Subtle border for definition */
-    --placeholder-color: #aaaaaa;
-
-  }
-
   /* Base Modal Styling (Glassmorphism) */
   .modal-content {
     display: flex;
@@ -89,6 +48,143 @@
     color: white; /* Default text for dark/colorful backgrounds */
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
+  }
+
+  --menu-header-bg: var(--ion-color-primary); /* Primary blue for Settings header */
+  --menu-header-text: #ffffff;
+  --section-divider-bg: #f4f5f8; // Light mode divider
+
+}
+
+/* The Override (Dark Mode) */
+.dark-theme {
+  --bg-primary: #121212;   /* classic dark mode bg */
+  --bg-secondary: #1e1e1e; /* slightly lighter for cards/nav */
+  --text-primary: #e0e0e0;
+  --text-secondary: #a0a0a0;
+  --accent-color: #4da3ff; /* lighter accent for better contrast on dark */
+  --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+  --border-color: #333333;
+  --menu-header-bg: #121212; /* Darker header for dark mode */
+  --menu-header-text: #ffffff;
+  --section-divider-bg: #222222; // Dark mode divider
+} // End of .dark-theme condition override
+
+body.dark-theme {
+  /* Define the dark colors */
+  --page-background: #121212;
+  --card-background: #1e1e1e; /* Cards become dark grey in dark mode */
+  --header-background: #0d253f;
+  --text-color: #ffffff;
+  --detail-box-bg: #2c2c2c; /* Slightly lighter than the card bg */
+
+
+
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-tertiary: rgba(255, 255, 255, 0.5);
+
+  /* REQUIRED: Tell Ionic components to update too */
+  --ion-background-color: #121212;
+  --ion-text-color: #ffffff;
+
+  /* Ionic Search Bar Variables */
+  --search-bg: rgba(255, 255, 255, 0.15); /* 15% White Transparent */
+  --search-text: #ffffff;
+  --search-placeholder: rgba(255, 255, 255, 0.6);
+  --search-icon: rgba(255, 255, 255, 0.8);
+  --search-shadow: none; /* No shadow on glass */
+  --search-border: rgba(255, 255, 255, 0.1); /* Subtle border for definition */
+  --placeholder-color: #aaaaaa;
+
+  ion-menu {
+    /* This ensures the background of the entire drawer changes */
+    --ion-background-color: #1a1a1a !important;;
+    --background: #1a1a1a !important;
+    --color: #ffffff !important;
+
+    ion-toolbar {
+      --background: #1a1a1a !important;
+      --color: #ffffff !important;
+      --border-color: #333333 !important;
+    }
+
+    ion-content {
+        --background: #1a1a1a !important;
+    }
+
+    ion-item {
+
+      --background: #1a1a1a !important;
+      --color: #ffffff !important;
+      --ion-icon-color: #ffffff !important;
+
+      &:hover {
+        --background: rgba(255, 255, 255, 0.08) !important;
+        transform: translateX(5px);
+      }
+
+      ion-icon {
+        color: #ffffff !important; /* Forces icons to be white in dark mode */
+        filter: drop-shadow(0 0 8px rgba(74, 144, 226, 0.4)) !important;
+      }
+
+      ion-label {
+        color: #ffffff !important;
+        font-weight: 500;
+      }
+
+      /* Ensure icons glow slightly on hover in dark mode */
+      &:hover ion-icon {
+        filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.4));
+      }
+    }
+
+    .developer-header{
+      ion-label {
+        color: #ffffff !important;
+        font-size: 16px !important;     /* Increased font size */
+        font-weight: 700 !important;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        opacity: 1 !important;
+      }
+    }
+
+
+    .menu-divider {
+      background: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    ion-toggle {
+      /* Color of the track when ON */
+      --background-checked: var(--ion-color-primary, #3880ff) !important;
+      --handle-background-checked: #ffffff !important;
+
+      transition: all 0.5s ease-in-out !important;
+    }
+
+
+
+  }// End of ion-menu condition for dark-theme
+
+
+  .policy-container section {
+    h2 {
+      color: #ffffff;
+    }
+    p {
+      color: var(--ion-color-step-400);
+    }
+  }
+
+  .info-card {
+    background: var(--ion-color-step-100, #1e1e1e);
+    border: 1px solid var(--ion-color-step-200);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+
+    ion-card-content {
+        color: var(--ion-color-step-400);
+    }
   }
 
 }
