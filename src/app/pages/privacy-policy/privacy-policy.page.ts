@@ -17,12 +17,12 @@ export class PrivacyPolicyPage implements OnInit {
 
   constructor(private weatherService: WeatherService) { }
 
-  ngOnInit() {
+  ngOnInit = () => {
     this.updateDate();
     this.getWeatherTheme();
   }
 
-  updateDate() {
+  updateDate = () => {
     const date = new Date();
     this.currentDate = date.toLocaleDateString('en-US', {
       year: 'numeric',
@@ -31,7 +31,7 @@ export class PrivacyPolicyPage implements OnInit {
     });
   }
 
-  getWeatherTheme() {
+  getWeatherTheme = () => {
     // Replace this with your actual service call or signal
     // Example: this.weatherCondition = this.weatherService.currentWeather()?.weather[0]?.main.toLowerCase();
 

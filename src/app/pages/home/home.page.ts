@@ -213,7 +213,7 @@ export class HomePage implements OnInit {
   /**
    * Function used to call weather service after getting the co-ordinates
   */
-  loadWeatherByCoords(lat: number, lon: number, event?: any) {
+  loadWeatherByCoords = (lat: number, lon: number, event?: any) => {
 
     console.log('Inside load weather by coords function  lat-long values :::', lat,lon);
     this.isLoading = true;
@@ -282,7 +282,7 @@ export class HomePage implements OnInit {
   /**
    * Function called for loading the weather
   */
-  loadWeather(city: string) {
+  loadWeather = (city: string) => {
     this.isLoading = true;
     this.errorMsg = ''; // Reset errors
     this.weatherData = null; // Clear old data while loading
@@ -334,7 +334,7 @@ export class HomePage implements OnInit {
    * Function called for loading the forecast for selected city
   */
 
-  loadForecast(city: string) {
+  loadForecast = (city: string) => {
   console.log('City string passed to load the forecast call :::', city);
     this.weatherService.getForecast(city).subscribe({
       next: (data: ForecastResponse) =>{
@@ -396,7 +396,7 @@ export class HomePage implements OnInit {
   /**
    * Add this helper method to your class (or just put the logic inside catch)
   */
-  loadFallbackCity() {
+  loadFallbackCity = () => {
     const lastCity = localStorage.getItem('lastCity');
     if (lastCity) {
       console.log('GPS failed. Falling back to saved city from local storage:', lastCity);

@@ -47,11 +47,11 @@ export class WeatherRadarPage implements OnInit {
 
   }
 
-  ngOnInit() {
+  ngOnInit = () => {
     console.log('Weather Radar Initialized');
   }
 
-  ionViewDidEnter() {
+  ionViewDidEnter = () => {
 
     this.initMap();
 
@@ -62,7 +62,7 @@ export class WeatherRadarPage implements OnInit {
     }, 400);
   }
 
-  initMap() {
+  initMap = () => {
     if (this.map) return;   //Prevent re-initialization
 
     // 1. Initialize Map
@@ -76,7 +76,7 @@ export class WeatherRadarPage implements OnInit {
     this.changeLayer(this.activeLayer);
   }
 
-  changeLayer(layerId: string) {
+  changeLayer = (layerId: string) => {
     this.activeLayer = layerId;
 
     if (this.weatherLayer) {

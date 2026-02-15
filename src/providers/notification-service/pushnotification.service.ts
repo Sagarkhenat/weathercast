@@ -51,7 +51,7 @@ export class PushNotificationService {
 
   }
 
-  private addNotificationListeners() {
+  private addNotificationListeners = () => {
 
     // Get the FCM token to send to your backend
     PushNotifications.addListener('registration', (token: Token) => {

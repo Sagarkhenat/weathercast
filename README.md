@@ -2,7 +2,7 @@
 
 ##
 
-### [🔴 **View Live Demo**](https://weathercast-beige.vercel.app)Stack: Ionic 7 • Angular 17 • Capacitor • OpenWeatherMap
+### [🔴 **View Live Demo**](https://weathercast-beige.vercel.app) Stack: Ionic 7 • Angular 17 • Capacitor • OpenWeatherMap
 
 ![Ionic](https://img.shields.io/badge/Ionic-7.0-3880FF?style=flat&logo=ionic)
 ![Angular](https://img.shields.io/badge/Angular-17+-DD0031?style=flat&logo=angular)
