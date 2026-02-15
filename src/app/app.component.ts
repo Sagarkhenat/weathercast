@@ -137,6 +137,10 @@ export class MyApp {
     this.router.navigate(['/privacy-policy']);
   }
 
+  openWeatherRadar = async() => {
+    this.router.navigate(['/weather-radar']);
+  }
+
   reportProblem = () => {
     const email = 'support@weathercast.com';
     const subject = 'WeatherCast App Issue';

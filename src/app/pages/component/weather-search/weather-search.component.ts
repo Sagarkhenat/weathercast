@@ -33,7 +33,7 @@ export class WeatherSearchComponent  implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
+  ngOnInit = () => {
 
       this.searchControl.valueChanges.pipe(
             debounceTime(500),   // Wait 500ms after the user STOPS typing
@@ -67,7 +67,7 @@ export class WeatherSearchComponent  implements OnInit {
   }
 
 
-  clearSearch() {
+  clearSearch = () => {
     this.searchControl.setValue(''); // Clears the input
     // Optional: If you want to clear the results on the main page too,
     // you can emit an empty string here:

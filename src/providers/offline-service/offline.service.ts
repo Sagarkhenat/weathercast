@@ -28,14 +28,14 @@ export class OfflineService implements OnDestroy {
     });
   }
 
-  private updateStatus(status: ConnectionStatus) {
+  private updateStatus = (status: ConnectionStatus) => {
     // Update the signal value
     this.isOnline.set(status.connected);
     console.log('Network status:', status.connected ? 'Online' : 'Offline');
   }
 
   // Cleanup listener when service is destroyed (rare for singletons, but good practice)
-  ngOnDestroy() {
+  ngOnDestroy = () =>{
     if (this.listenerHandle) {
       this.listenerHandle.remove();
     }else{

@@ -28,7 +28,7 @@ export class UnitStateService {
 
   }
 
-  toggleUnit() {
+  toggleUnit = () =>{
     // 2. Update the signal
     this._unit.update(current => {
       const newUnit = current === 'C' ? 'F' : 'C';

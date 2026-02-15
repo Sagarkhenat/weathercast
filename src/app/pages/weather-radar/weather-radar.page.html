@@ -1,0 +1,58 @@
+<div class="status-bar-overlay"></div>
+
+<ion-content [fullscreen]="true">
+  <div id="map" style="height: 100%; width: 100%; position: absolute;"></div>
+
+
+  @if (showMenu) {
+    <div class="layer-selector">
+      <div class="menu-grid">
+        @for (l of layers; track l.id) {
+          <div class="layer-item"
+              (click)="changeLayer(l.id)"
+              [class.active]="activeLayer === l.id">
+            <ion-icon [name]="l.icon"></ion-icon>
+            <p>{{ l.name }}</p>
+          </div>
+        }
+
+      </div>
+    </div>
+  }@else {
+
+  }
+
+  @if (activeLayer === 'temp_new') {
+    <div class="map-legend">
+      <span>-40°C</span>
+      <div class="gradient-bar temp"></div>
+      <span>+40°C</span>
+    </div>
+  }
+
+  @if (activeLayer === 'precipitation_new') {
+    <div class="map-legend">
+      <span>Light</span>
+      <div class="gradient-bar rain"></div>
+      <span>Heavy</span>
+    </div>
+  }
+
+  <ion-fab vertical="top" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="showMenu = !showMenu">
+      <ion-icon name="layers-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-fab vertical="top" horizontal="start" slot="fixed">
+    <ion-fab-button size="small" color="light" routerLink="/home" routerDirection="back">
+      <ion-icon name="arrow-back"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="locateUser()">
+      <ion-icon name="locate"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

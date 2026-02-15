@@ -83,7 +83,7 @@ export class WeatherService {
 
   }
 
-  updateWeatherTheme(condition: string) {
+  updateWeatherTheme = (condition: string) => {
     console.log('Inside update weather theme condition value passed :::', condition);
 
     const weather = this.mapConditionToType(condition);
@@ -95,7 +95,7 @@ export class WeatherService {
     this.applyThemeClasses();
   }
 
-  toggleDarkMode() {
+  toggleDarkMode = () => {
     this.isDarkMode.update(v => !v);
     this.applyThemeClasses();
   }

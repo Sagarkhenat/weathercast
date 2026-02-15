@@ -26,10 +26,10 @@ export class WeatherDetailComponent  implements OnInit {
 
   constructor(private modalCtrl: ModalController) { }
 
-  ngOnInit() {
+  ngOnInit = () => {
   }
 
-  close() {
+  close = () => {
     this.modalCtrl.dismiss();
   }
 
